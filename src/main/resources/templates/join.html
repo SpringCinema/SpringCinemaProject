@@ -1,3 +1,7 @@
+<!-- 수정일 : 2022-12-10일 -->
+<!-- 마지막으로 수정한 사람 : MoonNight285 -->
+<!-- 회원가입 유저정보입력 페이지 -->
+
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -6,6 +10,16 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            const birth = $("#select-i-brith");
+            const year = new Date().getFullYear();
+
+            for (let i = year; i >= 1900; --i) {
+                birth.append(`<option>${i}</option>`);
+            }
+        });
+    </script>
     <style>
         .container{width:1200px; max-width:none!important;}
 
@@ -57,7 +71,7 @@
                         </div>
                         <div class="mb-3">
                             <label class="mb-1">나이</label>
-                            <select class="form-select">
+                            <select id="select-i-brith" class="form-select">
                                 <option>생년을 선택하세요.</option>
                             </select>
                         </div>
