@@ -1,5 +1,9 @@
+<!-- 수정일 : 2022-12-10일 -->
+<!-- 마지막으로 수정한 사람 : MoonNight285 -->
+<!-- 회원가입 약관 페이지 -->
+
 <!DOCTYPE html>
-<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<html lang="ko">
 <head>
     <meta charset="UTF-8">
     <title>스프링 시네마 - 회원가입 약관</title>
@@ -8,14 +12,17 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"></script>
     <style>
         .container{width:1200px; max-width:none!important;}
+
         #img-i-welcome {
             margin-left: 25px;
             width: 900px;
             height: 600px;
         }
+
         #ul-i-clause-content {
             list-style: none;
         }
+
         #textarea-i-clause-content {
             resize: none;
         }
@@ -24,6 +31,7 @@
             cursor: pointer;
             margin-bottom: 7px;
         }
+
         #label-i-checkbox-wrap #i-i-check-icon  {
             display: inline-block;
             width: 24px;
@@ -33,7 +41,9 @@
             vertical-align: middle;
             transition-duration: .3s;
         }
+
         #label-i-checkbox-wrap input[type=checkbox] { display: none; }
+
         #label-i-checkbox-wrap input[type=checkbox]:checked + #i-i-check-icon { background-image: url("img/check.png") }
 
         .btn {
