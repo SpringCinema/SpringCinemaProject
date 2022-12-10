@@ -25,6 +25,25 @@
         #a-i-forgot-password {
             text-decoration: none;
         }
+
+        #label-i-id-save {
+            cursor: pointer;
+            margin-bottom: 7px;
+        }
+
+        #label-i-id-save #i-i-check-icon  {
+            display: inline-block;
+            width: 24px;
+            height: 24px;
+            margin-right: 5px;
+            background: url("img/notCheck.png") left center no-repeat;
+            vertical-align: middle;
+            transition-duration: .3s;
+        }
+
+        #label-i-id-save input[type=checkbox] { display: none; }
+
+        #label-i-id-save input[type=checkbox]:checked + #i-i-check-icon { background-image: url("img/check.png") }
     </style>
 </head>
 <body>
@@ -44,7 +63,7 @@
                         <div class="mb-3">
                             <div class="d-flex justify-content-between">
                                 <div>
-                                    <input type="checkbox">아이디 저장
+                                    <label id="label-i-id-save"><input type="checkbox"><i id="i-i-check-icon"></i>아이디 저장</label>
                                 </div>
                                 <a id="a-i-forgot-password" href="#">비밀번호 찾기</a>
                             </div>
