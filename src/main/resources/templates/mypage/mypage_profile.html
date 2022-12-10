@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"></script>
+</head>
+<body>
+<div th:fragment="profile">
+    <div class="rounded-4 d-flex" style="border: #FF4500 3px solid">
+        <div class="col-3 ms-3 mt-3">
+            <img src="" width="150px" height="150px">
+        </div>
+        <div class="col-7 mt-3">
+            <p>이름 : aaa</p>
+            <p>아이디 : aaaaaa</p>
+            <p>이메일 : aaaa@naver.com</p>
+            <div class="text-end">
+                <button class="btn text-light mb-3" style="background-color: #FF4500">내 정보 수정</button>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
