@@ -12,10 +12,4 @@ public class CinemaController {
     public String index() throws Exception {
         return "index";
     }
-
-    @RequestMapping(value = "/mypage", method = RequestMethod.GET)
-    public ModelAndView openMyPage() throws Exception {
-        ModelAndView mv = new ModelAndView("mypage/mypage");
-        return mv;
-    }
 }
