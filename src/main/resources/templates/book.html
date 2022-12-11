@@ -74,7 +74,10 @@
                 selectedMovieName = $(this).text();
 
                 const movieView = $("#p-i-selected-movie");
-                movieView.text(selectedMovieName);
+                movieView.text(selectedMovieName); // 유저에게 보여주기위한 용도
+
+                const movieSender = $("#input-i-send-movie");
+                movieSender.val(selectedMovieName); // 서버 전달용
             });
 
             // 극장 목록을 클릭하면 색상 강조하고 값 저장
@@ -90,6 +93,9 @@
 
                 const cinemaView = $("#p-i-selected-cinema");
                 cinemaView.text("선택극장 : " + selectedCinemaName);
+
+                const cinemaSender = $("#input-i-send-cinema");
+                cinemaSender.val(selectedCinemaName);
             });
 
             // 날짜 목록을 클릭하면 색상 강조하고 값 저장
@@ -119,6 +125,9 @@
                 selectedDate = $(this).text().split(" ")[1]; // 1 ~ 31
                 const dateView = $("#p-i-selected-date");
                 dateView.text(`선택날짜 : ${year}년 ${month}월 ${selectedDate}일 ${selectedDay}요일`);
+
+                const dateSender = $("#input-i-send-date");
+                dateSender.val(`${year}년 ${month}월 ${selectedDate}일 ${selectedDay}요일`);
             });
 
             // 시간 목록을 클릭하면 색상 강조하고 값 저장
@@ -140,6 +149,31 @@
 
                 const timeView = $("#p-i-selected-time");
                 timeView.text("선택시간 : " + selectedTime);
+
+                const hallSender = $("#input-i-send-hall");
+                hallSender.val(selectedHall);
+
+                const timeSender = $("#input-i-send-time");
+                timeSender.val(selectedTime);
+            });
+
+            // 좌석선택 버튼을 클릭시 선택안한 데이터가 있는지 체크하고 선택한 데이터를 서버로 넘김
+            const btnNext = $("#btn-i-next");
+            btnNext.on("click", function () {
+                const movieSender = $("#input-i-send-movie");
+                const cinemaSender = $("#input-i-send-cinema");
+                const dateSender = $("#input-i-send-date");
+                const hallSender = $("#input-i-send-hall");
+                const timeSender = $("#input-i-send-time");
+
+                if (movieSender.val() == "" || cinemaSender.val() == "" || dateSender.val() == "" ||
+                    hallSender.val() == "" || timeSender.val() == "") {
+                    const btnError = $("#btn-i-hidden-error");
+                    btnError.click();
+                    return;
+                }
+
+                // 다 선택했으면 서버로 값 넘기기
             });
         });
     </script>
@@ -280,8 +314,8 @@
             margin-top: 20px;
         }
 
-        /* 숨겨진 좌석선택 버튼(서버로 넘기기용) */
-        #btn-i-hidden-next {
+        /* 숨겨진 좌석선택 버튼(서버로 넘기기용), 에러버튼 */
+        #btn-i-hidden-next, #btn-i-hidden-error {
             display: none;
         }
 
@@ -405,9 +439,35 @@
                 </div>
                 <div id="div-i-next" class="d-flex justify-content-center">
                     <button id="btn-i-next" type="button" class="btn btn-dark my-2"><p>좌석선택</p></button>
-                    <button id="btn-i-hidden-next" type="submit"></button>
+                    <button id="btn-i-hidden-error" type="button" data-bs-toggle="modal" data-bs-target="#div-i-error"></button>
                 </div>
             </div>
+            <!-- Modal -->
+            <div class="modal fade" id="div-i-error" tabindex="-1">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">에러발생!</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                        </div>
+                        <div class="modal-body">
+                            선택하지않은 값이 존재합니다!
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-primary" data-bs-dismiss="modal">닫기</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- 이 폼은 눈에 보이지않습니다. 오로지 서버에 전달하기위한 용도입니다. -->
+            <form action="" method="">
+                <input id="input-i-send-movie" type="hidden">
+                <input id="input-i-send-cinema" type="hidden">
+                <input id="input-i-send-date" type="hidden">
+                <input id="input-i-send-hall" type="hidden">
+                <input id="input-i-send-time" type="hidden">
+                <button id="btn-i-hidden-next" type="submit"></button>
+            </form>
         </div>
     </div>
 </body>
