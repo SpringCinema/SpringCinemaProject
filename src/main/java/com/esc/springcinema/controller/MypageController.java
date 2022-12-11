@@ -9,11 +9,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Controller
-public class MovieController {
+public class MypageController {
 
     @RequestMapping(value = "/mypage", method = RequestMethod.GET)
     public ModelAndView openMyPage() throws Exception {
         ModelAndView mv = new ModelAndView("mypage/mypage");
+        return mv;
+    }
+
+    @RequestMapping(value = "/mypage/update", method = RequestMethod.GET)
+    public ModelAndView updateProfile() throws Exception {
+        ModelAndView mv = new ModelAndView("mypage/profile_update");
         return mv;
     }
 
