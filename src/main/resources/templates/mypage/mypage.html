@@ -12,7 +12,6 @@
             // 페이지 좌측 메뉴 클릭 시 우측 페이지 변경
             $('li').click(function () {
                 $('li').removeClass();
-                $('li').addClass("pt-2");
                 $(this).addClass('li-c-on text-light');
 
                 let num1 = $(this).attr('id').slice(-1);
@@ -36,15 +35,8 @@
             font-weight: normal;
             font-style: normal;
         }
-        @font-face {
-            font-family: 'KOHINanumOTFL';
-            src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2201-2@1.0/KOHINanumOTFL.woff') format('woff');
-            font-weight: normal;
-            font-style: normal;
-        }
 
         .container {
-            font-family: KOHINanumOTFL;
             width: 1300px;
             max-width: none !important;
         }
@@ -72,11 +64,11 @@
         <!--    메인 좌측 메뉴선택 페이지-->
         <div class="w-25 border-end border-end-2">
             <ul class="fs-4 text-center">
-                <li class="li-c-on text-light pt-2" id="li-i-1"><p>내 프로필</p></li>
-                <li class="pt-2" id="li-i-2"><p>예매내역</p></li>
-                <li class="pt-2" id="li-i-3"><p>결제내역</p></li>
-                <li class="pt-2" id="li-i-4"><p>댓글</p></li>
-                <li class="pt-2" id="li-i-5"><p>문의내역</p></li>
+                <li class="li-c-on text-light " id="li-i-1"><p>내 프로필</p></li>
+                <li id="li-i-2"><p>예매내역</p></li>
+                <li id="li-i-3"><p>결제내역</p></li>
+                <li id="li-i-4"><p>댓글</p></li>
+                <li id="li-i-5"><p>문의내역</p></li>
             </ul>
         </div>
 
