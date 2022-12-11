@@ -10,11 +10,12 @@
     <script>
         $(document).ready(function() {
 
+            // 인원 수 선택 이벤트
             // 인원 수 선택 시 금액 출력
             $(`input[name='inputAdt']`).on('click', function () {
                 let count = $(`input[type='checkbox']:checked`).length;
-                let adtVal = $(`input[name='inputAdt']:checked`).val();
-                let teenVal = $(`input[name='inputTeen']:checked`).val();
+                let adtVal = parseInt($(`input[name='inputAdt']:checked`).val());
+                let teenVal = parseInt($(`input[name='inputTeen']:checked`).val());
                 let adtCost = adtVal * 10000;
                 let teenCost = teenVal * 5000;
 
@@ -23,6 +24,7 @@
                     alert('좌석수가 인원수보다 많습니다.');
                     $(`input[type='checkbox']`).prop('checked', false);
                     $('#p-i-seatCode').html(`<p class="mb-1" id="p-i-seatCode">좌석 : </p>`);
+                    $(`#p-i-cost`).html('<p class="mb-1">금액 : <b>' + (adtCost + teenCost) + '원</b></p>');
                 }
                 else {
                     // 선택된 인원에 따른 금액 출력
@@ -38,8 +40,8 @@
             // 인원 수 선택 시 금액 출력
             $(`input[name='inputTeen']`).on('click', function () {
                 let count = $(`input[type='checkbox']:checked`).length;
-                let adtVal = $(`input[name='inputAdt']:checked`).val();
-                let teenVal = $(`input[name='inputTeen']:checked`).val();
+                let adtVal = parseInt($(`input[name='inputAdt']:checked`).val());
+                let teenVal = parseInt($(`input[name='inputTeen']:checked`).val());
                 let adtCost = adtVal * 10000;
                 let teenCost = teenVal * 5000;
 
@@ -48,6 +50,7 @@
                     alert('좌석수가 인원수보다 많습니다.');
                     $(`input[type='checkbox']`).prop('checked', false);
                     $('#p-i-seatCode').html(`<p class="mb-1" id="p-i-seatCode">좌석 : </p>`);
+                    $(`#p-i-cost`).html('<p class="mb-1">금액 : <b>' + (adtCost + teenCost) + '원</b></p>');
                 }
                 else {
                     // 선택된 인원에 따른 금액 출력
@@ -61,10 +64,13 @@
             });
 
 
+            // 좌석 선택 이벤트
             // 선택한 인원수 보다 많은 좌석 선택 시 오류 메세지 출력
             $(`input[type='checkbox']`).on('click', function () {
                 let count = $(`input[type='checkbox']:checked`).length;
-                let popNum = $(`input[name='inputAdt']:checked`).val() * 1 + $(`input[name='inputTeen']:checked`).val() * 1;
+                let adtVal = parseInt($(`input[name='inputAdt']:checked`).val());
+                let teenVal = parseInt($(`input[name='inputTeen']:checked`).val());
+                let popNum = adtVal + teenVal;
 
                 if (count > popNum) {
                     // 좌석 수가 더 많을 경우 체크박스 클릭 해제
@@ -138,8 +144,8 @@
                     <p class="m-0">일반 : 10,000원(1인)</p>
                     <div class="row text-center">
                         <div class="col-sm-1 me-1" th:each="item, i : ${people}">
-                            <input type="radio" class="btn-check" name="inputAdt" th:id="'input-i-adt' + ${item}" th:if="${i.index} == 0" autocomplete="off" th:value="${item}" checked>
-                            <input type="radio" class="btn-check" name="inputAdt" th:id="'input-i-adt' + ${item}" th:unless="${i.index} == 0" autocomplete="off" th:value="${item}">
+                            <input type="radio" class="btn-check" name="inputAdt" th:id="'input-i-adt' + ${item}" th:if="${i.index} == 0" th:value="${item}" checked>
+                            <input type="radio" class="btn-check" name="inputAdt" th:id="'input-i-adt' + ${item}" th:unless="${i.index} == 0" th:value="${item}">
                             <label class="btn btn-outline-secondary label-c-btn" th:for="'input-i-adt' + ${item}" th:text="${item}"></label>
                         </div>
                     </div>
@@ -149,8 +155,8 @@
                     <p class="m-0">청소년 : 5,000원(1인)</p>
                     <div class="row text-center">
                         <div class="col-sm-1 me-1" th:each="item, i : ${people}">
-                            <input type="radio" class="btn-check" name="inputTeen" th:id="'input-i-teen' + ${item}"th:if="${i.index} == 0" autocomplete="off" th:value="${item}" checked>
-                            <input type="radio" class="btn-check" name="inputTeen" th:id="'input-i-teen' + ${item}"th:unless="${i.index} == 0" autocomplete="off" th:value="${item}">
+                            <input type="radio" class="btn-check" name="inputTeen" th:id="'input-i-teen' + ${item}" th:if="${i.index} == 0" th:value="${item}" checked>
+                            <input type="radio" class="btn-check" name="inputTeen" th:id="'input-i-teen' + ${item}" th:unless="${i.index} == 0" th:value="${item}">
                             <label class="btn btn-outline-secondary label-c-btn" th:for="'input-i-teen' + ${item}" th:text="${item}"></label>
                         </div>
                     </div>
@@ -177,39 +183,39 @@
             <div class="bg-secondary text-light mx-auto mt-5 col-7">
                 <p class="text-center">SCREEN</p>
             </div>
-
             <div class="text-center w-75 mx-auto my-2">
+<!--                타임리프 반복문으로 좌석 코드 알파벳 부분 불러옴 (좌석 번호 부분도 코드 생략 가능한지 더 고민해봐야 함)-->
                 <div class="row" th:each="item, i : ${alp}">
                     <div class="col-1 border-end mb-2">
                         <button class="btn disabled border-0" th:text="${i.current}"></button>
                     </div>
                     <div class="col-11 row mb-2">
                         <div class="col-3 p-0 div-c-seat ms-2">
-                            <input type="checkbox" class="btn-check" th:id="'btn-check1' + ${item}" autocomplete="off" th:value="${item} + '1'">
+                            <input type="checkbox" class="btn-check" th:id="'btn-check1' + ${item}" th:value="${item} + '1'">
                             <label class="btn btn-success" th:for="'btn-check1' + ${item}">1</label>
-                            <input type="checkbox" class="btn-check" th:id="'btn-check2' + ${item}" autocomplete="off" th:value="${item} + '2'">
+                            <input type="checkbox" class="btn-check" th:id="'btn-check2' + ${item}" th:value="${item} + '2'">
                             <label class="btn btn-success" th:for="'btn-check2' + ${item}">2</label>
-                            <input type="checkbox" class="btn-check" th:id="'btn-check3' + ${item}" autocomplete="off" th:value="${item} + '3'">
+                            <input type="checkbox" class="btn-check" th:id="'btn-check3' + ${item}" th:value="${item} + '3'">
                             <label class="btn btn-success" th:for="'btn-check3' + ${item}">3</label>
                         </div>
 
                         <div class="col-5 p-0 div-c-seat">
-                            <input type="checkbox" class="btn-check" th:id="'btn-check4' + ${item}" autocomplete="off" th:value="${item} + '4'" disabled>
+                            <input type="checkbox" class="btn-check" th:id="'btn-check4' + ${item}" th:value="${item} + '4'" disabled>
                             <label class="btn btn-success" th:for="'btn-check4' + ${item}">4</label>
-                            <input type="checkbox" class="btn-check" th:id="'btn-check5' + ${item}" autocomplete="off" th:value="${item} + '5'">
+                            <input type="checkbox" class="btn-check" th:id="'btn-check5' + ${item}" th:value="${item} + '5'">
                             <label class="btn btn-success" th:for="'btn-check5' + ${item}">5</label>
-                            <input type="checkbox" class="btn-check" th:id="'btn-check6' + ${item}" autocomplete="off" th:value="${item} + '6'">
+                            <input type="checkbox" class="btn-check" th:id="'btn-check6' + ${item}" th:value="${item} + '6'">
                             <label class="btn btn-success" th:for="'btn-check6' + ${item}">6</label>
-                            <input type="checkbox" class="btn-check" th:id="'btn-check7' + ${item}" autocomplete="off" th:value="${item} + '7'">
+                            <input type="checkbox" class="btn-check" th:id="'btn-check7' + ${item}" th:value="${item} + '7'">
                             <label class="btn btn-success" th:for="'btn-check7' + ${item}">7</label>
                         </div>
 
                         <div class="col-3 p-0 div-c-seat">
-                            <input type="checkbox" class="btn-check" th:id="'btn-check8' + ${item}" autocomplete="off" th:value="${item} + '8'">
+                            <input type="checkbox" class="btn-check" th:id="'btn-check8' + ${item}" th:value="${item} + '8'">
                             <label class="btn btn-success" th:for="'btn-check8' + ${item}">8</label>
-                            <input type="checkbox" class="btn-check" th:id="'btn-check9' + ${item}" autocomplete="off" th:value="${item} + '9'">
+                            <input type="checkbox" class="btn-check" th:id="'btn-check9' + ${item}" th:value="${item} + '9'">
                             <label class="btn btn-success" th:for="'btn-check9' + ${item}">9</label>
-                            <input type="checkbox" class="btn-check" th:id="'btn-check10' + ${item}" autocomplete="off" th:value="${item} + '10'" disabled>
+                            <input type="checkbox" class="btn-check" th:id="'btn-check10' + ${item}" th:value="${item} + '10'" disabled>
                             <label class="ps-2 btn btn-dark" th:for="'btn-check10' + ${item}" style="width: 35.8px"><p class="m-0">10</p></label>
                         </div>
                     </div>
