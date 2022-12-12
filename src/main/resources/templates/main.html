@@ -11,6 +11,8 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"></script>
 
+    <th:block th:replace="fragments/config :: configFragment"></th:block>
+
     <script>
         $(document).ready(function () {
             var itemsMainDiv = ('.MultiCarousel');
@@ -131,6 +133,7 @@
         .MultiCarousel .leftLst.over, .MultiCarousel .rightLst.over { pointer-events: none; background:#ccc; }
     </style>
 </head>
+<header th:replace="fragments/header :: headerFragment"></header>
 <body>
 <header th:replace="header :: mainHeader"></header>
 <div class="div-c-youtube">
