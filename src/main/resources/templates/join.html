@@ -16,7 +16,11 @@
             const year = new Date().getFullYear();
 
             for (let i = year; i >= 1900; --i) {
-                birth.append(`<option>${i}</option>`);
+                if (i == 1970) {
+                    birth.append(`<option selected>${i}</option>`);
+                } else {
+                    birth.append(`<option>${i}</option>`);
+                }
             }
         });
     </script>
