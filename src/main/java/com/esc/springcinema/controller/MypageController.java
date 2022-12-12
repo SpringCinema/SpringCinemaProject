@@ -23,6 +23,18 @@ public class MypageController {
         return mv;
     }
 
+    @RequestMapping(value = "/mypage/delete", method = RequestMethod.GET)
+    public ModelAndView deleteProfile() throws Exception {
+        ModelAndView mv = new ModelAndView("mypage/profile_delete");
+        return mv;
+    }
+
+    @RequestMapping(value = "/mypage/paycancle", method = RequestMethod.GET)
+    public ModelAndView cancelPay() throws Exception {
+        ModelAndView mv = new ModelAndView("mypage/payment_cancel");
+        return mv;
+    }
+
     @RequestMapping(value = "/seat" , method = RequestMethod.GET)
     public ModelAndView openSeat() throws Exception {
         ModelAndView mv = new ModelAndView("movieseat");
