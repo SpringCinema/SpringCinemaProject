@@ -24,13 +24,40 @@
                 runLoginSuccessEffect(passwordCheckResult);
             }
         }
-        
+
+        // 회원가입에 사용되는 폼 양식에서 빈값이 있는지를 확인
+        // 있으면 true 없으면 false
+        function isAllEmpty() {
+            const id = $("#input-i-id");
+            const passwordCheckResult = $("#small-i-password-check-result");
+            const name = $("#input-i-name");
+            const birth = $("#select-i-birth option:selected");
+            const gender = $("#select-i-gender option:selected");
+            const email = $("#input-i-email");
+            const tel = $("#input-i-tel");
+
+            if (id.val() == "" || name.val() == "" || email.val() == "" || tel.val() == "") {
+                return true;
+            }
+
+            if (passwordCheckResult.text() != "비밀번호가 일치합니다.") {
+                return true;
+            }
+
+            if (birth.val() == "none" || gender.val() == "none") {
+                return true;
+            }
+
+            return false;
+        }
+
         $(document).ready(function () {
             const birth = $("#select-i-brith");
             const year = new Date().getFullYear();
             const password = $("#input-i-password");
             const passwordCheck = $("#input-i-password-check");
-            
+            const btnJoin = $("#btn-i-join");
+
             password.on("focusout", function () {
                 equalPassword();
             });
@@ -38,13 +65,23 @@
             passwordCheck.on("focusout", function () {
                 equalPassword();
             });
+
+            btnJoin.on("click", function () {
+                if (isAllEmpty()) {
+                    const btnError = $("#btn-i-hidden-error");
+                    btnError.click();
+                    return;
+                }
+
+                // 서버에 값 전달
+            });
             
             // 생년 삽입
             for (let i = year; i >= 1900; --i) {
                 if (i == 1970) {
-                    birth.append(`<option selected>${i}</option>`);
+                    birth.append(`<option value="${i}" selected>${i}</option>`);
                 } else {
-                    birth.append(`<option>${i}</option>`);
+                    birth.append(`<option value="${i}">${i}</option>`);
                 }
             }
         });
@@ -89,7 +126,7 @@
                     <div id="div-i-join-form">
                         <div class="mb-3">
                             <label class="mb-1">아이디</label>
-                            <input type="text" class="form-control">
+                            <input id="input-i-id" type="text" class="form-control">
                         </div>
                         <div class="mb-3">
                             <label class="mb-1">비밀번호</label>
@@ -104,29 +141,29 @@
                         </div>
                         <div class="mb-3">
                             <label class="mb-1">이름</label>
-                            <input type="text" class="form-control">
+                            <input id="input-i-name" type="text" class="form-control">
                         </div>
                         <div class="mb-3">
                             <label class="mb-1">나이</label>
                             <select id="select-i-brith" class="form-select">
-                                <option>생년을 선택하세요.</option>
+                                <option value="none">생년을 선택하세요.</option>
                             </select>
                         </div>
                         <div class="mb-3">
                             <label class="mb-1">성별</label>
-                            <select class="form-select">
-                                <option>성별을 선택하세요.</option>
-                                <option>남자</option>
-                                <option>여자</option>
+                            <select id="select-i-gender" class="form-select">
+                                <option value="none">성별을 선택하세요.</option>
+                                <option value="man">남자</option>
+                                <option value="woman">여자</option>
                             </select>
                         </div>
                         <div class="mb-3">
                             <label class="mb-1">이메일</label>
-                            <input type="email" class="form-control">
+                            <input id="input-i-email" type="email" class="form-control">
                         </div>
                         <div class="mb-4">
                             <label class="mb-1">전화번호</label>
-                            <input type="tel" class="form-control">
+                            <input id="input-i-tel" type="tel" class="form-control">
                         </div>
                         <div id="div-i-btn-wrapper" class="mb-3 d-flex justify-content-center">
                             <button id="btn-i-main" type="button" class="btn btn-dark">메인으로</button>
@@ -139,5 +176,6 @@
             </div>
         </div>
     </div>
+    <div th:replace="modalErrorPage :: modal-error('입력하지않은 값이 있습니다!')"></div>
 </body>
 </html>

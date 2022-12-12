@@ -442,23 +442,6 @@
                     <button id="btn-i-hidden-error" type="button" data-bs-toggle="modal" data-bs-target="#div-i-error"></button>
                 </div>
             </div>
-            <!-- Modal -->
-            <div class="modal fade" id="div-i-error" tabindex="-1">
-                <div class="modal-dialog modal-dialog-centered">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title">에러발생!</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                        </div>
-                        <div class="modal-body">
-                            선택하지않은 값이 존재합니다!
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-primary" data-bs-dismiss="modal">닫기</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
             <!-- 이 폼은 눈에 보이지않습니다. 오로지 서버에 전달하기위한 용도입니다. -->
             <form action="" method="">
                 <input id="input-i-send-movie" type="hidden">
@@ -470,5 +453,6 @@
             </form>
         </div>
     </div>
+    <div th:replace="modalErrorPage :: modal-error('선택하지않은 값이 존재합니다!')"></div>
 </body>
 </html>
