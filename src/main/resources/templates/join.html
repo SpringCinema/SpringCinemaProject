@@ -36,21 +36,26 @@
             width: 360px;
         }
 
-        #btn-i-join {
-            width: 180px;
+        #btn-i-join, #btn-i-main {
+            width: 150px;
             height: 45px;
+            margin: 0px 5px;
         }
 
         #btn-i-hidden-join {
             display: none;
+        }
+        
+        #small-i-password-check-result {
+            color: red;
         }
     </style>
 </head>
 <body>
     <div class="container">
         <div class="row">
-            <div class="col-xl-12 text-center mb-3">
-                <img id="img-i-logo" src="img/logo.png">
+            <div class="col-xl-12 text-center mb-3 mt-4">
+                <a href="#"><img id="img-i-logo" src="img/logo.png"></a>
             </div>
         </div>
         <div class="row">
@@ -66,7 +71,10 @@
                             <input type="password" class="form-control">
                         </div>
                         <div class="mb-3">
-                            <label class="mb-1">비밀번호 확인</label>
+                            <div class="d-flex justify-content-between">
+                                <label class="mb-1">비밀번호 확인</label>
+                                <small id="small-i-password-check-result">비밀번호가 일치하지않습니다!</small>
+                            </div>
                             <input type="password" class="form-control">
                         </div>
                         <div class="mb-3">
@@ -96,6 +104,7 @@
                             <input type="tel" class="form-control">
                         </div>
                         <div class="mb-3 d-flex justify-content-center">
+                            <button id="btn-i-main" type="button" class="btn btn-dark">메인으로</button>
                             <button id="btn-i-join" type="button" class="btn btn-success">가입하기</button>
                             <button id="btn-i-hidden-join"></button>
                         </div>
