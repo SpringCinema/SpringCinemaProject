@@ -20,7 +20,7 @@
         #div-i-payment-body {
             margin-left: 10px;
             width: 685px;
-            height: 500px;
+            height: 510px;
             background-color: #f2f0e5;
             border: 2px solid gray;
         }
@@ -28,7 +28,7 @@
         /* 결제정보 본문 디자인 */
         #div-i-sidebar {
             width: 295px;
-            height: 500px;
+            height: 510px;
             background-color: #f2f0e5;
             border-bottom: 2px solid gray;
             border-right: 2px solid gray;
@@ -42,6 +42,7 @@
             color: white;
             border-right: 1px solid white;
             font-family: "KOHINanumOTFL";
+            padding-top: 5px;
         }
 
         /* 결제수단 헤더 길이 */
@@ -60,16 +61,17 @@
             margin-top: 15px;
         }
 
-        /* 결제정보 결제하실 금액창 디자인 */
-        #p-i-money-header, #p-i-money-value {
+        /* 결제정보 결제하실 금액창 디자인, 선택한 좌석정보 디자인, 영화정보 */
+        /* 폰트 & 테두리 디자인 */
+        #p-i-money-header, #p-i-money-value, #p-i-seat-header, #p-i-seat-value, #p-i-movie-header, #p-i-movie-value {
             font-family: KOHINanumOTFL;
             font-weight: bold;
             border: 1px solid black;
         }
-
-        /* 결제정보 결제하실 금액 부분 디자인 */
-        #p-i-money-header {
-            margin-top: 30px;
+        /* 결제정보 결제하실 금액 부분 디자인, 선택한 좌석정보 헤더부분 디자인 */
+        /* 폰트 & 테두리 색상 & 패딩,마진 */
+        #p-i-money-header, #p-i-seat-header, #p-i-movie-header {
+            margin-top: 25px;
             padding-top: 10px;
             padding-bottom: 5px;
             margin-bottom: 0px;
@@ -78,8 +80,8 @@
             font-size: 18px;
         }
 
-        /* 결제정보 금액 가격 디자인 */
-        #p-i-money-value {
+        /* 결제정보 금액 가격 디자인, 선택한 좌석 정보 디자인 */
+        #p-i-money-value, #p-i-seat-value, #p-i-movie-value {
             background-color: #333333;
             color: white;
             padding-top: 10px;
@@ -88,10 +90,15 @@
             text-align: right;
             font-size: 24px;
         }
+        
+        /* 선택한 영화 폰트설정 */
+        #p-i-movie-value {
+            font-size: 16px;
+        }
 
         /* 결제하기 버튼 디자인 */
         #btn-i-payment {
-            width: 250px;
+            width: 240px;
             height: 100px;
             font-size: 28px;
             font-family: KOHINanumOTFL;
@@ -100,6 +107,16 @@
         /* 결제하기 버튼 글자 디자인 */
         #btn-i-payment p {
             padding-top: 24px;
+        }
+        
+        /* 체크박스 */
+        .form-check {
+            margin: 20px;
+        }
+        
+        /* 사이드바에 있는 아이템 항목에 패딩값 적용 */
+        .div-c-sidebar-item {
+            padding : 0px 15px;
         }
     </style>
 </head>
@@ -149,11 +166,19 @@
                 </div>
             </div>
             <div id="div-i-sidebar" class="col-xl-12">
-                <div>
+                <div class="div-c-sidebar-item">
+                    <p id="p-i-movie-header">선택하신 영화</p>
+                    <p id="p-i-movie-value">아바타 물의길</p>
+                </div>
+                <div class="div-c-sidebar-item">
+                    <p id="p-i-seat-header">선택하신 좌석</p>
+                    <p id="p-i-seat-value">A1/A2/A3</p>
+                </div>
+                <div class="div-c-sidebar-item">
                     <p id="p-i-money-header">결제하실 금액</p>
                     <p id="p-i-money-value">50000원</p>
                 </div>
-                <div style="margin-top: 250px" class="text-center">
+                <div style="margin-top: 25px" class="text-center">
                     <button id="btn-i-payment" type="button" class="btn btn-dark"><p>결제하기</p></button>
                 </div>
             </div>
