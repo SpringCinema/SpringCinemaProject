@@ -1,4 +1,4 @@
-<!-- 수정일 : 2022-12-10일 -->
+<!-- 수정일 : 2022-12-12일 -->
 <!-- 마지막으로 수정한 사람 : MoonNight285 -->
 <!-- 유저 로그인 페이지 -->
 
@@ -10,35 +10,11 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="js/animate.js"></script>
     <script>
-        function runLoginFailAnimate() {
-            const userCheckResult = $("#small-i-user-check-result");
-
-            userCheckResult.css("color", "red");
-            userCheckResult.text("아이디 혹은 비밀번호가 틀렸습니다.");
-
-            userCheckResult.animate({
-                marginTop : 10
-            }, 150);
-            userCheckResult.animate({
-                marginTop : 0
-            }, 150);
-            userCheckResult.animate({
-                marginTop : 5
-            }, 150);
-            userCheckResult.animate({
-                marginTop : 0
-            }, 150);
-            userCheckResult.animate({
-                marginTop : 3
-            }, 150);
-            userCheckResult.animate({
-                marginTop : 0
-            }, 150);
-        }
-
         $(document).ready(function () {
-            runLoginFailAnimate();
+            const userCheckResult = $("#small-i-user-check-result");
+            runLoginFailAnimate(userCheckResult);
         });
     </script>
     <style>
