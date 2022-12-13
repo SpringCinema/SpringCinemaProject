@@ -23,16 +23,16 @@
                     // 좌석 선택 후 인원 변경 시 좌석 제거
                     alert('좌석수가 인원수보다 많습니다.');
                     $(`input[type='checkbox']`).prop('checked', false);
-                    $('#p-i-seatCode').html(`<p class="mb-1" id="p-i-seatCode">좌석 : </p>`);
-                    $(`#p-i-cost`).html('<p class="mb-1">금액 : <b>' + (adtCost + teenCost) + '원</b></p>');
+                    $('#input-i-seatCode').val(``);
+                    $(`#input-i-cost`).val((adtCost + teenCost) + '원');
                 }
                 else {
                     // 선택된 인원에 따른 금액 출력
                     if((adtCost + teenCost) > 0) {
-                        $(`#p-i-cost`).html('<p class="mb-1">금액 : <b>' + (adtCost + teenCost) + '원</b></p>');
+                        $(`#input-i-cost`).val((adtCost + teenCost) + '원');
                     }
                     else {
-                        $(`#p-i-cost`).text('금액 : ');
+                        $(`#input-i-cost`).val("");
                     }
                 }
             });
@@ -49,16 +49,16 @@
                     // 좌석 선택 후 인원 변경 시 좌석 제거
                     alert('좌석수가 인원수보다 많습니다.');
                     $(`input[type='checkbox']`).prop('checked', false);
-                    $('#p-i-seatCode').html(`<p class="mb-1" id="p-i-seatCode">좌석 : </p>`);
-                    $(`#p-i-cost`).html('<p class="mb-1">금액 : <b>' + (adtCost + teenCost) + '원</b></p>');
+                    $('#input-i-seatCode').val(``);
+                    $(`#input-i-cost`).val((adtCost + teenCost) + '원');
                 }
                 else {
                     // 선택된 인원에 따른 금액 출력
                     if((adtCost + teenCost) > 0) {
-                        $(`#p-i-cost`).html('<p class="mb-1">금액 : <b>' + (adtCost + teenCost) + '원</b></p>');
+                        $(`#input-i-cost`).val((adtCost + teenCost) + '원');
                     }
                     else {
-                        $(`#p-i-cost`).text('금액 : ');
+                        $(`#input-i-cost`).val("");
                     }
                 }
             });
@@ -79,16 +79,26 @@
                 }
                 else {
                     if(count == 0) {
-                        $('#p-i-seatCode').html(`<p class="mb-1" id="p-i-seatCode">좌석 : </p>`);
+                        $('#input-i-seatCode').val(``);
                     }
                     else {
                         // 체크된 좌석 값 출력
-                        $('#p-i-seatCode').html(`<p class="mb-1" id="p-i-seatCode">좌석 : </p>`);
-                        $(`input[type='checkbox']`).each(function (index) {
-                            if($(this).is(":checked")==true){
-                                $('#p-i-seatCode p').append($(this).val() + "|");
-                            }
-                        });
+                        // $('#p-i-seatCode').html(`<p class="mb-1" id="p-i-seatCode">좌석 : </p>`);
+                        // $(`input[type='checkbox']`).each(function (index) {
+                        //     if($(this).is(":checked")==true){
+                        //         $('#p-i-seatCode p').append($(this).val() + "|");
+                        //     }
+                        // });
+
+                        // $('#input-i-seatCode').val('')
+                        // $(`input[type='checkbox']`).each(function (index) {
+                        //     if($(this).is(":checked")==true){
+                        //         $('#input-i-seatCode').val($(this).val());
+                        //         let l = "";
+                        //         l += $(this).val()
+                        //         console.log(l)
+                        //     }
+                        // });
                     }
                 }
             });
@@ -165,11 +175,46 @@
 <!--            내가 선택한 티켓 정보 출력 부분 -->
             <div class="col-6">
                 <div class="my-1 mt-3">
-                    <p class="mb-1">영화제목 : </p>
-                    <p class="mb-1">상영관 : </p>
-                    <p class="mb-1">상영시간 : </p>
-                    <p class="mb-1" id="p-i-seatCode">좌석 : </p>
-                    <p class="mb-1" id="p-i-cost">금액 : </p>
+                    <div class="row form-floating">
+                        <div class="col-3">
+                            <label for="input-i-title">영화제목 : </label>
+                        </div>
+                        <div class="col-9">
+                            <input type="text" class="form-control-plaintext py-0" id="input-i-title" value="아바타">
+                        </div>
+                    </div>
+                    <div class="row form-floating">
+                        <div class="col-3">
+                            <label for="input-i-cinema">상영관 : </label>
+                        </div>
+                        <div class="col-9">
+                            <input type="text" class="form-control-plaintext py-0" id="input-i-cinema" value="부산 1관">
+                        </div>
+                    </div>
+                    <div class="row form-floating">
+                        <div class="col-3">
+                            <label for="input-i-time">상영시간 : </label>
+                        </div>
+                        <div class="col-9">
+                            <input type="text" class="form-control-plaintext py-0" id="input-i-time" value="12 : 00">
+                        </div>
+                    </div>
+                    <div class="row form-floating">
+                        <div class="col-3">
+                            <label for="input-i-seatCode">좌석 : </label>
+                        </div>
+                        <div class="col-9">
+                            <input type="text" readonly class="form-control-plaintext py-0" id="input-i-seatCode">
+                        </div>
+                    </div>
+                    <div class="row form-floating">
+                        <div class="col-3">
+                            <label for="input-i-cost">금액 : </label>
+                        </div>
+                        <div class="col-9">
+                            <input type="text" readonly class="form-control-plaintext py-0" id="input-i-cost">
+                        </div>
+                    </div>
                 </div>
 
                 <div class="text-end">
