@@ -1,0 +1,57 @@
+<!-- 수정일 : 2022-12-13일 -->
+<!-- 마지막으로 수정한 사람 : MoonNight285 -->
+<!-- 마지막으로 작업한 내용 : 결과 페이지 기본 UI 구조 생성 -->
+<!-- 처리된 결과를 보여주는 페이지입니다. -->
+
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="${title}">여기에 제목이 들어갑니다.</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"></script>
+    <style>
+        @font-face {
+            font-family: 'KOHINanumOTFL';
+            src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2201-2@1.0/KOHINanumOTFL.woff') format('woff');
+            font-weight: normal;
+            font-style: normal;
+        }
+
+        /* 본문 컨테이너 영역 */
+        #div-i-main {
+            width:1000px;
+            margin: 255px auto;
+            max-width:none!important;
+        }
+
+        #h1-i-msg, #btn-i-back {
+            font-family: KOHINanumOTFL;
+        }
+
+        #btn-i-back {
+            width: 150px;
+            height: 50px;
+            font-size: 20px;
+            padding-top: 10px;
+        }
+    </style>
+
+    <th:block th:replace="fragments/config :: configFragment"></th:block>
+</head>
+<body>
+    <header th:replace="fragments/header :: headerFragment"></header>
+    <div id="div-i-main" class="container">
+        <div class="row">
+            <div class="col-xl-12 text-center">
+                <h1 th:text="${headMsg}" id="h1-i-msg">여기에 메세지가 들어갑니다.</h1>
+            </div>
+            <div class="col-xl-12 text-center mt-3">
+                <a th:href="${link}"><button th:text="${btnMsg}" id="btn-i-back" class="btn btn-dark" type="button">내용이 들어갑니다.</button></a>
+            </div>
+        </div>
+    </div>
+    <footer th:replace="fragments/footer.html :: footerFragment"></footer>
+</body>
+</html>
