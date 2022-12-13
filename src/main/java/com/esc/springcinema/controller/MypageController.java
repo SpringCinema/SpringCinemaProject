@@ -11,30 +11,35 @@ import java.util.List;
 @Controller
 public class MypageController {
 
+//    마이 페이지
     @RequestMapping(value = "/mypage", method = RequestMethod.GET)
     public ModelAndView openMyPage() throws Exception {
         ModelAndView mv = new ModelAndView("mypage/mypage");
         return mv;
     }
 
+//    내 정보 수정
     @RequestMapping(value = "/mypage/update", method = RequestMethod.GET)
     public ModelAndView updateProfile() throws Exception {
         ModelAndView mv = new ModelAndView("mypage/profile_update");
         return mv;
     }
 
+//    회원 탈퇴
     @RequestMapping(value = "/mypage/delete", method = RequestMethod.GET)
     public ModelAndView deleteProfile() throws Exception {
         ModelAndView mv = new ModelAndView("mypage/profile_delete");
         return mv;
     }
 
+//    결제 취소
     @RequestMapping(value = "/mypage/paycancle", method = RequestMethod.GET)
     public ModelAndView cancelPay() throws Exception {
         ModelAndView mv = new ModelAndView("mypage/payment_cancel");
         return mv;
     }
 
+//    좌석 선택
     @RequestMapping(value = "/seat" , method = RequestMethod.GET)
     public ModelAndView openSeat() throws Exception {
         ModelAndView mv = new ModelAndView("movieseat");
@@ -53,6 +58,10 @@ public class MypageController {
         seatCode.add("C");
         seatCode.add("D");
         seatCode.add("E");
+        seatCode.add("F");
+        seatCode.add("G");
+        seatCode.add("H");
+        seatCode.add("I");
 
 
         mv.addObject("alp", seatCode);
