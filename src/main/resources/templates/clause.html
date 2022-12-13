@@ -27,12 +27,18 @@
         });
     </script>
     <style>
-        .container{width:1200px; max-width:none!important;}
+        #div-i-main {
+            width:1200px;
+            max-width:none!important;
+            margin-top: 35px;
+            margin-bottom: 100px;
+        }
 
         #img-i-welcome {
-            margin-left: 25px;
-            width: 900px;
-            height: 600px;
+            margin-top: 50px;
+            margin-right: 10px;
+            width: 618px;
+            height: 424px;
         }
 
         #ul-i-clause-content {
@@ -72,12 +78,15 @@
             display: none;
         }
     </style>
+
+    <th:block th:replace="fragments/config :: configFragment"></th:block>
 </head>
 <body>
-    <div class="container">
+    <header th:replace="fragments/header :: headerFragment"></header>
+    <div id="div-i-main" class="container">
         <div class="row">
             <div class="col-xl-12 d-flex justify-content-center mb-3">
-                <img id="img-i-welcome" src="/img/welcome.png">
+                <img id="img-i-welcome" src="/img/welcome2.png">
             </div>
         </div>
         <div class="row">
@@ -99,6 +108,7 @@
             </div>
         </div>
     </div>
+    <footer th:replace="fragments/footer.html :: footerFragment"></footer>
     <div th:replace="modalErrorPage :: modal-error('약관동의를 해주세요!')"></div>
 </body>
 </html>

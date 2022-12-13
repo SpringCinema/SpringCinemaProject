@@ -18,7 +18,12 @@
             font-style: normal;
         }
 
-        .container{width:1000px; max-width:none!important;}
+        #div-i-main {
+            width:1000px;
+            max-width:none!important;
+            margin-top: 100px;
+            margin-bottom: 100px;
+        }
 
         /* 결제수단 본문 디자인 */
         #div-i-payment-body {
@@ -123,9 +128,12 @@
             padding : 0px 15px;
         }
     </style>
+
+    <th:block th:replace="fragments/config :: configFragment"></th:block>
 </head>
 <body>
-    <div class="container">
+    <header th:replace="fragments/header :: headerFragment"></header>
+    <div id="div-i-main" class="container">
         <div class="row">
             <div class="col-xl-12 d-flex justify-content-between">
                 <div id="div-i-payment-header">
@@ -188,5 +196,6 @@
             </div>
         </div>
     </div>
+    <footer th:replace="fragments/footer.html :: footerFragment"></footer>
 </body>
 </html>

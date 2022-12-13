@@ -185,7 +185,12 @@
             font-style: normal;
         }
 
-        .container{width:1000px; max-width:none!important;}
+        /* 본문 컨테이너 영역 */
+        #div-i-main {
+            width:1000px;
+            max-width:none!important;
+            margin: 100px auto;
+        }
 
         /* ul 태그 전체에 마진 적용 */
         #div-i-body ul {
@@ -324,9 +329,12 @@
             display: none;
         }
     </style>
+
+    <th:block th:replace="fragments/config :: configFragment"></th:block>
 </head>
 <body>
-    <div class="container">
+    <header th:replace="fragments/header :: headerFragment"></header>
+    <div id="div-i-main" class="container">
         <div class="row">
             <div class="col-xl-12 d-flex justify-content-between">
                 <div class="div-c-movie-header">
@@ -453,6 +461,7 @@
             </form>
         </div>
     </div>
+    <footer th:replace="fragments/footer.html :: footerFragment"></footer>
     <div th:replace="modalErrorPage :: modal-error('선택하지않은 값이 존재합니다!')"></div>
 </body>
 </html>
