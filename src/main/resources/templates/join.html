@@ -1,4 +1,4 @@
-<!-- 수정일 : 2022-12-12일 -->
+<!-- 수정일 : 2022-12-13일 -->
 <!-- 마지막으로 수정한 사람 : MoonNight285 -->
 <!-- 회원가입 유저정보입력 페이지 -->
 
@@ -17,8 +17,10 @@
             const passwordCheckResult = $("#small-i-password-check-result");
             const password = $("#input-i-password");
             const passwordCheck = $("#input-i-password-check");
-    
-            if (password.val() != passwordCheck.val()) {
+            
+            if (password.val() == "") {
+                runUserCheckFailAnimate(passwordCheckResult, "비밀번호는 공백이 불가능합니다!");
+            } else if (password.val() != passwordCheck.val()) {
                 runUserCheckFailAnimate(passwordCheckResult, "비밀번호가 일치하지않습니다!");
             } else {
                 runUserCheckSuccessEffect(passwordCheckResult, "비밀번호가 일치합니다.");
