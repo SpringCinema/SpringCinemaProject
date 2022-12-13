@@ -19,9 +19,9 @@
             const passwordCheck = $("#input-i-password-check");
     
             if (password.val() != passwordCheck.val()) {
-                runLoginFailAnimate(passwordCheckResult);
+                runUserCheckFailAnimate(passwordCheckResult, "비밀번호가 일치하지않습니다!");
             } else {
-                runLoginSuccessEffect(passwordCheckResult);
+                runUserCheckSuccessEffect(passwordCheckResult, "비밀번호가 일치합니다.");
             }
         }
 
