@@ -8,6 +8,10 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"></script>
 
     <script>
+        let won = $('#input-i-price').text();
+        won = won.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+
+
         $(document).ready(function() {
 
             // 인원 수 선택 이벤트
@@ -16,23 +20,24 @@
                 let count = $(`input[type='checkbox']:checked`).length;
                 let adtVal = parseInt($(`input[name='inputAdt']:checked`).val());
                 let teenVal = parseInt($(`input[name='inputTeen']:checked`).val());
-                let adtCost = adtVal * 10000;
-                let teenCost = teenVal * 5000;
+                let adtPrice = adtVal * 10000;
+                let teenPrice = teenVal * 5000;
+                let totalPrice = adtPrice + teenPrice;
 
                 if(count > (adtVal + teenVal)) {
                     // 좌석 선택 후 인원 변경 시 좌석 제거
                     alert('좌석수가 인원수보다 많습니다.');
                     $(`input[type='checkbox']`).prop('checked', false);
                     $('#input-i-seatCode').val(``);
-                    $(`#input-i-cost`).val((adtCost + teenCost) + '원');
+                    $(`#input-i-price`).val(totalPrice + '원');
                 }
                 else {
                     // 선택된 인원에 따른 금액 출력
-                    if((adtCost + teenCost) > 0) {
-                        $(`#input-i-cost`).val((adtCost + teenCost) + '원');
+                    if((adtPrice + teenPrice) > 0) {
+                        $(`#input-i-price`).val(totalPrice + '원');
                     }
                     else {
-                        $(`#input-i-cost`).val("");
+                        $(`#input-i-price`).val("");
                     }
                 }
             });
@@ -42,23 +47,24 @@
                 let count = $(`input[type='checkbox']:checked`).length;
                 let adtVal = parseInt($(`input[name='inputAdt']:checked`).val());
                 let teenVal = parseInt($(`input[name='inputTeen']:checked`).val());
-                let adtCost = adtVal * 10000;
-                let teenCost = teenVal * 5000;
+                let adtPrice = adtVal * 10000;
+                let teenPrice = teenVal * 5000;
+                let totalPrice = adtPrice + teenPrice;
 
                 if(count > (adtVal + teenVal)) {
                     // 좌석 선택 후 인원 변경 시 좌석 제거
                     alert('좌석수가 인원수보다 많습니다.');
                     $(`input[type='checkbox']`).prop('checked', false);
                     $('#input-i-seatCode').val(``);
-                    $(`#input-i-cost`).val((adtCost + teenCost) + '원');
+                    $(`#input-i-price`).val(totalPrice + '원');
                 }
                 else {
                     // 선택된 인원에 따른 금액 출력
-                    if((adtCost + teenCost) > 0) {
-                        $(`#input-i-cost`).val((adtCost + teenCost) + '원');
+                    if((adtPrice + teenPrice) > 0) {
+                        $(`#input-i-price`).val(totalPrice + '원');
                     }
                     else {
-                        $(`#input-i-cost`).val("");
+                        $(`#input-i-price`).val("");
                     }
                 }
             });
@@ -71,6 +77,8 @@
                 let adtVal = parseInt($(`input[name='inputAdt']:checked`).val());
                 let teenVal = parseInt($(`input[name='inputTeen']:checked`).val());
                 let popNum = adtVal + teenVal;
+                let seatValue = "";
+
 
                 if (count > popNum) {
                     // 좌석 수가 더 많을 경우 체크박스 클릭 해제
@@ -79,26 +87,18 @@
                 }
                 else {
                     if(count == 0) {
-                        $('#input-i-seatCode').val(``);
+                        $('#input-i-seatCode').val('');
                     }
                     else {
-                        // 체크된 좌석 값 출력
-                        // $('#p-i-seatCode').html(`<p class="mb-1" id="p-i-seatCode">좌석 : </p>`);
-                        // $(`input[type='checkbox']`).each(function (index) {
-                        //     if($(this).is(":checked")==true){
-                        //         $('#p-i-seatCode p').append($(this).val() + "|");
-                        //     }
-                        // });
-
-                        // $('#input-i-seatCode').val('')
-                        // $(`input[type='checkbox']`).each(function (index) {
-                        //     if($(this).is(":checked")==true){
-                        //         $('#input-i-seatCode').val($(this).val());
-                        //         let l = "";
-                        //         l += $(this).val()
-                        //         console.log(l)
-                        //     }
-                        // });
+                        // 좌석 번호 출력
+                        $('#input-i-seatCode').text('');
+                        $('input[type=checkbox]').each(function (index) {
+                            if($(this).is(":checked")==true){
+                                $('#input-i-seatCode').append($(this).val() + '|');
+                            }
+                        });
+                        let txt = ($('#input-i-seatCode').text()).slice(0, -1);
+                        $('#input-i-seatCode').val(txt);
                     }
                 }
             });
@@ -214,10 +214,10 @@
                     </div>
                     <div class="row form-floating">
                         <div class="col-3">
-                            <label for="input-i-cost">금액 : </label>
+                            <label for="input-i-price">금액 : </label>
                         </div>
                         <div class="col-9">
-                            <input type="text" readonly class="form-control-plaintext py-0" id="input-i-cost">
+                            <input type="text" readonly class="form-control-plaintext py-0" id="input-i-price">
                         </div>
                     </div>
                 </div>
@@ -258,15 +258,20 @@
                             <label class="btn btn-success" th:for="'input-i-' + ${item} + '6'">6</label>
                             <input type="checkbox" class="btn-check" th:id="'input-i-' + ${item} + '7'" th:value="${item} + '7'">
                             <label class="btn btn-success" th:for="'input-i-' + ${item} + '7'">7</label>
-                        </div>
-
-                        <div class="col-3 p-0 div-c-seat">
                             <input type="checkbox" class="btn-check" th:id="'input-i-' + ${item} + '8'" th:value="${item} + '8'">
                             <label class="btn btn-success" th:for="'input-i-' + ${item} + '8'">8</label>
                             <input type="checkbox" class="btn-check" th:id="'input-i-' + ${item} + '9'" th:value="${item} + '9'">
                             <label class="btn btn-success" th:for="'input-i-' + ${item} + '9'">9</label>
-                            <input type="checkbox" class="btn-check" th:id="'input-i-' + ${item} + '10'" th:value="${item} + '10'" disabled>
-                            <label class="ps-2 btn btn-dark" th:for="'input-i-' + ${item} + '10'" style="width: 35.8px"><p class="m-0">10</p></label>
+                        </div>
+
+                        <div class="col-3 p-0 div-c-seat">
+
+                            <input type="checkbox" class="btn-check" th:id="'input-i-' + ${item} + '10'" th:value="${item} + '10'">
+                            <label class="ps-2 btn btn-success" th:for="'input-i-' + ${item} + '10'" style="width: 35.8px"><p class="m-0">10</p></label>
+                            <input type="checkbox" class="btn-check" th:id="'input-i-' + ${item} + '11'" th:value="${item} + '11'">
+                            <label class="ps-2 btn btn-success" th:for="'input-i-' + ${item} + '11'" style="width: 35.8px"><p class="m-0">11</p></label>
+                            <input type="checkbox" class="btn-check" th:id="'input-i-' + ${item} + '12'" th:value="${item} + '12'" disabled>
+                            <label class="ps-2 btn btn-dark" th:for="'input-i-' + ${item} + '12'" style="width: 35.8px"><p class="m-0">12</p></label>
                         </div>
                     </div>
                 </div>
