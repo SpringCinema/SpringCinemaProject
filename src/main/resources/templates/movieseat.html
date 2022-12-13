@@ -106,6 +106,11 @@
     </script>
 
     <style>
+        header {
+            width: 1920px;
+            max-width: none !important;
+        }
+
         .container {
             width: 1300px;
             max-width: none !important;
@@ -134,16 +139,16 @@
             width: 20px;
         }
 
-
     </style>
+    <th:block th:replace="/fragments/config :: configFragment"></th:block>
 </head>
 <body>
 <!-- 헤더부분 -->
-<header class="container">임시 헤더입니다.<br><hr><br></header>
+<header th:replace="fragments/header :: headerFragment"></header>
 
 <!-- 메인부분 -->
 <main class="container">
-    <div class="col-10 mx-auto mt-5 border">
+    <div class="col-10 mx-auto mt-5 border" style="background-color: #f2f0e5">
         <div class="bg-dark text-light text-center m-0 mx-auto">
             <p class="m-0">인원/좌석</p>
         </div>
@@ -288,6 +293,6 @@
 </main>
 
 <!-- 푸터부분 -->
-<footer class="container"><br><hr><br>임시 푸터입니다.</footer>
+<footer th:replace="fragments/footer :: footerFragment"></footer>
 </body>
 </html>

@@ -10,9 +10,10 @@
     <script>
         $(document).ready(function () {
             // 페이지 좌측 메뉴 클릭 시 우측 페이지 변경
-            $('li').click(function () {
-                $('li').removeClass();
+            $('#ul-i-ul li').click(function () {
+                $('#ul-i-ul li').removeClass();
                 $(this).addClass('li-c-on text-light');
+
 
                 let num1 = $(this).attr('id').slice(-1);
                 for (let i = 1; i <= 5; i ++) {
@@ -25,6 +26,9 @@
                     }
                 }
             });
+
+
+            // $(`header li`).addClass('mx-5')
         });
     </script>
 
@@ -34,6 +38,11 @@
             src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2201-2@1.0/KOHIBaeumOTF.woff') format('woff');
             font-weight: normal;
             font-style: normal;
+        }
+
+        header {
+            width: 1920px;
+            max-width: none !important;
         }
 
         .container {
@@ -54,17 +63,18 @@
             font-family: KOHIBaeumOTF;
         }
     </style>
+    <th:block th:replace="fragments/config :: configFragment"></th:block>
 </head>
 <body>
 <!--헤더부분-->
-<header class="container">임시 헤더입니다.<br><hr><br></header>
+<header th:include="fragments/header :: headerFragment"></header>
 
 <!--메인부분-->
-<main class="container">
+<main class="container mt-2">
     <div class="d-flex">
         <!--    메인 좌측 메뉴선택 페이지-->
         <div class="w-25 border-end border-end-2">
-            <ul class="fs-4 text-center">
+            <ul id="ul-i-ul" class="fs-4 text-center">
                 <li class="li-c-on text-light " id="li-i-1"><p>내 프로필</p></li>
                 <li id="li-i-2"><p>예매내역</p></li>
                 <li id="li-i-3"><p>결제내역</p></li>
@@ -74,7 +84,7 @@
         </div>
 
         <!--    메인 우측 선택된 메뉴 출력 페이지 (메뉴 선택 시 display 속성값 none/block 변환)-->
-        <div class="w-75 ms-5">
+        <div class="w-75 ms-5 mt-4">
             <div th:insert="mypage/mypage_profile :: profile" id="div-i-1"></div>
             <div th:insert="mypage/mypage_book :: book" id="div-i-2" style="display: none"></div>
             <div th:insert="mypage/mypage_payment :: payment" id="div-i-3" style="display: none"></div>
@@ -86,6 +96,6 @@
 </main>
 
 <!--푸터부분-->
-<footer class="container"><br><hr><br>임시 푸터입니다.</footer>
+<footer th:replace="fragments/footer :: footerFragment"></footer>
 </body>
 </html>

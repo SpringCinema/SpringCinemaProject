@@ -16,6 +16,11 @@
     </script>
 
     <style>
+        header {
+            width: 1920px;
+            max-width: none !important;
+        }
+
         .container {
             width: 1300px;
             max-width: none !important;
@@ -25,12 +30,13 @@
             background-color: #FF4500;
         }
     </style>
+    <th:block th:replace="fragments/config :: configFragment"></th:block>
 </head>
 <body><!-- 헤더부분 -->
-<header class="container">임시 헤더입니다.<br><hr><br></header>
+<header th:replace="fragments/header :: headerFragment"></header>
 
 <!-- 메인부분 -->
-<main class="container">
+<main class="container mt-2">
 <!-- action태그 추후 수정 -->
     <form action="" method="post" class="col-sm-9 mx-auto">
         <div class="rounded-4 d-flex" style="border: #FF4500 3px solid">
@@ -67,6 +73,6 @@
 </main>
 
 <!-- 푸터부분 -->
-<footer class="container"><br><hr><br>임시 푸터입니다.</footer>
+<footer th:replace="fragments/footer :: footerFragment"></footer>
 </body>
 </html>

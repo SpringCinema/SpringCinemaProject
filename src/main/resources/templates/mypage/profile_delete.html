@@ -35,6 +35,11 @@
     </script>
 
     <style>
+        header {
+            width: 1920px;
+            max-width: none !important;
+        }
+
         .container {
             width: 1300px;
             max-width: none !important;
@@ -45,13 +50,14 @@
             border: 3px #FF4500 solid;
         }
     </style>
+    <th:block th:replace="fragments/config :: configFragment"></th:block>
 </head>
 <body>
 <!-- 헤더 부분 -->
-<header class="container"><p>임시 헤더부분입니다. <br><hr><br></p></header>
+<header th:replace="fragments/header :: headerFragment"></header>
 
 <!-- 메인 부분 -->
-<main class="container">
+<main class="container mt-2">
     <form action="" method="post" class="col-sm-9 mx-auto rounded-4" id="form-i-act">
         <div class="row mt-3">
             <label for="input-i-id" class="col-3 text-end pt-2">비밀번호</label>
@@ -67,6 +73,6 @@
 </main>
 
 <!-- 푸터 부분 -->
-<footer class="container"><p><br><hr><br>임시 푸터부분입니다.</p></footer>
+<footer th:replace="fragments/footer :: footerFragment"></footer>
 </body>
 </html>

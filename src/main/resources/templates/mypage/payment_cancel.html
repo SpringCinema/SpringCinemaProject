@@ -25,23 +25,28 @@
     </script>
 
     <style>
+        header {
+            width: 1920px;
+            max-width: none !important;
+        }
+
         .container {
             width: 1300px;
             max-width: none !important;
         }
 
-
         #form-i-border {
             border: #FF4500 solid 3px;
         }
     </style>
+    <th:block th:replace="fragments/config :: configFragment"></th:block>
 </head>
 <body>
 <!-- 헤더 부분 -->
-<header class="container">임시 헤더부분입니다.<br><hr><br></header>
+<header th:replace="fragments/header :: headerFragment"></header>
 
 <!-- 메인 부분 -->
-<main class="container">
+<main class="container mt-2">
     <form action="" method="post" class="row rounded-4" id="form-i-border">
         <div class="my-3 col-2 text-center">
             <img src="#" style="width: 150px; height: 150px; border: 1px solid">
@@ -66,7 +71,7 @@
 </main>
 
 <!-- 푸터 부분 -->
-<footer class="container"><br><hr><br>임시 푸터부분입니다.</footer>
+<footer th:replace="fragments/footer :: footerFragment"></footer>
 
 
 </body>
