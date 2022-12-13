@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+    <th:block th:fragment="configFragment">
+        <style>
+            .img-c-logo {
+                width: 130px;
+            }
+
+            .navbar ul {
+                display: flex;
+                list-style:none;
+            }
+
+            a {
+                text-decoration: none;
+                color: black;
+            }
+            .hr-c-nav {
+                margin: 0;
+                /*border: 0;*/
+                color: #FF4500;
+                height: 4px;
+                background-color: #FF4500;
+            }
+            hr {
+                /*border: 0;*/
+                margin: 0;
+            }
+            .nav2 {
+                height: 10px;
+            }
+            .dropdown {
+                position: relative;
+                display: inline-block;
+            }
+            .dropdown-content {
+                display: none;
+                position: absolute;
+                background-color: #f1f1f1;
+                min-width: 160px;
+                box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+                z-index: 1;
+            }
+            .dropdown-content a {
+                color: black;
+                padding: 12px 16px;
+                text-decoration: none;
+                display: block;
+            }
+
+            .dropdown-content a:hover {
+                color: white;
+                background-color: #FF4500;
+            }
+
+            .dropdown:hover .dropdown-content {display: block;}
+        </style>
+
+    </th:block>
+</html>

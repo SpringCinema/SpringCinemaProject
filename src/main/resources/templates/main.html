@@ -1,0 +1,336 @@
+<!-- 수정일 : 2022-12-11일 -->
+<!-- 마지막으로 수정한 사람 : eblyncho -->
+<!-- 메인 페이지 -->
+
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8" xmlns:th="http://www.thymeleaf.org">
+    <title>스프링시네마</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"></script>
+
+    <th:block th:replace="fragments/config :: configFragment"></th:block>
+
+    <script>
+        $(document).ready(function () {
+            var itemsMainDiv = ('.MultiCarousel');
+            var itemsDiv = ('.MultiCarousel-inner');
+            var itemWidth = "";
+
+            $('.leftLst, .rightLst').click(function () {
+                var condition = $(this).hasClass("leftLst");
+                if (condition)
+                    click(0, this);
+                else
+                    click(1, this)
+            });
+
+            ResCarouselSize();
+
+
+
+
+            $(window).resize(function () {
+                ResCarouselSize();
+            });
+
+            //this function define the size of the items
+            function ResCarouselSize() {
+                var incno = 0;
+                var dataItems = ("data-items");
+                var itemClass = ('.item');
+                var id = 0;
+                var btnParentSb = '';
+                var itemsSplit = '';
+                var sampwidth = $(itemsMainDiv).width();
+                var bodyWidth = $('body').width();
+                $(itemsDiv).each(function () {
+                    id = id + 1;
+                    var itemNumbers = $(this).find(itemClass).length;
+                    btnParentSb = $(this).parent().attr(dataItems);
+                    itemsSplit = btnParentSb.split(',');
+                    $(this).parent().attr("id", "MultiCarousel" + id);
+
+
+                    if (bodyWidth >= 1200) {
+                        incno = itemsSplit[3];
+                        itemWidth = sampwidth / incno;
+                    }
+                    else if (bodyWidth >= 992) {
+                        incno = itemsSplit[2];
+                        itemWidth = sampwidth / incno;
+                    }
+                    else if (bodyWidth >= 768) {
+                        incno = itemsSplit[1];
+                        itemWidth = sampwidth / incno;
+                    }
+                    else {
+                        incno = itemsSplit[0];
+                        itemWidth = sampwidth / incno;
+                    }
+                    $(this).css({ 'transform': 'translateX(0px)', 'width': itemWidth * itemNumbers });
+                    $(this).find(itemClass).each(function () {
+                        $(this).outerWidth(itemWidth);
+                    });
+
+                    $(".leftLst").addClass("over");
+                    $(".rightLst").removeClass("over");
+
+                });
+            }
+
+
+            //this function used to move the items
+            function ResCarousel(e, el, s) {
+                var leftBtn = ('.leftLst');
+                var rightBtn = ('.rightLst');
+                var translateXval = '';
+                var divStyle = $(el + ' ' + itemsDiv).css('transform');
+                var values = divStyle.match(/-?[\d\.]+/g);
+                var xds = Math.abs(values[4]);
+                if (e == 0) {
+                    translateXval = parseInt(xds) - parseInt(itemWidth * s);
+                    $(el + ' ' + rightBtn).removeClass("over");
+
+                    if (translateXval <= itemWidth / 2) {
+                        translateXval = 0;
+                        $(el + ' ' + leftBtn).addClass("over");
+                    }
+                }
+                else if (e == 1) {
+                    var itemsCondition = $(el).find(itemsDiv).width() - $(el).width();
+                    translateXval = parseInt(xds) + parseInt(itemWidth * s);
+                    $(el + ' ' + leftBtn).removeClass("over");
+
+                    if (translateXval >= itemsCondition - itemWidth / 2) {
+                        translateXval = itemsCondition;
+                        $(el + ' ' + rightBtn).addClass("over");
+                    }
+                }
+                $(el + ' ' + itemsDiv).css('transform', 'translateX(' + -translateXval + 'px)');
+            }
+
+            //It is used to get some elements from btn
+            function click(ell, ee) {
+                var Parent = "#" + $(ee).parent().attr("id");
+                var slide = $(Parent).attr("data-slide");
+                ResCarousel(ell, Parent, slide);
+            }
+
+        });
+    </script>
+    <style>
+        .MultiCarousel { float: left; overflow: hidden; padding: 15px; width: 100%; position:relative; }
+        .MultiCarousel .MultiCarousel-inner { transition: 1s ease all; float: left; }
+        .MultiCarousel .MultiCarousel-inner .item { float: left;}
+        .MultiCarousel .MultiCarousel-inner .item > div { text-align: center; padding:10px; margin:10px; background:#f1f1f1; color:#666;}
+        .MultiCarousel .leftLst, .MultiCarousel .rightLst { position:absolute; border-radius:50%;top:calc(50% - 20px); }
+        .MultiCarousel .leftLst { left:0; }
+        .MultiCarousel .rightLst { right:0; }
+
+        .MultiCarousel .leftLst.over, .MultiCarousel .rightLst.over { pointer-events: none; background:#ccc; }
+    </style>
+
+    <style>
+        .box {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+        }
+        .item {
+            width: 25%;
+            margin-bottom: 10px;
+        }
+        a {
+            text-decoration: none;
+            color: black;
+        }
+        li {
+            float: left;
+            /*width: 30%;*/
+            margin: 10px;
+            width: 213px;
+        }
+
+        li>a {
+            display: none;
+            position: relative;
+            width: 100%;
+            text-align: center;
+            background: darkgray;
+        }
+
+        .container2 {
+            position: relative;
+            /*margin-top: 50px;*/
+            width: 213px;
+            height: 304px;
+        }
+
+        .overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            background: rgba(0, 0, 0, 0);
+            transition: background 0.5s ease;
+            margin-bottom: 10px;
+        }
+
+        .container2:hover .overlay {
+            display: block;
+            filter: brightness(0.5);
+        }
+
+        img {
+            position: absolute;
+            left: 0;
+        }
+
+
+        .button-book {
+            top: 170px;
+            left: 31px;
+            position: absolute;
+            background-color: #FF4500;
+            text-align: center;
+            opacity: 0;
+            transition: opacity .35s ease;
+        }
+
+        .button-detail {
+            top: 110px;
+            left: 31px;
+            position: absolute;
+            background-color: white;
+            text-align: center;
+            opacity: 0;
+            transition: opacity .35s ease;
+        }
+
+        .button-book a {
+            padding: 12px 48px;
+            text-align: center;
+            background-color: #FF4500;
+            color: white;
+            z-index: 1;
+            text-decoration: none;
+        }
+
+        .button-detail a {
+            padding: 12px 48px;
+            text-align: center;
+            background-color: white;
+            color: black;
+            z-index: 1;
+            text-decoration: none;
+        }
+
+        .container2:hover .button-book {
+            opacity: 1;
+        }
+
+        .container2:hover .button-detail {
+            opacity: 1;
+        }
+
+        .category {
+            font-size: 24px;
+            /*text-decoration: underline;*/
+            /*text-underline-color: #FF4500;*/
+        }
+
+        .title {
+            font-size: 21px;
+            font-weight: bold;
+        }
+    </style>
+
+</head>
+<header th:replace="fragments/header :: headerFragment"></header>
+<body>
+<header th:replace="header :: mainHeader"></header>
+<div class="div-c-youtube">
+    <iframe width="100%" height="400" src="https://www.youtube.com/embed/kihrFxwdMb4?autoplay=1&mute=1&rel=0&showsearch=0&control=0&version=3&vq=hd1080"
+            title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen>
+    </iframe>
+</div>
+<div class="container">
+    <div class="row">
+        <div class="MultiCarousel" data-items="1,3,5,6" data-slide="1" id="MultiCarousel"  data-interval="1000">
+            <div class="MultiCarousel-inner">
+                <div class="item">
+
+                    <div class="pad15">
+                        <li class="box flex">
+                            <div class="container2">
+                                <div class="overlay">
+                                    <img src="http://file.koreafilm.or.kr/thm/02/00/01/46/tn_DPK004440.JPG" alt="" />
+                                </div>
+                                <div class="button-detail"><a href="#"> 상세보기 </a></div>
+                                <div class="button-book"><a href="#"> 예매하기 </a></div>
+                            </div>
+                            <div class="text-center mx-auto">
+                                <span class="title">영화 제목</span>
+                            </div>
+                        </li>
+<!--                        <p class="lead">영화1</p>-->
+                    </div>
+                </div>
+                <div class="item">
+                    <div class="pad15">
+                        <p class="lead">영화2</p>
+                    </div>
+                </div>
+                <div class="item">
+                    <div class="pad15">
+                        <p class="lead">영화3</p>
+                    </div>
+                </div>
+                <div class="item">
+                    <div class="pad15">
+                        <p class="lead">영화4</p>
+                    </div>
+                </div>
+                <div class="item">
+                    <div class="pad15">
+                        <p class="lead">영화5</p>
+                    </div>
+                </div>
+                <div class="item">
+                    <div class="pad15">
+                        <p class="lead">영화6</p>
+                    </div>
+                </div>
+                <div class="item">
+                    <div class="pad15">
+                        <p class="lead">영화7</p>
+                    </div>
+                </div>
+                <div class="item">
+                    <div class="pad15">
+                        <p class="lead">영화8</p>
+                    </div>
+                </div>
+                <div class="item">
+                    <div class="pad15">
+                        <p class="lead">영화9</p>
+                    </div>
+                </div>
+                <div class="item">
+                    <div class="pad15">
+                        <p class="lead">영화10</p>
+                    </div>
+                </div>
+            </div>
+            <button class="btn btn-primary leftLst"><</button>
+            <button class="btn btn-primary rightLst">></button>
+        </div>
+    </div>
+</div>
+<div class="container border mx-auto my-3" style="height: 200px">
+    <p>이벤트 및 광고</p>
+</div>
+</body>
+</html>
