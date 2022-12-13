@@ -132,12 +132,127 @@
 
         .MultiCarousel .leftLst.over, .MultiCarousel .rightLst.over { pointer-events: none; background:#ccc; }
     </style>
+
+    <style>
+        .box {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+        }
+        .item {
+            width: 25%;
+            margin-bottom: 10px;
+        }
+        a {
+            text-decoration: none;
+            color: black;
+        }
+        li {
+            float: left;
+            /*width: 30%;*/
+            margin: 10px;
+            width: 213px;
+        }
+
+        li>a {
+            display: none;
+            position: relative;
+            width: 100%;
+            text-align: center;
+            background: darkgray;
+        }
+
+        .container2 {
+            position: relative;
+            /*margin-top: 50px;*/
+            width: 213px;
+            height: 304px;
+        }
+
+        .overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            background: rgba(0, 0, 0, 0);
+            transition: background 0.5s ease;
+            margin-bottom: 10px;
+        }
+
+        .container2:hover .overlay {
+            display: block;
+            filter: brightness(0.5);
+        }
+
+        img {
+            position: absolute;
+            left: 0;
+        }
+
+
+        .button-book {
+            top: 170px;
+            left: 31px;
+            position: absolute;
+            background-color: #FF4500;
+            text-align: center;
+            opacity: 0;
+            transition: opacity .35s ease;
+        }
+
+        .button-detail {
+            top: 110px;
+            left: 31px;
+            position: absolute;
+            background-color: white;
+            text-align: center;
+            opacity: 0;
+            transition: opacity .35s ease;
+        }
+
+        .button-book a {
+            padding: 12px 48px;
+            text-align: center;
+            background-color: #FF4500;
+            color: white;
+            z-index: 1;
+            text-decoration: none;
+        }
+
+        .button-detail a {
+            padding: 12px 48px;
+            text-align: center;
+            background-color: white;
+            color: black;
+            z-index: 1;
+            text-decoration: none;
+        }
+
+        .container2:hover .button-book {
+            opacity: 1;
+        }
+
+        .container2:hover .button-detail {
+            opacity: 1;
+        }
+
+        .category {
+            font-size: 24px;
+            /*text-decoration: underline;*/
+            /*text-underline-color: #FF4500;*/
+        }
+
+        .title {
+            font-size: 21px;
+            font-weight: bold;
+        }
+    </style>
+
 </head>
 <header th:replace="fragments/header :: headerFragment"></header>
 <body>
 <header th:replace="header :: mainHeader"></header>
 <div class="div-c-youtube">
-    <iframe width="100%" height="400" src="https://www.youtube.com/embed/kihrFxwdMb4?autoplay=1&mute=1&rel=0&showsearch=0&control=0"
+    <iframe width="100%" height="400" src="https://www.youtube.com/embed/kihrFxwdMb4?autoplay=1&mute=1&rel=0&showsearch=0&control=0&version=3&vq=hd1080"
             title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen>
     </iframe>
 </div>
@@ -148,6 +263,20 @@
                 <div class="item">
                     <div class="pad15">
                         <p class="lead">영화1</p>
+                    <div class="pad15">
+                        <li class="box flex">
+                            <div class="container2">
+                                <div class="overlay">
+                                    <img src="http://file.koreafilm.or.kr/thm/02/00/01/46/tn_DPK004440.JPG" alt="" />
+                                </div>
+                                <div class="button-detail"><a href="#"> 상세보기 </a></div>
+                                <div class="button-book"><a href="#"> 예매하기 </a></div>
+                            </div>
+                            <div class="text-center mx-auto">
+                                <span class="title">영화 제목</span>
+                            </div>
+                        </li>
+<!--                        <p class="lead">영화1</p>-->
                     </div>
                 </div>
                 <div class="item">
