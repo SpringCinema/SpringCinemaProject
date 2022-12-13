@@ -14,9 +14,9 @@
     <script>
         $(document).ready(function() {
             // 금액 세자리 마다 ',' 추가
-            // let won = $('#input-i-cost').text();
-            // won = won.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-            // $('#input-i-cost').text(won + "원");
+            let won = $('#input-i-cost').text();
+            won = won.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+            $('#input-i-cost').text(won + "원");
 
             $('#button-i-back').on('click', function() {
                 history.back();
