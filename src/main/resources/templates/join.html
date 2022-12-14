@@ -54,21 +54,26 @@
         }
         
         function isUserId() {
-            const id = $("#input-i-id");
+            const idValue = $("#input-i-id");
+            const result = $("#small-i-id-overlap-check-result");
+
             $.ajax({
-                url : "/join/user/",
-                type : "get",
-                data : {id : id},
+                url : "/join/user",
+                type : "post",
+                data : {targetId : idValue.val()},
                 success : function (data) {
-                    let jsonData = JSON.parse(data);
-                    if (jsonData.data == "true") {
-                        alert("이미 아이디가 존재");
+                    if (data == "true") {
+                        result.css("color", "red");
+                        result.text("이미 사용중인 아이디입니다.");
+                        result.show();
                     } else {
-                        alert("아이디 없음");
+                        result.css("color", "green");
+                        result.text("사용 가능한 아이디입니다.");
+                        result.show();
                     }
                 },
                 error : function () {
-                    alert("서버통신 실패");
+                    alert("서버와 통신에 실패했습니다.");
                 }
             });
         }
@@ -79,9 +84,17 @@
             const password = $("#input-i-password");
             const passwordCheck = $("#input-i-password-check");
             const btnJoin = $("#btn-i-join");
-            const id = $("#input-i-id");
-            
-            id.on("focusout", function () {
+            const inputId = $("#input-i-id");
+            const blankCheckResult = $("#small-i-id-overlap-check-result");
+
+            inputId.on("focusout", function () {
+                if (inputId.val() == "") {
+                    blankCheckResult.css("color", "red");
+                    blankCheckResult.text("아이디는 공백이 불가능합니다.");
+                    blankCheckResult.show();
+                    return;
+                }
+
                 isUserId();
             });
 
@@ -131,20 +144,28 @@
             margin: 0px 5px;
         }
 
-        #btn-i-hidden-join, #btn-i-hidden-error {
+        #btn-i-hidden-join, #btn-i-hidden-error, #small-i-id-overlap-check-result {
             display: none;
+            height: 20px;
         }
         
         #div-i-btn-wrapper {
             margin-top: 35px;
+        }
+
+        #btn-i-id-overlap-check {
+            border: none;
+            background-color: white;
+            height: 30px;
+            color: #242473;
         }
     </style>
 </head>
 <body>
     <div class="container">
         <div class="row">
-            <div class="col-xl-12 text-center mt-5">
-                <a href="#"><img id="img-i-logo" src="/img/logo.png"></a>
+            <div class="col-xl-12 text-center mt-4 mb-3">
+                <a href="/main"><img id="img-i-logo" src="/img/logo.png"></a>
             </div>
         </div>
         <div class="row">
@@ -152,7 +173,10 @@
                 <form id="form-i-join" action="/join" method="post">
                     <div id="div-i-join-form">
                         <div class="mb-3">
-                            <label class="mb-1">아이디</label>
+                            <div class="d-flex justify-content-between">
+                                <label class="mb-1">아이디</label>
+                                <small id="small-i-id-overlap-check-result"></small>
+                            </div>
                             <input id="input-i-id" type="text" class="form-control" name="id">
                         </div>
                         <div class="mb-3">
@@ -193,7 +217,7 @@
                             <input id="input-i-tel" type="tel" class="form-control" name="tel">
                         </div>
                         <div id="div-i-btn-wrapper" class="mb-3 d-flex justify-content-center">
-                            <a href="main"><button id="btn-i-main" type="button" class="btn btn-dark">메인으로</button></a>
+                            <a href="/main"><button id="btn-i-main" type="button" class="btn btn-dark">메인으로</button></a>
                             <button id="btn-i-join" type="button" class="btn btn-success">가입하기</button>
                             <button id="btn-i-hidden-error" type="button" data-bs-toggle="modal" data-bs-target="#div-i-error"></button>
                             <button id="btn-i-hidden-join"></button>

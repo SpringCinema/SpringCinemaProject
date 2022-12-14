@@ -34,10 +34,20 @@ public class JoinController {
     
     // 이미 사용중인 아이디가 있는지 확인
     @ResponseBody
-    @RequestMapping(value = "/join/user/{targetId}", method = RequestMethod.GET)
-    public String isUserId(@PathVariable String targetId) throws Exception {
-        boolean result = memberService.isUserId(targetId);
-        return "isUserData {data=" + result + "}";
+    @RequestMapping(value = "/join/user", method = RequestMethod.POST)
+    public String isUserId(@RequestParam("targetId") String targetId) throws Exception {
+        if (targetId == "") {
+            return "none";
+        } else {
+            boolean result = memberService.isUserId(targetId);
+            return String.valueOf(result);
+        }
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/test", method = RequestMethod.GET)
+    public String test(){
+        return "test";
     }
     
     // 회원가입진행
