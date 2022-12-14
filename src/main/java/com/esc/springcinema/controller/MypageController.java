@@ -62,6 +62,7 @@ public class MypageController {
         seatCode.add("G");
         seatCode.add("H");
         seatCode.add("I");
+        seatCode.add("J");
 
 
         mv.addObject("alp", seatCode);

@@ -12,4 +12,10 @@ public class CinemaController {
     public String index() throws Exception {
         return "index";
     }
+
+//    메인페이지 접속
+    @RequestMapping("/main")
+    public String openMain() throws Exception {
+        return "main";
+    }
 }
