@@ -1,22 +1,46 @@
-<!-- 수정일 : 2022-12-10일 -->
+<!-- 수정일 : 2022-12-13일 -->
 <!-- 마지막으로 수정한 사람 : MoonNight285 -->
+<!-- 마지막으로 작업한 내용 : 다음버튼 누르면 회원가입 유저정보 페이지로 넘어가는 기능 -->
 <!-- 회원가입 약관 페이지 -->
 
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>스프링 시네마 - 회원가입 약관</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            const clauseCheck = $("#input-i-clause-checkbox");
+            const btnNext = $("#btn-i-next");
+            const btnError = $("#btn-i-hidden-error");
+            const btnHiddenNext = $("#btn-i-hidden-next");
+            
+            btnNext.on("click", function () {
+                if (clauseCheck.is(":checked") == false) {
+                    btnError.click();
+                    return;
+                }
+
+                btnHiddenNext.click();
+            });
+        });
+    </script>
     <style>
-        .container{width:1200px; max-width:none!important;}
+        #div-i-main {
+            width:1200px;
+            max-width:none!important;
+            margin-top: 35px;
+            margin-bottom: 100px;
+        }
 
         #img-i-welcome {
-            margin-left: 25px;
-            width: 900px;
-            height: 600px;
+            margin-top: 50px;
+            margin-right: 10px;
+            width: 618px;
+            height: 424px;
         }
 
         #ul-i-clause-content {
@@ -37,33 +61,40 @@
             width: 24px;
             height: 24px;
             margin-right: 5px;
-            background: url("static/img/notCheck.png") left center no-repeat;
+            background: url("/img/notCheck.png") left center no-repeat;
             vertical-align: middle;
             transition-duration: .3s;
         }
 
         #label-i-checkbox-wrap input[type=checkbox] { display: none; }
 
-        #label-i-checkbox-wrap input[type=checkbox]:checked + #i-i-check-icon { background-image: url("static/img/check.png") }
+        #label-i-checkbox-wrap input[type=checkbox]:checked + #i-i-check-icon { background-image: url("/img/check.png") }
 
         .btn {
             width: 180px;
             height: 45px;
             margin: 0px 5px;
         }
+        
+        #btn-i-hidden-error, #btn-i-hidden-next {
+            display: none;
+        }
     </style>
+
+    <th:block th:replace="fragments/config :: configFragment"></th:block>
 </head>
 <body>
-    <div class="container">
+    <header th:replace="fragments/header :: headerFragment"></header>
+    <div id="div-i-main" class="container">
         <div class="row">
             <div class="col-xl-12 d-flex justify-content-center mb-3">
-                <img id="img-i-welcome" src="../static/img/welcome.png">
+                <img id="img-i-welcome" src="/img/welcome2.png">
             </div>
         </div>
         <div class="row">
             <div class="col-xs-12 d-flex justify-content-center">
                 <ul id="ul-i-clause-content">
-                    <li><label id="label-i-checkbox-wrap"><input type="checkbox"><i id="i-i-check-icon"></i>스프링 시네마 이용약관 동의</label></li>
+                    <li><label id="label-i-checkbox-wrap"><input id="input-i-clause-checkbox" type="checkbox"><i id="i-i-check-icon"></i>스프링 시네마 이용약관 동의</label></li>
                     <li>
                         <textarea id="textarea-i-clause-content" cols="95" rows="5">여러분을 환영합니다.&#10;&#10;스프링 시네마 서비스 및 제품(이하 ‘서비스’)을 이용해 주셔서 감사합니다. 본 약관은 다양한 스프링 시네마 서비스의 이용과 관련하여 스프링 시네마 서비스를 제공하는 스프링 시네마 주식회사와 이를 이용하는 스프링 시네마 서비스 회원(이하 ‘회원’) 또는 비회원과의 관계를 설명하며, 아울러 여러분의 스프링 시네마 서비스 이용에 도움이 될 수 있는 유익한 정보를 포함하고 있습니다.스프링 시네마 서비스를 이용하시거나 스프링 시네마 서비스 회원으로 가입하실 경우 여러분은 본 약관 및 관련 운영 정책을 확인하거나 동의하게 되므로, 잠시 시간을 내시어 주의 깊게 살펴봐 주시기 바랍니다.다양한 스프링 시네마 서비스를 즐겨보세요.
                         </textarea>
@@ -72,11 +103,17 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-xl-12 d-flex justify-content-center">
-                <button type="button" class="btn btn-dark">취소</button>
-                <button type="button" class="btn btn-success">다음</button>
-            </div>
+            <form action="/join" method="post">
+                <div class="col-xl-12 d-flex justify-content-center">
+                    <button type="button" class="btn btn-dark">취소</button>
+                    <button id="btn-i-next" type="button" class="btn btn-success">다음</button>
+                    <button id="btn-i-hidden-error" type="button" data-bs-toggle="modal" data-bs-target="#div-i-error"></button>
+                    <button id="btn-i-hidden-next" type="submit"></button>
+                </div>
+            </form>
         </div>
     </div>
+    <footer th:replace="fragments/footer.html :: footerFragment"></footer>
+    <div th:replace="fragments/modal_error :: modalError('약관동의를 해주세요!')"></div>
 </body>
 </html>

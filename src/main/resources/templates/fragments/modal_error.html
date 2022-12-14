@@ -1,0 +1,26 @@
+<!-- 수정일 : 2022-12-12일 -->
+<!-- 마지막으로 수정한 사람 : MoonNight285 -->
+<!-- 모달 에러창 페이지 -->
+
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<body>
+    <!-- Modal -->
+    <div th:fragment="modalError(errorMsg)">
+        <div class="modal fade" id="div-i-error" tabindex="-1">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">에러발생!</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+                    <div th:text="${errorMsg}" class="modal-body"></div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" data-bs-dismiss="modal">닫기</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

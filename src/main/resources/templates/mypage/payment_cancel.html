@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>결제 취소</title>
+    <!-- CSS only -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+    <!-- JavaScript Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3"
+            crossorigin="anonymous"></script>
+
+    <script>
+        $(document).ready(function() {
+            // 금액 세자리 마다 ',' 추가
+            let won = $('#input-i-cost').text();
+            won = won.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+            $('#input-i-cost').text(won + "원");
+
+            $('#button-i-back').on('click', function() {
+                history.back();
+            });
+        });
+    </script>
+
+    <style>
+        header {
+            width: 1920px;
+            max-width: none !important;
+        }
+
+        .container {
+            width: 1300px;
+            max-width: none !important;
+        }
+
+        #form-i-border {
+            border: #FF4500 solid 3px;
+        }
+    </style>
+    <th:block th:replace="fragments/config :: configFragment"></th:block>
+</head>
+<body>
+<!-- 헤더 부분 -->
+<header th:replace="fragments/header :: headerFragment"></header>
+
+<!-- 메인 부분 -->
+<main class="container mt-2">
+    <form action="" method="post" class="row rounded-4" id="form-i-border">
+        <div class="my-3 col-2 text-center">
+            <img src="#" style="width: 150px; height: 150px; border: 1px solid">
+        </div>
+        <div class="my-3 col-6 border-end">
+            <p>영화제목 : </p>
+            <p>상영관 : </p>
+            <p>상영시간 : </p>
+            <p>금액 : </p>
+        </div>
+        <div class="my-3 col-4">
+            <p class="pt-4">결제번호 : </p>
+            <p>결제날짜 : </p>
+            <p>결제수단 : </p>
+            <div class="text-end">
+                <button type="submit" class="btn btn-danger" id="button-i-cancel">결제 취소</button>
+                <button type="reset" class="btn btn-secondary me-3" id="button-i-back">뒤로</button>
+            </div>
+        </div>
+
+    </form>
+</main>
+
+<!-- 푸터 부분 -->
+<footer th:replace="fragments/footer :: footerFragment"></footer>
+
+
+</body>
+</html>

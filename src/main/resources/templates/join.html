@@ -1,4 +1,4 @@
-<!-- 수정일 : 2022-12-10일 -->
+<!-- 수정일 : 2022-12-13일 -->
 <!-- 마지막으로 수정한 사람 : MoonNight285 -->
 <!-- 회원가입 유저정보입력 페이지 -->
 
@@ -10,13 +10,81 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="/js/event.js"></script>
     <script>
+        // 비밀번호 & 비밀번호 확인란에 포커스 아웃되면 암호 일치한지 확인
+        function equalPassword() {
+            const passwordCheckResult = $("#small-i-password-check-result");
+            const password = $("#input-i-password");
+            const passwordCheck = $("#input-i-password-check");
+            
+            if (password.val() == "") {
+                runUserCheckFailAnimate(passwordCheckResult, "비밀번호는 공백이 불가능합니다!");
+            } else if (password.val() != passwordCheck.val()) {
+                runUserCheckFailAnimate(passwordCheckResult, "비밀번호가 일치하지않습니다!");
+            } else {
+                runUserCheckSuccessEffect(passwordCheckResult, "비밀번호가 일치합니다.");
+            }
+        }
+
+        // 회원가입에 사용되는 폼 양식에서 빈값이 있는지를 확인
+        // 있으면 true 없으면 false
+        function isAllEmpty() {
+            const id = $("#input-i-id");
+            const passwordCheckResult = $("#small-i-password-check-result");
+            const name = $("#input-i-name");
+            const birth = $("#select-i-birth option:selected");
+            const gender = $("#select-i-gender option:selected");
+            const email = $("#input-i-email");
+            const tel = $("#input-i-tel");
+
+            if (id.val() == "" || name.val() == "" || email.val() == "" || tel.val() == "") {
+                return true;
+            }
+
+            if (passwordCheckResult.text() != "비밀번호가 일치합니다.") {
+                return true;
+            }
+
+            if (birth.val() == "none" || gender.val() == "none") {
+                return true;
+            }
+
+            return false;
+        }
+
         $(document).ready(function () {
             const birth = $("#select-i-brith");
             const year = new Date().getFullYear();
+            const password = $("#input-i-password");
+            const passwordCheck = $("#input-i-password-check");
+            const btnJoin = $("#btn-i-join");
 
+            password.on("focusout", function () {
+                equalPassword();
+            });
+            
+            passwordCheck.on("focusout", function () {
+                equalPassword();
+            });
+
+            btnJoin.on("click", function () {
+                if (isAllEmpty()) {
+                    const btnError = $("#btn-i-hidden-error");
+                    btnError.click();
+                    return;
+                }
+
+                // 서버에 값 전달
+            });
+            
+            // 생년 삽입
             for (let i = year; i >= 1900; --i) {
-                birth.append(`<option>${i}</option>`);
+                if (i == 1970) {
+                    birth.append(`<option value="${i}" selected>${i}</option>`);
+                } else {
+                    birth.append(`<option value="${i}">${i}</option>`);
+                }
             }
         });
     </script>
@@ -32,21 +100,26 @@
             width: 360px;
         }
 
-        #btn-i-join {
-            width: 180px;
+        #btn-i-join, #btn-i-main {
+            width: 125px;
             height: 45px;
+            margin: 0px 5px;
         }
 
-        #btn-i-hidden-join {
+        #btn-i-hidden-join, #btn-i-hidden-error {
             display: none;
+        }
+        
+        #div-i-btn-wrapper {
+            margin-top: 35px;
         }
     </style>
 </head>
 <body>
     <div class="container">
         <div class="row">
-            <div class="col-xl-12 text-center mb-3">
-                <img id="img-i-logo" src="../static/img/logo.png">
+            <div class="col-xl-12 text-center mt-5">
+                <a href="#"><img id="img-i-logo" src="/img/logo.png"></a>
             </div>
         </div>
         <div class="row">
@@ -55,44 +128,49 @@
                     <div id="div-i-join-form">
                         <div class="mb-3">
                             <label class="mb-1">아이디</label>
-                            <input type="text" class="form-control">
+                            <input id="input-i-id" type="text" class="form-control">
                         </div>
                         <div class="mb-3">
                             <label class="mb-1">비밀번호</label>
-                            <input type="password" class="form-control">
+                            <input id="input-i-password" type="password" class="form-control">
                         </div>
                         <div class="mb-3">
-                            <label class="mb-1">비밀번호 확인</label>
-                            <input type="password" class="form-control">
+                            <div class="d-flex justify-content-between">
+                                <label class="mb-1">비밀번호 확인</label>
+                                <small id="small-i-password-check-result"></small>
+                            </div>
+                            <input id="input-i-password-check" type="password" class="form-control">
                         </div>
                         <div class="mb-3">
                             <label class="mb-1">이름</label>
-                            <input type="text" class="form-control">
+                            <input id="input-i-name" type="text" class="form-control">
                         </div>
                         <div class="mb-3">
                             <label class="mb-1">나이</label>
                             <select id="select-i-brith" class="form-select">
-                                <option>생년을 선택하세요.</option>
+                                <option value="none">생년을 선택하세요.</option>
                             </select>
                         </div>
                         <div class="mb-3">
                             <label class="mb-1">성별</label>
-                            <select class="form-select">
-                                <option>성별을 선택하세요.</option>
-                                <option>남자</option>
-                                <option>여자</option>
+                            <select id="select-i-gender" class="form-select">
+                                <option value="none">성별을 선택하세요.</option>
+                                <option value="man">남자</option>
+                                <option value="woman">여자</option>
                             </select>
                         </div>
                         <div class="mb-3">
                             <label class="mb-1">이메일</label>
-                            <input type="email" class="form-control">
+                            <input id="input-i-email" type="email" class="form-control">
                         </div>
                         <div class="mb-4">
                             <label class="mb-1">전화번호</label>
-                            <input type="tel" class="form-control">
+                            <input id="input-i-tel" type="tel" class="form-control">
                         </div>
-                        <div class="mb-3 d-flex justify-content-center">
+                        <div id="div-i-btn-wrapper" class="mb-3 d-flex justify-content-center">
+                            <button id="btn-i-main" type="button" class="btn btn-dark">메인으로</button>
                             <button id="btn-i-join" type="button" class="btn btn-success">가입하기</button>
+                            <button id="btn-i-hidden-error" type="button" data-bs-toggle="modal" data-bs-target="#div-i-error"></button>
                             <button id="btn-i-hidden-join"></button>
                         </div>
                     </div>
@@ -100,5 +178,6 @@
             </div>
         </div>
     </div>
+    <div th:replace="fragments/modal_error :: modalError('입력하지않은 값이 있습니다!')"></div>
 </body>
 </html>
