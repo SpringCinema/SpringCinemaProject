@@ -17,20 +17,30 @@
                 history.back();
             });
 
-            $('#button-i-delOk').on('click', function() {
-                if($('#input-i-id').val() == 1234) {
-                    let con = confirm('정말 탈퇴하시겠습니까?');
-                    if(con == true) {
-                    }
-                    else {
-                        alert('취소하였습니다.');
-                        history.back();
-                    }
-                }
-                else {
-                    alert('비밀번호가 틀렸습니다.');
-                }
-            });
+            // $('#button-i-delOk').on('click', function() {
+            //     let id = ($('#input-i-id').val());
+            //     console.log(id)
+            //     let pwd = ($('#input-i-pwd').val());
+            //     console.log(pwd)
+            //     $.ajax({
+            //         type: "post",
+            //         url: "checkPwd",
+            //         data: {"pwd": pwd},
+            //         success: function(data) {
+            //             alert(data)
+            //             if (data == "OK") {
+            //                 alert(id);
+            //                 alert(pwd);
+            //             }
+            //             else {
+            //                 alert('비밀번호가 틀렸습니다.')
+            //             }
+            //         },
+            //         error: function () {
+            //             alert("ajax 통신이 오류가 발생했습니다.");
+            //         }
+            //     });
+            // });
         });
     </script>
 
@@ -45,7 +55,7 @@
             max-width: none !important;
         }
 
-        #form-i-act {
+        #form-i-frm {
             width: 400px;
             border: 3px #FF4500 solid;
         }
@@ -58,17 +68,21 @@
 
 <!-- 메인 부분 -->
 <main class="container mt-2">
-    <form action="" method="post" class="col-sm-9 mx-auto rounded-4" id="form-i-act">
+    <form id="form-i-frm" method="post" class="col-sm-9 mx-auto rounded-4">
         <div class="row mt-3">
             <label for="input-i-id" class="col-3 text-end pt-2">비밀번호</label>
             <div class="col-8">
-                <input type="password" class="form-control" id="input-i-id" name="inputId" placeholder="비밀번호를 입력하세요">
+                <input type="password" class="form-control" id="input-i-pwd" name="pwd" placeholder="비밀번호를 입력하세요">
             </div>
         </div>
         <div class="text-end">
             <button type="submit" class="my-3 btn btn-danger" id="button-i-delOk">회원 탈퇴</button>
             <button type="reset" class="my-3 me-4 btn btn-secondary" id="button-i-back">뒤로</button>
         </div>
+<!--        전송 방식 변경을 위한 숨겨진 input 태그-->
+        <input type="hidden" id="input-i-method" name="_method">
+<!--        id값 전달받기 위한 숨겨진 input 태그-->
+        <input type="hidden" id="input-i-id" th:value="${myInfo.id}">
     </form>
 </main>
 
