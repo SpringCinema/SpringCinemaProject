@@ -11,10 +11,10 @@ public interface CinemaMapper {
     // 마지막 작성자 : MoonNight285
     int isUserId(String targetId) throws Exception;
     
-    // 일치하는 유저의 개수를 반환한다.
+    // 일치하는 유저의 정보를 반환(아이디, 이름만 포함)
     // 최종 수정 : 2022-12-14
     // 마지막 작성자 : MoonNight285
-    int login(String targetId, String pwd) throws Exception;
+    MemberDto login(String targetId, String pwd) throws Exception;
     
     // 신규 유저 생성
     // 최종 수정 : 2022-12-14
