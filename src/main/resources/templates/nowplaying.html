@@ -10,28 +10,43 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"></script>
 
+    <th:block th:replace="fragments/config :: configFragment"></th:block>
+
     <style>
         .box {
             display: flex;
             justify-content: space-between;
             flex-wrap: wrap;
+            width: 213px;
         }
         .item {
             width: 25%;
             margin-bottom: 10px;
+            padding: 30px;
         }
-        a {
+        #btn-i-detail {
             text-decoration: none;
             color: black;
         }
-        li {
-            float: left;
-            /*width: 30%;*/
-            margin: 10px;
-            width: 213px;
+        #btn-i-book {
+            text-decoration: none;
+            color: white;
         }
+        /*#li-i-poster {*/
+        /*    float: left;*/
+        /*    !*width: 30%;*!*/
+        /*    margin: 10px;*/
+        /*    width: 213px;*/
+        /*}*/
 
-        li>a {
+        li>#btn-i-detail {
+            display: none;
+            position: relative;
+            width: 100%;
+            text-align: center;
+            background: darkgray;
+        }
+        li>#btn-i-book {
             display: none;
             position: relative;
             width: 100%;
@@ -60,7 +75,7 @@
             filter: brightness(0.5);
         }
 
-        img {
+        #img-i-poster {
             position: absolute;
             left: 0;
         }
@@ -68,7 +83,7 @@
 
         .button-book {
             top: 170px;
-            left: 31px;
+            left: 27px;
             position: absolute;
             background-color: #FF4500;
             text-align: center;
@@ -78,7 +93,7 @@
 
         .button-detail {
             top: 110px;
-            left: 31px;
+            left: 27px;
             position: absolute;
             background-color: white;
             text-align: center;
@@ -112,18 +127,19 @@
             opacity: 1;
         }
 
-        .category {
-            font-size: 24px;
-            /*text-decoration: underline;*/
-            /*text-underline-color: #FF4500;*/
-        }
 
         .title {
-            font-size: 21px;
+            font-size: 20px;
             font-weight: bold;
+        }
+
+        .category {
+            font-size: 25px;
+            font-weight: bolder;
         }
     </style>
 </head>
+<header th:replace="fragments/header :: headerFragment"></header>
 <body>
 
 <div class="m-5">
@@ -136,13 +152,13 @@
                 <div class="overlay">
                     <img src="http://file.koreafilm.or.kr/thm/02/00/01/46/tn_DPK004440.JPG" alt="" />
                 </div>
-                <div class="button-detail"><a href="#"> 상세보기 </a></div>
-                <div class="button-book"><a href="#"> 예매하기 </a></div>
+                <div class="button-detail"><a href="#" id="btn-i-detail"> 상세보기 </a></div>
+                <div class="button-book"><a href="#" id="btn-i-book"> 예매하기 </a></div>
             </div>
             <div class="text-center mx-auto">
                 <span class="title">영화 제목</span>
             </div>
-            <div class="text-left">
+            <div>
                 <span>예매율</span>
                 <span>00.0%</span>
                 <span>전문가평점</span><br/>
@@ -152,5 +168,8 @@
         </li>
     </div>
 </div>
+
+
+<footer th:replace="fragments/footer :: footerFragment"></footer>
 </body>
 </html>
