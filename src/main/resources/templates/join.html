@@ -124,15 +124,15 @@
         </div>
         <div class="row">
             <div class="col-xl-12 d-flex justify-content-center">
-                <form id="form-i-join" action="" method="">
+                <form id="form-i-join" action="/join" method="post">
                     <div id="div-i-join-form">
                         <div class="mb-3">
                             <label class="mb-1">아이디</label>
-                            <input id="input-i-id" type="text" class="form-control">
+                            <input id="input-i-id" type="text" class="form-control" name="id">
                         </div>
                         <div class="mb-3">
                             <label class="mb-1">비밀번호</label>
-                            <input id="input-i-password" type="password" class="form-control">
+                            <input id="input-i-password" type="password" class="form-control" name="pwd">
                         </div>
                         <div class="mb-3">
                             <div class="d-flex justify-content-between">
@@ -143,17 +143,17 @@
                         </div>
                         <div class="mb-3">
                             <label class="mb-1">이름</label>
-                            <input id="input-i-name" type="text" class="form-control">
+                            <input id="input-i-name" type="text" class="form-control" name="name">
                         </div>
                         <div class="mb-3">
                             <label class="mb-1">나이</label>
-                            <select id="select-i-brith" class="form-select">
+                            <select id="select-i-brith" class="form-select" name="birth">
                                 <option value="none">생년을 선택하세요.</option>
                             </select>
                         </div>
                         <div class="mb-3">
                             <label class="mb-1">성별</label>
-                            <select id="select-i-gender" class="form-select">
+                            <select id="select-i-gender" class="form-select" name="gender">
                                 <option value="none">성별을 선택하세요.</option>
                                 <option value="man">남자</option>
                                 <option value="woman">여자</option>
@@ -161,11 +161,11 @@
                         </div>
                         <div class="mb-3">
                             <label class="mb-1">이메일</label>
-                            <input id="input-i-email" type="email" class="form-control">
+                            <input id="input-i-email" type="email" class="form-control" name="email">
                         </div>
                         <div class="mb-4">
                             <label class="mb-1">전화번호</label>
-                            <input id="input-i-tel" type="tel" class="form-control">
+                            <input id="input-i-tel" type="tel" class="form-control" name="tel">
                         </div>
                         <div id="div-i-btn-wrapper" class="mb-3 d-flex justify-content-center">
                             <a href="main"><button id="btn-i-main" type="button" class="btn btn-dark">메인으로</button></a>
