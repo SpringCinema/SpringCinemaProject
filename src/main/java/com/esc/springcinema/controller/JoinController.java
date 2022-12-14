@@ -43,12 +43,6 @@ public class JoinController {
             return String.valueOf(result);
         }
     }
-
-    @ResponseBody
-    @RequestMapping(value = "/test", method = RequestMethod.GET)
-    public String test(){
-        return "test";
-    }
     
     // 회원가입진행
     @RequestMapping(value = "/join", method = RequestMethod.POST)

@@ -113,7 +113,8 @@
                     return;
                 }
 
-                // 서버에 값 전달
+                const btnHiddenJoin = $("#btn-i-hidden-join");
+                btnHiddenJoin.click();
             });
             
             // 생년 삽입
@@ -204,8 +205,8 @@
                             <label class="mb-1">성별</label>
                             <select id="select-i-gender" class="form-select" name="gender">
                                 <option value="none">성별을 선택하세요.</option>
-                                <option value="man">남자</option>
-                                <option value="woman">여자</option>
+                                <option value="M">남자</option>
+                                <option value="W">여자</option>
                             </select>
                         </div>
                         <div class="mb-3">
