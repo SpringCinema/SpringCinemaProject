@@ -16,17 +16,17 @@
 <header th:fragment="headerFragment">
     <div class="navbar mt-2">
         <div class="container-fluid">
-            <a href="/main.html" class=""><img src="./img/logo.png" alt="" class="img-c-logo ms-2"></a>
+            <a href="/main.html" class="a-c-main"><img src="/img/logo.png" alt="" class="img-c-logo ms-2"></a>
             <div class="justify-content-end">
                 <ul>
                     <li class="mx-3">
-                        <a href=""><img src="./img/login2.png" alt="로그인" style="display:block;" class="mx-auto my-1"><span>로그인</span></a>
+                        <a href="" class="a-c-main"><img src="/img/login2.png" alt="로그인" style="display:block;" class="mx-auto my-1"><span>로그인</span></a>
                     </li>
                     <li class="mx-2">
-                        <a href=""><img src="./img/join2.png" alt="회원가입" style="display:block;" class="mx-auto my-1"><span>회원가입</span></a>
+                        <a href="" class="a-c-main"><img src="/img/join2.png" alt="회원가입" style="display:block;" class="mx-auto my-1"><span>회원가입</span></a>
                     </li>
                     <li class="mx-2 me-5">
-                        <a href=""><img src="./img/mypage2.png" alt="MY PAGE" style="display:block;" class="mx-auto my-1"><span>MY PAGE</span></a>
+                        <a href="" class="a-c-main"><img src="/img/mypage2.png" alt="MY PAGE" style="display:block;" class="mx-auto my-1"><span>MY PAGE</span></a>
                     </li>
                 </ul>
             </div>
@@ -34,25 +34,28 @@
     </div>
     <hr>
     <div class="navbar">
-        <div class="container ps-5">
-            <div class="nav-item mx-auto ps-5">
+        <div class="container3 mx-auto d-flex">
+            <div class="nav-item mx-auto">
                 <ul class="nav2 p-0">
-                    <li class="mx-5">
+                    <li class="li-c-header mx-5">
                         <div class="dropdown">
-                            <a href="">영화</a>
+                            <a href="" class="a-c-main">영화</a>
                             <div class="dropdown-content">
-                                <a href="">현재 상영작</a>
-                                <a href="">개봉 예정작</a>
+                                <a href="" class="a-c-main">현재 상영작</a>
+                                <a href="" class="a-c-main">개봉 예정작</a>
                             </div>
                         </div>
                     </li>
                     <li class="mx-5">
-                        <a href="">예매</a>
+                        <a href="" class="a-c-main">예매</a>
                     </li>
                     <li class="mx-5">
-                        <a href="">극장</a>
+                        <a href="" class="a-c-main">극장</a>
                     </li>
                 </ul>
+<!--                <ul class="justify-content-end m-0 p-0">-->
+<!--                    <input type="text" style="height: 24px">-->
+<!--                </ul>-->
             </div>
             <ul class="justify-content-end m-0 p-0">
                 <input type="text" style="height: 24px">
