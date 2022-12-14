@@ -1,5 +1,6 @@
-<!-- 수정일 : 2022-12-12일 -->
+<!-- 수정일 : 2022-12-13일 -->
 <!-- 마지막으로 수정한 사람 : MoonNight285 -->
+<!-- 마지막으로 작업한 내용 : 헤더,푸터 추가 -->
 <!-- 결제처리 페이지(결제모듈 사용안될시 사용할 페이지) -->
 
 <!DOCTYPE html>
@@ -18,7 +19,12 @@
             font-style: normal;
         }
 
-        .container{width:1000px; max-width:none!important;}
+        #div-i-main {
+            width:1000px;
+            max-width:none!important;
+            margin-top: 100px;
+            margin-bottom: 100px;
+        }
 
         /* 결제수단 본문 디자인 */
         #div-i-payment-body {
@@ -123,9 +129,12 @@
             padding : 0px 15px;
         }
     </style>
+
+    <th:block th:replace="fragments/config :: configFragment"></th:block>
 </head>
 <body>
-    <div class="container">
+    <header th:replace="fragments/header :: headerFragment"></header>
+    <div id="div-i-main" class="container">
         <div class="row">
             <div class="col-xl-12 d-flex justify-content-between">
                 <div id="div-i-payment-header">
@@ -188,5 +197,6 @@
             </div>
         </div>
     </div>
+    <footer th:replace="fragments/footer.html :: footerFragment"></footer>
 </body>
 </html>

@@ -1,5 +1,6 @@
-<!-- 수정일 : 2022-12-10일 -->
+<!-- 수정일 : 2022-12-13일 -->
 <!-- 마지막으로 수정한 사람 : MoonNight285 -->
+<!-- 마지막으로 작업한 내용 : 다음버튼 누르면 회원가입 유저정보 페이지로 넘어가는 기능 -->
 <!-- 회원가입 약관 페이지 -->
 
 <!DOCTYPE html>
@@ -15,24 +16,31 @@
             const clauseCheck = $("#input-i-clause-checkbox");
             const btnNext = $("#btn-i-next");
             const btnError = $("#btn-i-hidden-error");
+            const btnHiddenNext = $("#btn-i-hidden-next");
             
             btnNext.on("click", function () {
                 if (clauseCheck.is(":checked") == false) {
                     btnError.click();
                     return;
                 }
-                
-                // 다음페이지로 이동
+
+                btnHiddenNext.click();
             });
         });
     </script>
     <style>
-        .container{width:1200px; max-width:none!important;}
+        #div-i-main {
+            width:1200px;
+            max-width:none!important;
+            margin-top: 35px;
+            margin-bottom: 100px;
+        }
 
         #img-i-welcome {
-            margin-left: 25px;
-            width: 900px;
-            height: 600px;
+            margin-top: 50px;
+            margin-right: 10px;
+            width: 618px;
+            height: 424px;
         }
 
         #ul-i-clause-content {
@@ -68,16 +76,19 @@
             margin: 0px 5px;
         }
         
-        #btn-i-hidden-error {
+        #btn-i-hidden-error, #btn-i-hidden-next {
             display: none;
         }
     </style>
+
+    <th:block th:replace="fragments/config :: configFragment"></th:block>
 </head>
 <body>
-    <div class="container">
+    <header th:replace="fragments/header :: headerFragment"></header>
+    <div id="div-i-main" class="container">
         <div class="row">
             <div class="col-xl-12 d-flex justify-content-center mb-3">
-                <img id="img-i-welcome" src="/img/welcome.png">
+                <img id="img-i-welcome" src="/img/welcome2.png">
             </div>
         </div>
         <div class="row">
@@ -92,13 +103,17 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-xl-12 d-flex justify-content-center">
-                <button type="button" class="btn btn-dark">취소</button>
-                <button id="btn-i-next" type="button" class="btn btn-success">다음</button>
-                <button id="btn-i-hidden-error" type="button" data-bs-toggle="modal" data-bs-target="#div-i-error"></button>
-            </div>
+            <form action="/join" method="post">
+                <div class="col-xl-12 d-flex justify-content-center">
+                    <button type="button" class="btn btn-dark">취소</button>
+                    <button id="btn-i-next" type="button" class="btn btn-success">다음</button>
+                    <button id="btn-i-hidden-error" type="button" data-bs-toggle="modal" data-bs-target="#div-i-error"></button>
+                    <button id="btn-i-hidden-next" type="submit"></button>
+                </div>
+            </form>
         </div>
     </div>
-    <div th:replace="modalErrorPage :: modal-error('약관동의를 해주세요!')"></div>
+    <footer th:replace="fragments/footer.html :: footerFragment"></footer>
+    <div th:replace="fragments/modal_error :: modalError('약관동의를 해주세요!')"></div>
 </body>
 </html>
