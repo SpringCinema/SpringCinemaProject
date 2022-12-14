@@ -32,6 +32,16 @@
             const btnHiddenLogin = $("#btn-i-hidden-login");
             const inputId = $("#input-i-id");
             const inputPwd = $("#input-i-pwd");
+            const inputIdSave = $("#input-i-id-save");
+            const inputHiddenIdSave = $("#input-i-hidden-id-save");
+
+            inputIdSave.on("click", function () {
+                if (inputIdSave.is(":checked")) {
+                    inputHiddenIdSave.val("on");
+                } else {
+                    inputHiddenIdSave.val("off");
+                }
+            });
 
             btnLogin.on("click", function () {
                 if (isAllEmpty(inputId.val(), inputPwd.val()) == false) {
@@ -122,7 +132,7 @@
                         <div class="mb-4">
                             <div class="d-flex justify-content-between">
                                 <div>
-                                    <label id="label-i-id-save"><input type="checkbox"><i id="i-i-check-icon"></i>아이디 저장</label>
+                                    <label id="label-i-id-save"><input id="input-i-id-save" type="checkbox"><i id="i-i-check-icon"></i>아이디 저장</label>
                                 </div>
                                 <!-- a 태그 스타일 겹치는것으로 보임.. -->
                                 <a id="a-i-forgot-password" style="color: #3333b2" href="#">비밀번호 찾기</a>
@@ -133,6 +143,7 @@
                             <button id="btn-i-hidden-login" type="submit"></button>
                         </div>
                     </div>
+                    <input id="input-i-hidden-id-save" type="hidden" name="idSave" value="off">
                 </form>
             </div>
         </div>

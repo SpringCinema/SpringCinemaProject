@@ -42,10 +42,13 @@ public class UserController {
     
     // 로그인 진행을합니다.
     // 세션에 아이디와 이름이 저장됩니다.
+    // 아이디 저장을 위해서는 쿠기를 사용을 해야할것같으나 개인정보는 내릴수없기때문에 고민해봐야함
     // 최종 수정 : 2022-12-14
     // 마지막 작성자 : MoonNight285
     @RequestMapping(value = "/user/login", method = RequestMethod.POST)
-    public String login(@RequestParam("targetId") String targetId, @RequestParam("pwd") String pwd, HttpServletRequest request) throws Exception {
+    public String login(@RequestParam("targetId") String targetId, @RequestParam("pwd") String pwd,
+        @RequestParam(value = "idSave") String idSave, HttpServletRequest request) throws Exception {
+
         MemberDto member = memberService.login(targetId, pwd);
         HttpSession session = request.getSession();
         session.setAttribute("loggedInUserInfo", member);
