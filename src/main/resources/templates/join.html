@@ -65,12 +65,11 @@
                     if (data == "true") {
                         result.css("color", "red");
                         result.text("이미 사용중인 아이디입니다.");
-                        result.show();
                     } else {
                         result.css("color", "green");
                         result.text("사용 가능한 아이디입니다.");
-                        result.show();
                     }
+                    result.show();
                 },
                 error : function () {
                     alert("서버와 통신에 실패했습니다.");
@@ -113,6 +112,11 @@
                     return;
                 }
 
+                if (blankCheckResult.text() != "사용 가능한 아이디입니다.") {
+                    runUserCheckFailAnimate(blankCheckResult, "이미 사용중인 아이디입니다.");
+                    return;
+                }
+
                 const btnHiddenJoin = $("#btn-i-hidden-join");
                 btnHiddenJoin.click();
             });
@@ -152,13 +156,6 @@
         
         #div-i-btn-wrapper {
             margin-top: 35px;
-        }
-
-        #btn-i-id-overlap-check {
-            border: none;
-            background-color: white;
-            height: 30px;
-            color: #242473;
         }
     </style>
 </head>
@@ -228,6 +225,6 @@
             </div>
         </div>
     </div>
-    <div th:replace="fragments/modal_error :: modalError('입력하지않은 값이 있습니다!')"></div>
+    <div th:replace="fragments/modal_error :: modalError('입력하지않은 값이 존재합니다!')"></div>
 </body>
 </html>
