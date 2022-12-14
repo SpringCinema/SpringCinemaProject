@@ -37,7 +37,7 @@ public class JoinController {
     @RequestMapping(value = "/join/user/{targetId}", method = RequestMethod.GET)
     public String isUserId(@PathVariable String targetId) throws Exception {
         boolean result = memberService.isUserId(targetId);
-        return "isUserData {value=" + result + "}";
+        return "isUserData {data=" + result + "}";
     }
     
     // 회원가입진행

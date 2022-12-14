@@ -52,6 +52,26 @@
 
             return false;
         }
+        
+        function isUserId() {
+            const id = $("#input-i-id");
+            $.ajax({
+                url : "/join/user/",
+                type : "get",
+                data : {id : id},
+                success : function (data) {
+                    let jsonData = JSON.parse(data);
+                    if (jsonData.data == "true") {
+                        alert("이미 아이디가 존재");
+                    } else {
+                        alert("아이디 없음");
+                    }
+                },
+                error : function () {
+                    alert("서버통신 실패");
+                }
+            });
+        }
 
         $(document).ready(function () {
             const birth = $("#select-i-brith");
@@ -59,6 +79,11 @@
             const password = $("#input-i-password");
             const passwordCheck = $("#input-i-password-check");
             const btnJoin = $("#btn-i-join");
+            const id = $("#input-i-id");
+            
+            id.on("focusout", function () {
+                isUserId();
+            });
 
             password.on("focusout", function () {
                 equalPassword();
