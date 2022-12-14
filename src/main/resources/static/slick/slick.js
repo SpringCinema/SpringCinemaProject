@@ -2338,7 +2338,8 @@
                 if (index >= centerOffset && index <= (_.slideCount - 1) - centerOffset) {
                     _.$slides
                         .slice(index - centerOffset + evenCoef, index + centerOffset + 1)
-                        .addClass('slick-active')
+                        // .addClass('slick-active')
+                        .addClass('slick-active slick-current')
                         .attr('aria-hidden', 'false');
 
                 } else {
@@ -2346,7 +2347,8 @@
                     indexOffset = _.options.slidesToShow + index;
                     allSlides
                         .slice(indexOffset - centerOffset + 1 + evenCoef, indexOffset + centerOffset + 2)
-                        .addClass('slick-active')
+                        // .addClass('slick-active')
+                        .addClass('slick-active slick-current')
                         .attr('aria-hidden', 'false');
 
                 }
@@ -2377,13 +2379,15 @@
 
                 _.$slides
                     .slice(index, index + _.options.slidesToShow)
-                    .addClass('slick-active')
+                    // .addClass('slick-active')
+                    .addClass('slick-active slick-current')
                     .attr('aria-hidden', 'false');
 
             } else if (allSlides.length <= _.options.slidesToShow) {
 
                 allSlides
-                    .addClass('slick-active')
+                    // .addClass('slick-active')
+                    .addClass('slick-active slick-current')
                     .attr('aria-hidden', 'false');
 
             } else {
@@ -2395,14 +2399,16 @@
 
                     allSlides
                         .slice(indexOffset - (_.options.slidesToShow - remainder), indexOffset + remainder)
-                        .addClass('slick-active')
+                        // .addClass('slick-active')
+                        .addClass('slick-active slick-current')
                         .attr('aria-hidden', 'false');
 
                 } else {
 
                     allSlides
                         .slice(indexOffset, indexOffset + _.options.slidesToShow)
-                        .addClass('slick-active')
+                        // .addClass('slick-active')
+                        .addClass('slick-active slick-current')
                         .attr('aria-hidden', 'false');
 
                 }
