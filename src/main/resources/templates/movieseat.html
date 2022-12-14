@@ -29,15 +29,20 @@
                     alert('좌석수가 인원수보다 많습니다.');
                     $(`input[type='checkbox']`).prop('checked', false);
                     $('#input-i-seatCode').val(``);
-                    $(`#input-i-price`).val(totalPrice + '원');
+                    $(`#input-i-adtPrice`).val(adtPrice + '원');
+                    $(`#input-i-teenPrice`).val(teenPrice + '원');
+                    $(`#input-i-totalPrice`).val(totalPrice + '원');
                 }
                 else {
                     // 선택된 인원에 따른 금액 출력
                     if((adtPrice + teenPrice) > 0) {
-                        $(`#input-i-price`).val(totalPrice + '원');
+                        $(`#input-i-adtPrice`).val(adtPrice + '원');
+                        $(`#input-i-teenPrice`).val(teenPrice + '원');
+                        $(`#input-i-totalPrice`).val(totalPrice + '원');
                     }
                     else {
-                        $(`#input-i-price`).val("");
+                        $(`#input-i-totalPrice`).val("");
+                        $(`#input-i-adtPrice`).val("");
                     }
                 }
             });
@@ -56,15 +61,20 @@
                     alert('좌석수가 인원수보다 많습니다.');
                     $(`input[type='checkbox']`).prop('checked', false);
                     $('#input-i-seatCode').val(``);
-                    $(`#input-i-price`).val(totalPrice + '원');
+                    $(`#input-i-adtPrice`).val(adtPrice + '원');
+                    $(`#input-i-teenPrice`).val(teenPrice + '원');
+                    $(`#input-i-totalPrice`).val(totalPrice + '원');
                 }
                 else {
                     // 선택된 인원에 따른 금액 출력
                     if((adtPrice + teenPrice) > 0) {
-                        $(`#input-i-price`).val(totalPrice + '원');
+                        $(`#input-i-adtPrice`).val(adtPrice + '원');
+                        $(`#input-i-teenPrice`).val(teenPrice + '원');
+                        $(`#input-i-totalPrice`).val(totalPrice + '원');
                     }
                     else {
-                        $(`#input-i-price`).val("");
+                        $(`#input-i-teenPrice`).val("");
+                        $(`#input-i-totalPrice`).val("");
                     }
                 }
             });
@@ -77,8 +87,6 @@
                 let adtVal = parseInt($(`input[name='inputAdt']:checked`).val());
                 let teenVal = parseInt($(`input[name='inputTeen']:checked`).val());
                 let popNum = adtVal + teenVal;
-                let seatValue = "";
-
 
                 if (count > popNum) {
                     // 좌석 수가 더 많을 경우 체크박스 클릭 해제
@@ -90,6 +98,7 @@
                         $('#input-i-seatCode').val('');
                     }
                     else {
+
                         // 좌석 번호 출력
                         $('#input-i-seatCode').text('');
                         $('input[type=checkbox]').each(function (index) {
@@ -115,6 +124,7 @@
             width: 1300px;
             max-width: none !important;
         }
+
 
         .label-c-btn {
             background-color: lightgray;
@@ -154,6 +164,7 @@
         </div>
         <div class="row mx-1">
             <div class="col-6 border-end">
+
 <!--                성인 관람 인원 선택 부분 -->
                 <div class="my-1 mt-3">
                     <p class="m-0">일반 : 10,000원(1인)</p>
@@ -165,6 +176,7 @@
                         </div>
                     </div>
                 </div>
+
 <!--                청소년 관람 인원 선택 부분-->
                 <div class="mt-2">
                     <p class="m-0">청소년 : 5,000원(1인)</p>
@@ -177,12 +189,13 @@
                     </div>
                 </div>
             </div>
+
 <!--            내가 선택한 티켓 정보 출력 부분 -->
             <div class="col-6">
                 <div class="my-1 mt-3">
                     <div class="row form-floating">
                         <div class="col-3">
-                            <label for="input-i-title">영화제목 : </label>
+                            <label for="input-i-title">영화제목 &nbsp;  : </label>
                         </div>
                         <div class="col-9">
                             <input type="text" class="form-control-plaintext py-0" id="input-i-title" value="아바타">
@@ -190,7 +203,7 @@
                     </div>
                     <div class="row form-floating">
                         <div class="col-3">
-                            <label for="input-i-cinema">상영관 : </label>
+                            <label for="input-i-cinema">상영관 &nbsp;  : </label>
                         </div>
                         <div class="col-9">
                             <input type="text" class="form-control-plaintext py-0" id="input-i-cinema" value="부산 1관">
@@ -198,7 +211,7 @@
                     </div>
                     <div class="row form-floating">
                         <div class="col-3">
-                            <label for="input-i-time">상영시간 : </label>
+                            <label for="input-i-time">상영시간 &nbsp;  : </label>
                         </div>
                         <div class="col-9">
                             <input type="text" class="form-control-plaintext py-0" id="input-i-time" value="12 : 00">
@@ -206,7 +219,7 @@
                     </div>
                     <div class="row form-floating">
                         <div class="col-3">
-                            <label for="input-i-seatCode">좌석 : </label>
+                            <label for="input-i-seatCode">좌석 &nbsp;  : </label>
                         </div>
                         <div class="col-9">
                             <input type="text" readonly class="form-control-plaintext py-0" id="input-i-seatCode">
@@ -214,14 +227,27 @@
                     </div>
                     <div class="row form-floating">
                         <div class="col-3">
-                            <label for="input-i-price">금액 : </label>
+                            <label for="input-i-adtPrice">일반 &nbsp;  : </label>
                         </div>
                         <div class="col-9">
-                            <input type="text" readonly class="form-control-plaintext py-0" id="input-i-price">
+                            <input type="text" readonly class="form-control-plaintext py-0" id="input-i-adtPrice">
+                        </div>
+                    </div>
+                    <div class="row form-floating">
+                        <div class="col-3">
+                            <label for="input-i-teenPrice">청소년 &nbsp;  : </label>
+                        </div>
+                        <div class="col-2 border-end">
+                            <input type="text" readonly class="form-control-plaintext py-0" id="input-i-teenPrice">
+                        </div>
+                        <div class="col-1 pe-0">
+                            <label for="input-i-totalPrice">총 &nbsp;: </label>
+                        </div>
+                        <div class="col-3">
+                            <input type="text" readonly class="form-control-plaintext py-0" id="input-i-totalPrice">
                         </div>
                     </div>
                 </div>
-
                 <div class="text-end">
                     <button class="btn text-light mb-2" style="background-color: #FF4500">결제하기</button>
                 </div>
@@ -279,7 +305,7 @@
         </div>
 
         <div class="my-3">
-            <div class="row mx-auto w-50 border">
+            <div class="row mx-auto w-50 border border-2">
                 <div class="row col-4 ms-1 my-1">
                     <div class="col-6 div-c-seatInfo1 me-1"></div>
                     <p class="col-6 m-0 p-0">일반석</p>
