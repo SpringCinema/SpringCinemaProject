@@ -12,4 +12,9 @@ public class CinemaController {
     public String index() throws Exception {
         return "index";
     }
+
+    @RequestMapping("/main")
+    public String viewMain() {
+        return "main";
+    }
 }
