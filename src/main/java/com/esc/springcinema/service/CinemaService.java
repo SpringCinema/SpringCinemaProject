@@ -1,12 +1,11 @@
-package com.esc.springcinema.mapper;
+package com.esc.springcinema.service;
 
 import com.esc.springcinema.dto.MemberDto;
-import org.apache.ibatis.annotations.Mapper;
 
-@Mapper
-public interface CinemaMapper {
+import java.util.List;
 
-    MemberDto selectMyInfo(String id) throws Exception;
+public interface CinemaService {
+    public MemberDto selectMyInfo(String id) throws Exception;
 
     void updateMyInfo(MemberDto update) throws Exception;
 

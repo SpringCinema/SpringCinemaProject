@@ -15,12 +15,12 @@
             <img src="/img/profile.png" width="150px" height="150px">
         </div>
         <div class="col-7 mt-3">
-            <p>이름 : aaa</p>
-            <p>아이디 : aaaaaa</p>
-            <p>이메일 : aaaa@naver.com</p>
+            <p th:text="'이름 : '+ ${myInfo.name}"></p>
+            <p th:text="'아이디 : '+ ${myInfo.id}"></p>
+            <p th:text="'이메일 : '+ ${myInfo.email}"></p>
             <div class="text-end">
-                <a class="btn text-light mb-3" href="mypage/update" id="button-i-update">내 정보 수정</a>
-                <a class="btn btn-outline-danger mb-3" href="mypage/delete" id="button-i-delP">회원 탈퇴</a>
+                <a class="btn text-light mb-3" href="/mypage/edit/" th:attrappend="href=${myInfo.id}" id="button-i-update">내 정보 수정</a>
+                <a class="btn btn-outline-danger mb-3" href="/mypage/delete/" th:attrappend="href=${myInfo.id}" id="button-i-delP">회원 탈퇴</a>
             </div>
         </div>
     </div>

@@ -1,8 +1,11 @@
 package com.esc.springcinema.controller;
 
+import com.esc.springcinema.dto.MemberDto;
+import com.esc.springcinema.mapper.CinemaMapper;
+import com.esc.springcinema.service.CinemaService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.ArrayList;
@@ -11,26 +14,61 @@ import java.util.List;
 @Controller
 public class MypageController {
 
+    @Autowired
+    private CinemaService cinemaService;
+
+
+//    DB 적용
 //    마이 페이지
-    @RequestMapping(value = "/mypage", method = RequestMethod.GET)
-    public ModelAndView openMyPage() throws Exception {
+    @RequestMapping(value = "/mypage/{id}", method = RequestMethod.GET)
+    public ModelAndView openMyPage(@PathVariable("id") String id) throws Exception {
         ModelAndView mv = new ModelAndView("mypage/mypage");
+
+        MemberDto myInfo = cinemaService.selectMyInfo(id);
+        mv.addObject("myInfo", myInfo);
         return mv;
     }
 
-//    내 정보 수정
-    @RequestMapping(value = "/mypage/update", method = RequestMethod.GET)
-    public ModelAndView updateProfile() throws Exception {
+//    (DB 적용)
+//    내 정보 수정 (뷰)
+    @RequestMapping(value = "/mypage/edit/{id}", method = RequestMethod.GET)
+    public ModelAndView updateProfile(@PathVariable("id") String id) throws Exception {
         ModelAndView mv = new ModelAndView("mypage/profile_update");
+        MemberDto myInfo = cinemaService.selectMyInfo(id);
+        mv.addObject("myInfo", myInfo);
         return mv;
     }
 
-//    회원 탈퇴
-    @RequestMapping(value = "/mypage/delete", method = RequestMethod.GET)
-    public ModelAndView deleteProfile() throws Exception {
+
+//    (DB 적용)
+//    내 정보 수정 (수정 기능)
+//    추후 redirect mypage로
+    @RequestMapping(value = "/mypage/update/{id}", method = RequestMethod.PUT)
+    public String updateMyInfo(MemberDto update) throws Exception{
+        cinemaService.updateMyInfo(update);
+
+        return "redirect:/seat";
+    }
+
+//    (DB 적용)
+//    회원 탈퇴 (뷰)
+    @RequestMapping(value = "/mypage/delete/{id}", method = RequestMethod.GET)
+    public ModelAndView deleteProfile(@PathVariable("id") String id) throws Exception {
         ModelAndView mv = new ModelAndView("mypage/profile_delete");
+        MemberDto myInfo = cinemaService.selectMyInfo(id);
+        mv.addObject("myInfo", myInfo);
         return mv;
     }
+
+//    (DB 적용)
+//    회원 탈퇴 (기능)
+    @RequestMapping(value = "/mypage/out/{id}", method = RequestMethod.DELETE)
+    public String deleteAccount(MemberDto delete) throws Exception{
+        cinemaService.deleteAccount(delete);
+
+        return "redirect:/seat";
+    }
+
 
 //    결제 취소
     @RequestMapping(value = "/mypage/paycancle", method = RequestMethod.GET)
