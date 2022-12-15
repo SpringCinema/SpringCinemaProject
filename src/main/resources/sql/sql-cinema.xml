@@ -29,4 +29,15 @@
         VALUES(#{docid}, #{title}, #{titleEng}, #{nation}, #{company}, #{runtime}, #{rating}, #{genre}, #{repRlsDate}, #{keywords},
                #{posters}, #{stlls}, #{awards1}, #{plotsDto.plotDto.plotText})
     </insert>
+
+    <insert id="insertDirectors" parameterType="com.esc.springcinema.dto.apiMovieDto.MovieDto">
+        INSERT INTO directors(docid, directorNm) VALUES(#{docid}, #{directorsDto.directorDto.directorNm})
+    </insert>
+
+    <insert id="insertActors" parameterType="com.esc.springcinema.dto.apiMovieDto.MovieDto">
+        INSERT INTO actors(docid, actorNm) VALUES
+        <foreach collection="actorsDto.actors" item="item" separator="," index="index">
+            (#{docid}, #{item.actorNm})
+        </foreach>
+    </insert>
 </mapper>
