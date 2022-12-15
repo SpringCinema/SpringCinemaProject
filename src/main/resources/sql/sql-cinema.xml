@@ -40,4 +40,8 @@
             (#{docid}, #{item.actorNm})
         </foreach>
     </insert>
+
+    <select id="selectMovieDocid" resultType="int" parameterType="String">
+        SELECT COUNT(*) FROM movies WHERE docid = #{docid}
+    </select>
 </mapper>
