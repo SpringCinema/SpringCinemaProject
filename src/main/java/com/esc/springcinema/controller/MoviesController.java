@@ -40,4 +40,20 @@ public class MoviesController {
 
         return mv;
     }
+
+    // 영화_현재상영작 페이지
+    // 최종 수정 : 2022-12-15
+    // 마지막 작성자 : eblyncho
+    @RequestMapping("/nowplaying")
+    public String viewNowPlaying() throws Exception {
+        return "nowplaying";
+    }
+
+    // 영화_상영예정작 페이지
+    // 최종 수정 : 2022-12-15
+    // 마지막 작성자 : eblyncho
+    @RequestMapping("/upcoming")
+    public String viewUpcoming() throws Exception {
+        return "upcoming";
+    }
 }
