@@ -14,8 +14,8 @@ public class CinemaController {
     }
 
 //    메인페이지 접속
-    @RequestMapping("/main")
-    public String openMain() throws Exception {
-        return "main";
-    }
+//    @RequestMapping("/main")
+//    public String openMain() throws Exception {
+//        return "main";
+//    }
 }
