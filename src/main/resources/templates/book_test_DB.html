@@ -186,10 +186,11 @@
                 // 추후 val() 내부 값 수정 필요
                 else {
                     $(`input[name='inputAdt']:checked`)
+                    let date = $("#p-i-selected-date").text().slice(7)
                     let time = $(".clickedTime").text().split("|")[1];
                     movieSender.val("아바타 물의 길");
                     cinemaSender.val("spring cinema 부산점");
-                    dateSender.val($("#p-i-selected-date").text());
+                    dateSender.val(date);
                     hallSender.val("1관");
                     timeSender.val(time);
                     const frm = $('#form-i-book')[0];
