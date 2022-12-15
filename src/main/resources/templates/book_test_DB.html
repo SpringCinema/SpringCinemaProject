@@ -1,0 +1,498 @@
+<!-- 수정일 : 2022-12-13일 -->
+<!-- 마지막으로 수정한 사람 : MoonNight285 -->
+<!-- 마지막으로 작업한 내용 : 헤더,푸터 추가 -->
+<!-- 영화 예매 페이지 -->
+<!-- 영화 메뉴를 표시하는 부분은 DB에서 가져와서 div-i-movie-content 안에있는 ul 태그 안에 동적으로 집어넣어야한다. -->
+<!-- 극장 메뉴를 표시하는 부분은 DB에서 가져와서 div-i-cinema-content 안에있는 ul 태그 안에 동적으로 집어넣을것 -->
+<!-- 날짜는 제이쿼리에서 처리했음 서버에서 건드릴필요가 없다. -->
+
+<!-- 중요!!!!(실수 가능성 높음) -->
+<!-- 시간 메뉴 div안에는 여러가지 정보가 들어가기 때문에 매우매우 중요하다. -->
+<!-- 상영관정보 DB에서 가져와서 div-i-time-content 안에있는 h6 태그안에 상영관(좌석수) 들어가야한다. -->
+<!-- 날짜정보는 DB에서 가져와서 div-i-time-content 안에있는 ul 태그안에 li를 추가하는데 이 안에 span 태그가 필요한데 이 태그의 클래스 이름은
+    span-c-time 로 되어야하며 이 태그 안에 또 span 태그가 자식으로 존재하는데 이 부분에 상영관 정보가 들어가야한다.
+    그리고 자식태그말고 본인 span 태그에서는 상영 시간 정보가 들어가야한다.
+    예를 들면 <span class="span-c-time"> => 상영관과 시간 정보가 들어있는 태그
+                <span>1관|</span> => 상영관 정보가 들어있는 태그(숨김처리 되어있다.)
+                14 : 30 => 상영 시간
+            </span>
+    이렇게 동적으로 들어가야한다.
+    -->
+<!-- 좌석정보 DB에서 가져와서 div-i-time-content 안에있는 ul태그 li 태그안에
+    <span class="span-c-seat">76석</span> 이런식으로 동적으로 추가
+-->
+<!-- 예시를 하단에 미리 작성해놨으니 보고 참고할것 -->
+<!-- 시간 지났을때 클릭못하게 disabled 처리는 동적으로 처리할것 -->
+
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            const yearValue = $("#small-i-year-value");
+            const monthValue = $("#h4-i-month-value");
+            let selectedMovieName;
+            let selectedCinemaName;
+            let selectedDay;
+            let selectedDate;
+            let selectedTime;
+            let selectedHall;
+
+            // 오늘 날짜를 얻어와서 년과 월을 저장하고 날짜 목록에 표시
+            const today = new Date();
+            const year = today.getFullYear();
+            const month = today.getMonth() + 1;
+            yearValue.text(year);
+            monthValue.text(month);
+
+            // 날짜 항목에 오늘 날짜 기준으로 시작해서 자동으로 이번달 마지막일짜까지 채우기
+            // 일요일은 class(li-c-sunday) 추가
+            const dateList = $("#div-i-date-content").children("ul");
+            let dayNames = ["일", "월", "화", "수", "목", "금", "토"];
+            while(today.getMonth() + 1 == month) {
+                if (today.getDay() == 0) {
+                    dateList.append(`<li class="li-c-sunday" style="color: red;">${dayNames[today.getDay()]} ${today.getDate()}</li>`);
+                } else {
+                    dateList.append(`<li>${dayNames[today.getDay()]} ${today.getDate()}</li>`);
+                }
+                today.setDate(today.getDate() + 1);
+            }
+
+            // 영화 목록을 클릭하면 색상 강조하고 값 저장
+            const movieNames = $("#div-i-movie-content").children("ul").children();
+            movieNames.on("click", function () {
+                movieNames.css("background-color", "");
+                movieNames.css("color", "");
+
+                $(this).css("background-color", "#333333");
+                $(this).css("color", "white");
+
+                selectedMovieName = $(this).text();
+
+                const movieView = $("#p-i-selected-movie");
+                movieView.text(selectedMovieName); // 유저에게 보여주기위한 용도
+
+                const movieSender = $("#input-i-send-movie");
+                movieSender.val(selectedMovieName); // 서버 전달용
+            });
+
+            // 극장 목록을 클릭하면 색상 강조하고 값 저장
+            const cinemaNames = $("#div-i-cinema-content").children("ul").children();
+            cinemaNames.on("click", function () {
+                cinemaNames.css("background-color", "");
+                cinemaNames.css("color", "");
+
+                $(this).css("background-color", "#333333");
+                $(this).css("color", "white");
+
+                selectedCinemaName = $(this).text();
+
+                const cinemaView = $("#p-i-selected-cinema");
+                cinemaView.text("선택극장 : " + selectedCinemaName);
+
+                const cinemaSender = $("#input-i-send-cinema");
+                cinemaSender.val(selectedCinemaName);
+            });
+
+            // 날짜 목록을 클릭하면 색상 강조하고 값 저장
+            // 날짜 목록을 선택하면 저장된 값을 통해 날짜 정보를 가공해서 표시
+            // 일요일은 클래스(li-c-sunday)로 판단
+            const dates = $("#div-i-date-content").children("ul").children();
+            dates.on("click", function () {
+                for (let i = 0; i < dates.length; ++i) {
+                    dates.eq(i).css("background-color", "");
+
+                    if (dates.eq(i).hasClass("li-c-sunday")) {
+                        dates.eq(i).css("color", "red");
+                    } else {
+                        dates.eq(i).css("color", "");
+                    }
+                }
+
+                if ($(this).hasClass("li-c-sunday")) {
+                    $(this).css("background-color", "#333333");
+                    $(this).css("color", "red");
+                } else {
+                    $(this).css("background-color", "#333333");
+                    $(this).css("color", "white");
+                }
+
+                selectedDay = $(this).text().split(" ")[0]; // 월 ~ 일
+                selectedDate = $(this).text().split(" ")[1]; // 1 ~ 31
+                const dateView = $("#p-i-selected-date");
+                dateView.text(`선택날짜 : ${year}년 ${month}월 ${selectedDate}일 ${selectedDay}요일`);
+
+                const dateSender = $("#input-i-send-date");
+                dateSender.val(`${year}년 ${month}월 ${selectedDate}일 ${selectedDay}요일`);
+            });
+
+            // 시간 목록을 클릭하면 색상 강조하고 값 저장
+            // 시간 목록을 클릭하면 상영관 정보도 같이 저장되어야함
+            // 시간 목록을 선택하면 상영관과 시간 정보를 가공해서 표시
+            const times = $(".span-c-time");
+            times.on("click", function () {
+                times.css("background-color", "");
+                times.css("color", "");
+                // 2022-12-15 양민호
+                // -----------부터-------------
+                // 선택된 시간 리스트 부분에 고유 클래스명 추가
+                times.removeClass();
+                times.addClass('span-c-time');
+                $(this).addClass('clickedTime');
+                // -----------까지--------------
+
+                $(this).css("background-color", "#333333");
+                $(this).css("color", "white");
+
+                selectedHall = $(this).text().split("|")[0]; // X관
+                selectedTime = $(this).text().split("|")[1]; // 9 : 30(예시)
+
+                const hallView = $("#p-i-selected-hall");
+                hallView.text("선택상영관 : " + selectedHall);
+
+                const timeView = $("#p-i-selected-time");
+                timeView.text("선택시간 : " + selectedTime);
+
+                const hallSender = $("#input-i-send-hall");
+                hallSender.val(selectedHall);
+
+                const timeSender = $("#input-i-send-time");
+                timeSender.val(selectedTime);
+            });
+
+            // 좌석선택 버튼을 클릭시 선택안한 데이터가 있는지 체크하고 선택한 데이터를 서버로 넘김
+            const btnNext = $("#btn-i-next");
+            btnNext.on("click", function () {
+                const movieSender = $("#input-i-send-movie");
+                const cinemaSender = $("#input-i-send-cinema");
+                const dateSender = $("#input-i-send-date");
+                const hallSender = $("#input-i-send-hall");
+                const timeSender = $("#input-i-send-time");
+
+                if (movieSender.val() == "" || cinemaSender.val() == "" || dateSender.val() == "" ||
+                    hallSender.val() == "" || timeSender.val() == "") {
+                    const btnError = $("#btn-i-hidden-error");
+                    btnError.click();
+                    return;
+                }
+                // 2022-12-15 양민호
+                // ------------------부터----------------
+                // 임시적으로 입력 값 숨겨진 태그에 붙여넣고 서버로 데이터 전송
+                // 추후 val() 내부 값 수정 필요
+                else {
+                    $(`input[name='inputAdt']:checked`)
+                    let time = $(".clickedTime").text().split("|")[1];
+                    movieSender.val("아바타 물의 길");
+                    cinemaSender.val("spring cinema 부산점");
+                    dateSender.val($("#p-i-selected-date").text());
+                    hallSender.val("1관");
+                    timeSender.val(time);
+                    const frm = $('#form-i-book')[0];
+                    frm.submit();
+                }
+                // ------------------까지----------------
+                // 다 선택했으면 서버로 값 넘기기
+            });
+        });
+    </script>
+    <style>
+        @font-face {
+            font-family: 'KOHINanumOTFL';
+            src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2201-2@1.0/KOHINanumOTFL.woff') format('woff');
+            font-weight: normal;
+            font-style: normal;
+        }
+
+        /* 본문 컨테이너 영역 */
+        #div-i-main {
+            width:1000px;
+            max-width:none!important;
+            margin: 100px auto;
+        }
+
+        /* ul 태그 전체에 마진 적용 */
+        #div-i-body ul {
+            margin: 10px 0px;
+        }
+
+        /* 제목 부분 디자인 */
+        .div-c-movie-header {
+            text-align: center;
+            width: 300px;
+            background-color: #333333;
+            color: white;
+            border-right: 1px solid white;
+            font-family: "KOHINanumOTFL";
+        }
+
+        /* 제목부분 마진 디자인 */
+        .div-c-movie-header h5 {
+            margin-bottom: 10px;
+            margin-top: 15px;
+        }
+
+        /* 내용부분 박스 디자인 */
+        #div-i-movie-content, #div-i-cinema-content, #div-i-date-content, #div-i-time-content {
+            border-right: 2px solid gray;
+            border-bottom: 2px solid gray;
+            width: 300px;
+            height: 600px;
+            background-color: #f2f0e5;
+            overflow: auto;
+        }
+
+        #div-i-time-content {
+            margin-right: 1px;
+        }
+
+        /* 내용부분 박스에서 컨텐츠 요소에 마우스 올렸을때 포인터 변경 */
+        #div-i-movie-content ul li:hover, #div-i-cinema-content ul li:hover, #div-i-date-content ul li:hover,
+        #div-i-time-content ul li:hover {
+            cursor: pointer;
+        }
+
+        /* 내용부분 박스에서 컨텐츠 요소에 마우스 올렸을때 색상변경 */
+        #div-i-movie-content ul li:hover, #div-i-cinema-content ul li:hover, #div-i-date-content ul li:hover {
+            background-color: #333333;
+            color: white;
+        }
+
+        /* 내용부분 박스에서 컨텐츠 요소에 마우스 올렸을때 색상변경(시간대에만 적용) */
+        #div-i-time-content ul li:hover .span-c-time {
+            background-color: #333333;
+            color: white;
+        }
+
+        /* 영화랑 극장 마진 바텀 */
+        #div-i-movie-content ul li, #div-i-cinema-content ul li {
+            margin-bottom: 10px;
+        }
+
+        /* 날짜 마진 */
+        #div-i-date-content ul li {
+            margin-bottom: 10px;
+            width: 40px;
+        }
+
+        /* 시간 마진 */
+        #div-i-time-content ul li {
+            display: inline-block;
+            margin-right: 10px;
+            margin-bottom: 10px;
+        }
+
+        /* 시간 패딩 */
+        #div-i-time-content .span-c-time {
+            border: 1px solid #d6d3ce;
+            padding: 2px;
+        }
+
+        /* 영화, 극장 목록 불릿제거하고 패딩 제거 */
+        #div-i-movie-content ul, #div-i-cinema-content ul {
+            list-style: none;
+            padding-left: 0px;
+        }
+
+        /* 날짜 선택부분 패딩 적용 */
+        #div-i-date-content ul {
+            padding-left: 22px;
+        }
+
+        /* 극장 목록 가운데 정렬 */
+        #div-i-cinema-content ul li {
+            text-align: center;
+        }
+
+        /* 선택한 영화의 이름을 표시하는 공간의 디자인 */
+        #div-i-selected-movie {
+            background-color: #f2f0e5;
+            width: 293px;
+            height: 100px;
+            border-left: 2px solid gray;
+            border-bottom: 2px solid gray;
+        }
+
+        /* 선택한 영화의 정보를 표시하는 공간의 디자인 */
+        #div-i-selected-movie-info {
+            background-color: #f2f0e5;
+            width: 400px;
+            height: 100px;
+            border-bottom: 2px solid gray;
+        }
+
+        /* 다음 버튼 공간의 디자인 */
+        #div-i-next {
+            background-color: #f2f0e5;
+            width: 293px;
+            height: 100px;
+            border-bottom: 2px solid gray;
+            border-right: 2px solid gray;
+        }
+
+        /* 좌석선택 버튼 */
+        #btn-i-next {
+            width: 180px;
+            font-size: 24px;
+            font-family: KOHINanumOTFL;
+        }
+
+        /* 좌석선택 버튼의 내용값 */
+        #btn-i-next p {
+            margin-top: 20px;
+        }
+
+        /* 숨겨진 좌석선택 버튼(서버로 넘기기용), 에러버튼 */
+        #btn-i-hidden-next, #btn-i-hidden-error {
+            display: none;
+        }
+
+        /* 숨겨진 상영관정보(시간 선택에 포함) */
+        .span-c-time span {
+            display: none;
+        }
+    </style>
+
+    <th:block th:replace="fragments/config :: configFragment"></th:block>
+</head>
+<body>
+    <header th:replace="fragments/header :: headerFragment"></header>
+    <div id="div-i-main" class="container">
+        <div class="row">
+            <div class="col-xl-12 d-flex justify-content-between">
+                <div class="div-c-movie-header">
+                    <h5>영화</h5>
+                </div>
+                <div class="div-c-movie-header">
+                    <h5>극장</h5>
+                </div>
+                <div class="div-c-movie-header" style="width: 100px">
+                    <h5>날짜</h5>
+                </div>
+                <div class="div-c-movie-header">
+                    <h5>시간</h5>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div id="div-i-body" class="col-xl-12 d-flex justify-content-between">
+                <div id="div-i-movie-content" style="border-left: 2px solid gray">
+                    <ul>
+                        <li>
+                            <div class="d-flex justify-content-start">
+                                <img src="/img/twelve.png" class="mx-2">아바타 물의길
+                            </div>
+                        </li>
+                        <li>
+                            <div class="d-flex justify-content-start">
+                                <img src="/img/fifteen.png" class="mx-2">올빼미
+                            </div>
+                        </li>
+                        <li>
+                            <div class="d-flex justify-content-start">
+                                <img src="/img/letter-a.png" class="mx-2">신비아파트
+                            </div>
+                        </li>
+                        <li>
+                            <div class="d-flex justify-content-start">
+                                <img src="/img/twelve.png" class="mx-2">탄생
+                            </div>
+                        </li>
+                        <li>
+                            <div class="d-flex justify-content-start">
+                                <img src="/img/eighteen.png" class="mx-2">크리스마스 캐럴
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                <div id="div-i-cinema-content">
+                    <ul>
+                        <li>서울</li>
+                        <li>부산</li>
+                    </ul>
+                </div>
+                <div id="div-i-date-content" style="width: 100px;">
+                    <small id="small-i-year-value" class="d-flex justify-content-center mt-2">2022</small>
+                    <h4 id="h4-i-month-value" class="text-center">12</h4>
+                    <ul style="list-style: none"></ul>
+                </div>
+                <div id="div-i-time-content">
+                    <ul>
+                        <h6><b>1관(총 82석)</b></h6>
+                        <li>
+                            <span class="span-c-time"><span>1관|</span> 9 : 30</span>
+                            <span class="span-c-seat">76석</span>
+                        </li>
+                        <li>
+                            <span class="span-c-time"><span>1관|</span> 11 : 30</span>
+                            <span class="span-c-seat">66석</span>
+                        </li>
+                        <li>
+                            <span class="span-c-time"><span>1관|</span> 14 : 30</span>
+                            <span class="span-c-seat">82석</span>
+                        </li>
+                        <li>
+                            <span class="span-c-time"><span>1관|</span> 18 : 30</span>
+                            <span class="span-c-seat">55석</span>
+                        </li>
+                    </ul>
+                    <ul>
+                        <h6><b>2관(총 82석)</b></h6>
+                        <li>
+                            <span class="span-c-time"><span>2관|</span> 9 : 30</span>
+                            <span class="span-c-seat">76석</span>
+                        </li>
+                        <li>
+                            <span class="span-c-time"><span>2관|</span> 11 : 30</span>
+                            <span class="span-c-seat">66석</span>
+                        </li>
+                        <li>
+                            <span class="span-c-time"><span>2관|</span> 14 : 30</span>
+                            <span class="span-c-seat">82석</span>
+                        </li>
+                        <li>
+                            <span class="span-c-time"><span>2관|</span> 18 : 30</span>
+                            <span class="span-c-seat">55석</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div id="div-i-footer" class="col-xl-12 d-flex justify-content-start">
+                <div id="div-i-selected-movie">
+                    <p class="mb-0 mt-3 text-center">선택영화</p>
+                    <p id="p-i-selected-movie" class="text-center" style="word-wrap: break-word;">없음</p>
+                </div>
+                <div id="div-i-selected-movie-info">
+                    <p id="p-i-selected-cinema" class="mx-3 mb-0" style="text-align: left">선택극장 : 없음</p>
+                    <p id="p-i-selected-date" class="mx-3 mb-0" style="text-align: left">선택날짜 : 없음</p>
+                    <p id="p-i-selected-hall" class="mx-3 mb-0" style="text-align: left">선택상영관 : 없음</p>
+                    <p id="p-i-selected-time" class="mx-3 mb-0" style="text-align: left">선택시간 : 없음</p>
+                </div>
+                <div id="div-i-next" class="d-flex justify-content-center">
+                    <button id="btn-i-next" type="button" class="btn btn-dark my-2"><p>좌석선택</p></button>
+                    <button id="btn-i-hidden-error" type="button" data-bs-toggle="modal" data-bs-target="#div-i-error"></button>
+                </div>
+            </div>
+            <!-- 이 폼은 눈에 보이지않습니다. 오로지 서버에 전달하기위한 용도입니다. -->
+<!--            2022-12-15 양민호 -->
+<!--            -------------------부터-------------------- -->
+<!--            임시 name값 추가-->
+            <form action="/seat" method="post" id="form-i-book">
+                <input id="input-i-send-movie" type="hidden" name="movieTitle">
+                <input id="input-i-send-cinema" type="hidden" name="cinemaName">
+                <input id="input-i-send-date" type="hidden" name="date">
+                <input id="input-i-send-hall" type="hidden" name="screenHallName">
+                <input id="input-i-send-time" type="hidden" name="time">
+                <button id="btn-i-hidden-next" type="submit"></button>
+            </form>
+<!--            -------------------까지-------------------- -->
+        </div>
+    </div>
+    <footer th:replace="fragments/footer.html :: footerFragment"></footer>
+    <div th:replace="fragments/modal_error :: modalError('선택하지않은 값이 존재합니다!')"></div>
+</body>
+</html>
