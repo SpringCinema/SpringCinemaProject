@@ -48,6 +48,9 @@ public class MovieServiceImpl implements MovieService {
     }
     
     // API로부터 영화 데이터 가져와서 반환
+    // 미완성, 변수로 검색해야함
+    // 최종 수정 : 2022-12-15
+    // 마지막 작성자 : MoonNight285
     private List<MovieDto> getMovieDatas() throws Exception {
 //        String strUrl = "https://api.koreafilm.or.kr/openapi-data2/wisenut/search_api/search_xml2.jsp?collection=kmdb_new2&detail=Y" +
 //                "&title=" + title + "&releaseDts=" + releaseDts + "&ServiceKey=" + SERVICE_KEY;
@@ -74,15 +77,16 @@ public class MovieServiceImpl implements MovieService {
         return movies;
     }
     
+    // 영화정보를 API를 통해 받아서 DB에 저장
+    // 최종 수정 : 2022-12-15
+    // 마지막 작성자 : MoonNight285
     @Override
     public void insertMovieInfo() throws Exception {
         List<MovieDto> movies = getMovieDatas();
-        insertMovieData(movies);
-    }
-    
-    private void insertMovieData(List<MovieDto> movies) throws Exception {
         for (int i = 0; i < movies.size(); ++i) {
             cinemaMapper.insertMovieDatas(movies.get(i));
+            cinemaMapper.insertDirectors(movies.get(i));
+            cinemaMapper.insertActors(movies.get(i));
         }
     }
 }
