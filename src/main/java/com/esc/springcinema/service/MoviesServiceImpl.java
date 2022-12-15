@@ -1,6 +1,6 @@
 package com.esc.springcinema.service;
 
-import com.esc.springcinema.dto.MoviesDto;
+import com.esc.springcinema.dto.apiMovieDto.MovieDto;
 import com.esc.springcinema.mapper.CinemaMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,7 +16,7 @@ public class MoviesServiceImpl implements MoviesService {
     // 최종 수정 : 2022-12-15
     // 마지막 작성자 : eblyncho
     @Override
-    public List<MoviesDto> selectMoviesList() throws Exception {
+    public List<MovieDto> selectMoviesList() throws Exception {
         return cinemaMapper.selectMoviesList();
     }
 
@@ -24,7 +24,7 @@ public class MoviesServiceImpl implements MoviesService {
     // 최종 수정 : 2022-12-15
     // 마지막 작성자 : eblyncho
     @Override
-    public List<MoviesDto> selectNowplayingMoviesList() throws Exception {
+    public List<MovieDto> selectNowplayingMoviesList() throws Exception {
         return cinemaMapper.selectNowplayingMoviesList();
     }
 }

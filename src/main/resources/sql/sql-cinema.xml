@@ -16,11 +16,17 @@
                NOW())
     </insert>
 
-    <select id="selectNowplayingMoviesList" resultType="com.esc.springcinema.dto.MoviesDto">
+    <select id="selectNowplayingMoviesList" resultType="com.esc.springcinema.dto.apiMovieDto.MovieDto">
         <![CDATA[
             SELECT title, SUBSTRING_INDEX(posters, '|', 1) AS posters
             FROM movies
             WHERE repRlsDate <= NOW()
         ]]>
     </select>
+
+    <insert id="insertMovieDatas" parameterType="com.esc.springcinema.dto.apiMovieDto.MovieDto">
+        INSERT INTO movies(docid, title, titleEng, nation, company, runtime, rating, genre, repRlsDate, keywords, posters, stlls, awards1, plotText)
+        VALUES(#{docid}, #{title}, #{titleEng}, #{nation}, #{company}, #{runtime}, #{rating}, #{genre}, #{repRlsDate}, #{keywords},
+               #{posters}, #{stlls}, #{awards1}, #{plotsDto.plotDto.plotText})
+    </insert>
 </mapper>

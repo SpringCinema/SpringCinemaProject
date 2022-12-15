@@ -1,6 +1,6 @@
 package com.esc.springcinema.controller;
 
-import com.esc.springcinema.dto.MoviesDto;
+import com.esc.springcinema.dto.apiMovieDto.MovieDto;
 import com.esc.springcinema.service.MoviesService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -22,7 +22,7 @@ public class MoviesController {
     public ModelAndView viewNowplayingMoviesList() throws Exception {
         ModelAndView mv = new ModelAndView("main");
 
-        List<MoviesDto> nowplayingList = moviesService.selectNowplayingMoviesList();
+        List<MovieDto> nowplayingList = moviesService.selectNowplayingMoviesList();
         mv.addObject("nowplayingList", nowplayingList);
 
         return mv;
@@ -35,7 +35,7 @@ public class MoviesController {
     public ModelAndView viewMoviesList() throws Exception {
         ModelAndView mv = new ModelAndView("search");
 
-        List<MoviesDto> dataList = moviesService.selectMoviesList();
+        List<MovieDto> dataList = moviesService.selectMoviesList();
         mv.addObject("dataList", dataList);
 
         return mv;
