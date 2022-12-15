@@ -1,6 +1,7 @@
 package com.esc.springcinema.controller;
 
 import com.esc.springcinema.dto.MemberDto;
+import com.esc.springcinema.dto.ScreenHallDto;
 import com.esc.springcinema.service.CinemaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -88,9 +89,17 @@ public class MypageController {
     }
 
 //    좌석 선택
-    @RequestMapping(value = "/seat" , method = RequestMethod.GET)
-    public ModelAndView openSeat() throws Exception {
+    @RequestMapping(value = "/seat" , method = RequestMethod.POST)
+    public ModelAndView openSeat(@RequestParam("movieTitle") String title, @RequestParam("cinemaName") String cinemaName, @RequestParam("date") String date,
+                                 @RequestParam("screenHallName") String screenHallName, @RequestParam("time") String time) throws Exception {
         ModelAndView mv = new ModelAndView("movieseat");
+
+        ScreenHallDto screenData = cinemaService.selectScreenData(title, cinemaName, screenHallName);
+
+
+        String times = time;
+        String dates = date;
+
 
         List<Integer> people = new ArrayList<>();
         people.add(0);
@@ -115,6 +124,9 @@ public class MypageController {
 
         mv.addObject("alp", seatCode);
         mv.addObject("people", people);
+        mv.addObject("times", times);
+        mv.addObject("dates", dates);
+        mv.addObject("screenData", screenData);
         return mv;
     }
 }

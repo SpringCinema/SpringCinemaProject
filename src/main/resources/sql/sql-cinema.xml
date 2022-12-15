@@ -26,6 +26,13 @@
         WHERE id = #{id} AND pwd = #{pwd}
     </select>
 
+    <select id="selectScreenData" resultType="com.esc.springcinema.dto.ScreenHallDto">
+        SELECT * FROM screen_hall
+        WHERE cinema_name = #{cinemaName} AND screen_hall_name = #{screenHallName} AND movie_title = #{movieTitle}
+    </select>
+
+
+
     <select id="isUserId" parameterType="String" resultType="int">
         SELECT COUNT(*) FROM members WHERE id = #{targetId}
     </select>

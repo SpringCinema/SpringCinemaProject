@@ -2,6 +2,7 @@ package com.esc.springcinema.mapper;
 
 import com.esc.springcinema.dto.MemberDto;
 import com.esc.springcinema.dto.MoviesDto;
+import com.esc.springcinema.dto.ScreenHallDto;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
@@ -41,4 +42,6 @@ public interface CinemaMapper {
     // 최종 수정 : 2022-12-15
     // 마지막 작성자 : eblyncho
     List<MoviesDto> selectNowplayingMoviesList() throws Exception;
+
+    ScreenHallDto selectScreenData(String movieTitle, String cinemaName, String screenHallName);
 }
