@@ -17,8 +17,8 @@
     </insert>
 
     <insert id="insertMovieDatas" parameterType="com.esc.springcinema.dto.apiMovieDto.MovieDto">
-        INSERT INTO movies(docid, title, nation, company, runtime, rating, genre, repRlsDate, keywords, posters, stills, awards1, plotText)
-        VALUES(#{docid}, #{title}, #{nation}, #{company}, #{runtime}, #{rating}, #{genre}, #{repRlsDate}, #{keywords},
-               #{posters}, #{stills}, #{awards1}, #{plotText})
+        INSERT INTO movies(docid, title, titleEng, nation, company, runtime, rating, genre, repRlsDate, keywords, posters, stlls, awards1, plotText)
+        VALUES(#{docid}, #{title}, #{titleEng}, #{nation}, #{company}, #{runtime}, #{rating}, #{genre}, #{repRlsDate}, #{keywords},
+               #{posters}, #{stlls}, #{awards1}, #{plotsDto.plotDto.plotText})
     </insert>
 </mapper>

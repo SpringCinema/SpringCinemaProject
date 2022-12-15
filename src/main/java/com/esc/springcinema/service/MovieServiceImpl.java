@@ -1,7 +1,6 @@
 package com.esc.springcinema.service;
 
 import com.esc.springcinema.dto.apiMovieDto.MovieDto;
-import com.esc.springcinema.dto.apiMovieDto.ResultDto;
 import com.esc.springcinema.dto.apiMovieDto.SearchDto;
 import com.esc.springcinema.mapper.CinemaMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +11,6 @@ import javax.xml.bind.Unmarshaller;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -25,7 +23,7 @@ public class MovieServiceImpl implements MovieService {
     CinemaMapper cinemaMapper;
     
     public MovieServiceImpl() throws Exception {
-        this("아바타", "20000601");
+        this("컨저링", "20000601");
     }
     
     public MovieServiceImpl(String title, String releaseDts) throws Exception {
@@ -50,10 +48,10 @@ public class MovieServiceImpl implements MovieService {
     }
     
     // API로부터 영화 데이터 가져와서 반환
-    public List<MovieDto> getMovieDatas() throws Exception {
-        title = URLEncoder.encode("아바타", "UTF-8");
-        String strUrl = "https://api.koreafilm.or.kr/openapi-data2/wisenut/search_api/search_xml2.jsp?collection=kmdb_new2&detail=Y" +
-                "&title=" + title + "&releaseDts=" + releaseDts + "&ServiceKey=" + SERVICE_KEY;
+    private List<MovieDto> getMovieDatas() throws Exception {
+//        String strUrl = "https://api.koreafilm.or.kr/openapi-data2/wisenut/search_api/search_xml2.jsp?collection=kmdb_new2&detail=Y" +
+//                "&title=" + title + "&releaseDts=" + releaseDts + "&ServiceKey=" + SERVICE_KEY;
+        String strUrl = "https://api.koreafilm.or.kr/openapi-data2/wisenut/search_api/search_xml2.jsp?collection=kmdb_new2&detail=Y&releaseDts=20220101&listCount=100&ServiceKey=3922EP8PL7QCSBYQ4DR8";
         SearchDto searchDto = new SearchDto();
         URL url = null;
         HttpURLConnection urlConn = null;
@@ -76,9 +74,15 @@ public class MovieServiceImpl implements MovieService {
         return movies;
     }
     
-    
     @Override
-    public void insertMovieData(MovieDto Movies) throws Exception {
+    public void insertMovieInfo() throws Exception {
+        List<MovieDto> movies = getMovieDatas();
+        insertMovieData(movies);
+    }
     
+    private void insertMovieData(List<MovieDto> movies) throws Exception {
+        for (int i = 0; i < movies.size(); ++i) {
+            cinemaMapper.insertMovieDatas(movies.get(i));
+        }
     }
 }
