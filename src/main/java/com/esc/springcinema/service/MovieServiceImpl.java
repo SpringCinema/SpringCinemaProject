@@ -11,7 +11,9 @@ import javax.xml.bind.Unmarshaller;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.List;
 
 @Service
@@ -27,19 +29,25 @@ public class MovieServiceImpl implements MovieService {
     // 최종 수정 : 2022-12-15
     // 마지막 작성자 : MoonNight285
     public void init() throws Exception {
-        Calendar today = Calendar.getInstance();
-        
-        // 발매일 기준일은 당일기준 한달 전
-        String year = String.valueOf(today.get(Calendar.YEAR));
-        String month = String.format("%02d", (today.get(Calendar.MONTH)));
-        String day = String.format("%02d", today.get(Calendar.DATE));
+        GregorianCalendar startDate = new GregorianCalendar();
+        GregorianCalendar endDate = new GregorianCalendar();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
+        endDate.add(GregorianCalendar.MONTH, 1);
 
-        strUrl = "https://api.koreafilm.or.kr/openapi-data2/wisenut/search_api/search_xml2.jsp?" +
-                "collection=kmdb_new2&detail=Y&listCount=150&" +
-                "releaseDts=" + (year + month + day) +
-                "&ServiceKey=" + SERVICE_KEY;
+        for (int i = 0; i < 12; ++i) {
+            System.out.println(sdf.format(startDate.getTime()));
 
-        insertMovieInfo();
+            // 발매일 기준일은 당일기준 한달 전
+            strUrl = "https://api.koreafilm.or.kr/openapi-data2/wisenut/search_api/search_xml2.jsp?" +
+                    "collection=kmdb_new2&detail=Y&listCount=100&" +
+                    "releaseDts=" + sdf.format(startDate.getTime()) +
+                    "&releaseDte=" + sdf.format(endDate.getTime()) +
+                    "&ServiceKey=" + SERVICE_KEY;
+
+            insertMovieInfo();
+            startDate.add(GregorianCalendar.MONTH, -1); // 한달전으로
+            endDate.add(GregorianCalendar.MONTH, -1); // 한달전으로
+        }
     }
 
     // API로부터 영화 데이터 가져와서 반환
