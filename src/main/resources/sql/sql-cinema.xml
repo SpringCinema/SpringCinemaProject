@@ -18,7 +18,7 @@
 
     <select id="selectNowplayingMoviesList" resultType="com.esc.springcinema.dto.apiMovieDto.MovieDto">
         <![CDATA[
-            SELECT title, SUBSTRING_INDEX(posters, '|', 1) AS posters
+            SELECT docid, title, SUBSTRING_INDEX(posters, '|', 1) AS posters
             FROM movies
             WHERE repRlsDate <= NOW()
         ]]>
@@ -29,4 +29,20 @@
         VALUES(#{docid}, #{title}, #{titleEng}, #{nation}, #{company}, #{runtime}, #{rating}, #{genre}, #{repRlsDate}, #{keywords},
                #{posters}, #{stlls}, #{awards1}, #{plotsDto.plotDto.plotText})
     </insert>
+
+    <select id="selectMovieDetail" parameterType="String" resultType="com.esc.springcinema.dto.apiMovieDto.MovieDto">
+        <![CDATA[
+        SELECT docid, title, titleEng, SUBSTRING_INDEX(posters, '|', 1) AS posters, nation, runtime, rating, genre, repRlsDate, keywords, awards1, REPLACE(stlls, '|', ',') AS stlls
+        FROM movies
+        WHERE docid = #{docid}
+        ]]>
+    </select>
+
+    <select id="selectPlotText" parameterType="String" resultType="com.esc.springcinema.dto.apiMovieDto.PlotDto">
+        <![CDATA[
+        SELECT plotText
+        FROM movies
+        WHERE docid = #{docid}
+        ]]>
+    </select>
 </mapper>

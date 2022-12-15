@@ -2,6 +2,7 @@ package com.esc.springcinema.mapper;
 
 import com.esc.springcinema.dto.MemberDto;
 import com.esc.springcinema.dto.apiMovieDto.MovieDto;
+import com.esc.springcinema.dto.apiMovieDto.PlotDto;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
@@ -36,4 +37,11 @@ public interface CinemaMapper {
     
     // API를 통해 가져온 영화 데이터를 저장
     void insertMovieDatas(MovieDto movies) throws Exception;
+
+    // 영화 상세보기
+    // 최종 수정 : 2022-12-15
+    // 마지막 작성자 : eblyncho
+    MovieDto selectMovieDetail(String docid) throws Exception;
+
+    PlotDto selectPlotText(String docid) throws Exception;
 }
