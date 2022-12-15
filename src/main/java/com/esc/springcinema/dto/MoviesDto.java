@@ -16,7 +16,7 @@ public class MoviesDto {
     private String repRlsDate;
     private String keywords;
     private String posters;
-    private String stlls;
+    private String stills;
     private String awards1;
     private String plotText;
 

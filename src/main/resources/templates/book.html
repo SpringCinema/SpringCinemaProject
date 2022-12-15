@@ -1,5 +1,6 @@
-<!-- 수정일 : 2022-12-11일 -->
+<!-- 수정일 : 2022-12-13일 -->
 <!-- 마지막으로 수정한 사람 : MoonNight285 -->
+<!-- 마지막으로 작업한 내용 : 헤더,푸터 추가 -->
 <!-- 영화 예매 페이지 -->
 <!-- 영화 메뉴를 표시하는 부분은 DB에서 가져와서 div-i-movie-content 안에있는 ul 태그 안에 동적으로 집어넣어야한다. -->
 <!-- 극장 메뉴를 표시하는 부분은 DB에서 가져와서 div-i-cinema-content 안에있는 ul 태그 안에 동적으로 집어넣을것 -->
@@ -185,7 +186,12 @@
             font-style: normal;
         }
 
-        .container{width:1000px; max-width:none!important;}
+        /* 본문 컨테이너 영역 */
+        #div-i-main {
+            width:1000px;
+            max-width:none!important;
+            margin: 100px auto;
+        }
 
         /* ul 태그 전체에 마진 적용 */
         #div-i-body ul {
@@ -216,6 +222,10 @@
             height: 600px;
             background-color: #f2f0e5;
             overflow: auto;
+        }
+
+        #div-i-time-content {
+            margin-right: 1px;
         }
 
         /* 내용부분 박스에서 컨텐츠 요소에 마우스 올렸을때 포인터 변경 */
@@ -324,9 +334,12 @@
             display: none;
         }
     </style>
+
+    <th:block th:replace="fragments/config :: configFragment"></th:block>
 </head>
 <body>
-    <div class="container">
+    <header th:replace="fragments/header :: headerFragment"></header>
+    <div id="div-i-main" class="container">
         <div class="row">
             <div class="col-xl-12 d-flex justify-content-between">
                 <div class="div-c-movie-header">
@@ -453,6 +466,7 @@
             </form>
         </div>
     </div>
-    <div th:replace="modalErrorPage :: modal-error('선택하지않은 값이 존재합니다!')"></div>
+    <footer th:replace="fragments/footer.html :: footerFragment"></footer>
+    <div th:replace="fragments/modal_error :: modalError('선택하지않은 값이 존재합니다!')"></div>
 </body>
 </html>

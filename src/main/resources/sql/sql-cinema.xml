@@ -25,4 +25,26 @@
         SELECT count(*) FROM members
         WHERE id = ${id} AND pwd = ${pwd}
     </select>
+
+    <select id="isUserId" parameterType="String" resultType="int">
+        SELECT COUNT(*) FROM members WHERE id = #{targetId}
+    </select>
+
+    <select id="login" parameterType="String" resultType="com.esc.springcinema.dto.MemberDto">
+        SELECT id, name FROM members WHERE id = #{targetId} AND pwd = #{pwd}
+    </select>
+
+    <insert id="createMember" parameterType="com.esc.springcinema.dto.MemberDto">
+        INSERT INTO members(id, pwd, name, birth, gender, email, tel, join_date)
+        VALUES(#{id}, #{pwd}, #{name}, #{birth}, #{gender}, #{email}, #{tel},
+               NOW())
+    </insert>
+
+    <select id="selectNowplayingMoviesList" resultType="com.esc.springcinema.dto.MoviesDto">
+        <![CDATA[
+            SELECT title, SUBSTRING_INDEX(posters, '|', 1) AS posters
+            FROM movies
+            WHERE repRlsDate <= NOW()
+        ]]>
+    </select>
 </mapper>
