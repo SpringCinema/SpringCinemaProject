@@ -3,7 +3,7 @@
 <!-- 메인 페이지 -->
 
 <!doctype html>
-<html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
@@ -15,7 +15,6 @@
 
     <th:block th:replace="fragments/config :: configFragment"></th:block>
 
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js" type="text/javascript"></script>
     <script src="https://code.jquery.com/jquery-migrate-3.4.0.min.js"></script>
 
     <script src="/slick/slick.js?v2022" type="text/javascript" charset="utf-8"></script>
@@ -217,6 +216,44 @@
             font-weight: bold;
         }
 
+        .div-c-youtube {
+            /*background-color: black;*/
+            background: #000000;  /* fallback for old browsers */
+            background: -webkit-linear-gradient(to left, #434343, #000000);  /* Chrome 10-25, Safari 5.1-6 */
+            background: linear-gradient(to left, #434343, #000000); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+
+        }
+        /*.faded {*/
+        /*    !*padding: 30px;*!*/
+        /*    !*width: 616px;*!*/
+        /*    !*height: 300px;*!*/
+        /*    overflow: hidden;*/
+        /*    position: relative;*/
+        /*}*/
+        /*.faded:after {*/
+        /*    content: '';*/
+        /*    position: absolute;*/
+        /*    display: block;*/
+        /*    width: 70%;*/
+        /*    height: 100%;*/
+        /*    top: 0;*/
+        /*    background: linear-gradient(to left, black, black 10%, transparent);*/
+        /*    background-repeat: no-repeat;*/
+        /*    transition: all 500ms ease;*/
+        /*}*/
+        /*.faded:hover:after {*/
+        /*    background-position: 0 200px;*/
+        /*}*/
+
+        .img-c-trailer {
+            margin-left: 616px;
+        }
+
+        /*.faded {*/
+        /*    background-color: #ffffff;*/
+        /*    background-color: rgba( 255, 255, 255, 0.5 );*/
+        /*}*/
+
     </style>
 
 
@@ -227,155 +264,31 @@
 <body>
 <div class="container">
     <div class="div-c-youtube">
-        <iframe width="100%" height="400" src="https://www.youtube.com/embed/kihrFxwdMb4?autoplay=1&mute=1&rel=0&showsearch=0&control=0&version=3&vq=hd1080"
-                title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen>
-        </iframe>
-    </div>
-
-
-    <div><script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2783044520727903"
-                 crossorigin="anonymous"></script>
-        <!-- jQuery_Replace_Demo -->
-<!--        <ins class="adsbygoogle"-->
-<!--             style="display:block"-->
-<!--             data-ad-client="ca-pub-2783044520727903"-->
-<!--             data-ad-slot="7325992188"-->
-<!--             data-ad-format="auto"-->
-<!--             data-full-width-responsive="true"></ins>-->
+        <a href="#" onclick="location.href='#'">
+            <div class="faded">
+                <img src="https://img.youtube.com/vi/UOfRrh9mPiE/mqdefault.jpg" alt="유튜브 동영상 이미지입니다." class="img-c-trailer">
+            </div>
+<!--            <img src="https://img.youtube.com/vi/UOfRrh9mPiE/mqdefault.jpg" alt="유튜브 동영상 이미지입니다.">-->
+<!--            <h5 class="mt-2"><%=title%></h5>-->
+        </a>
+<!--        <iframe width="100%" height="400" src="https://www.youtube.com/embed/kihrFxwdMb4?autoplay=1&mute=1&rel=0&showsearch=0&control=0&version=3&vq=hd1080"-->
+<!--                title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen>-->
+<!--        </iframe>-->
     </div>
 
     <section class="regular slider">
-        <div class="item">
+        <div class="item" th:if="${#lists.size(nowplayingList) > 0}" th:each="list : ${nowplayingList}">
             <div class="">
                 <li class="box flex" id="li-i-poster">
                     <div class="container2">
                         <div class="overlay">
-                            <img src="http://file.koreafilm.or.kr/thm/02/00/01/46/tn_DPK004440.JPG" alt=""/>
+                            <img th:src="${list.posters}" alt="영화포스터" th:if="${list.posters != null}"/>
                         </div>
-                        <div class="button-detail"><a href="#" id="btn-i-detail"> 상세보기 </a></div>
-                        <div class="button-book"><a href="#" id="btn-i-book"> 예매하기 </a></div>
+                        <div class="button-detail"><a href="#" id="btn-i-detail" class="rounded"> 상세보기 </a></div>
+                        <div class="button-book"><a href="#" id="btn-i-book" class="rounded"> 예매하기 </a></div>
                     </div>
-                    <div class="text-center mx-auto">
-                        <span class="title">영화 제목</span>
-                    </div>
-                </li>
-            </div>
-        </div>
-
-        <div class="item">
-            <div class="">
-                <li class="box flex">
-                    <div class="container2">
-                        <div class="overlay">
-                            <img src="http://file.koreafilm.or.kr/thm/02/00/01/46/tn_DPK004440.JPG" alt=""/>
-                        </div>
-                        <div class="button-detail"><a href="#" > 상세보기 </a></div>
-                        <div class="button-book"><a href="#" > 예매하기 </a></div>
-                    </div>
-                    <div class="text-center mx-auto">
-                        <span class="title">영화 제목</span>
-                    </div>
-                </li>
-            </div>
-        </div>
-
-        <div class="item">
-            <div class="">
-                <li class="box flex">
-                    <div class="container2">
-                        <div class="overlay">
-                            <img src="http://file.koreafilm.or.kr/thm/02/00/01/46/tn_DPK004440.JPG" alt=""/>
-                        </div>
-                        <div class="button-detail"><a href="#" > 상세보기 </a></div>
-                        <div class="button-book"><a href="#" > 예매하기 </a></div>
-                    </div>
-                    <div class="text-center mx-auto">
-                        <span class="title">영화 제목</span>
-                    </div>
-                </li>
-            </div>
-        </div>
-
-        <div class="item">
-            <div class="">
-                <li class="box flex">
-                    <div class="container2">
-                        <div class="overlay">
-                            <img src="http://file.koreafilm.or.kr/thm/02/00/01/46/tn_DPK004440.JPG" alt=""/>
-                        </div>
-                        <div class="button-detail"><a href="#" > 상세보기 </a></div>
-                        <div class="button-book"><a href="#" > 예매하기 </a></div>
-                    </div>
-                    <div class="text-center mx-auto">
-                        <span class="title">영화 제목</span>
-                    </div>
-                </li>
-            </div>
-        </div>
-
-        <div class="item">
-            <div class="">
-                <li class="box flex">
-                    <div class="container2">
-                        <div class="overlay">
-                            <img src="http://file.koreafilm.or.kr/thm/02/00/01/46/tn_DPK004440.JPG" alt=""/>
-                        </div>
-                        <div class="button-detail"><a href="#" > 상세보기 </a></div>
-                        <div class="button-book"><a href="#" > 예매하기 </a></div>
-                    </div>
-                    <div class="text-center mx-auto">
-                        <span class="title">영화 제목</span>
-                    </div>
-                </li>
-            </div>
-        </div>
-
-        <div class="item">
-            <div class="">
-                <li class="box flex">
-                    <div class="container2">
-                        <div class="overlay">
-                            <img src="http://file.koreafilm.or.kr/thm/02/00/01/46/tn_DPK004440.JPG" alt=""/>
-                        </div>
-                        <div class="button-detail"><a href="#" > 상세보기 </a></div>
-                        <div class="button-book"><a href="#" > 예매하기 </a></div>
-                    </div>
-                    <div class="text-center mx-auto">
-                        <span class="title">영화 제목</span>
-                    </div>
-                </li>
-            </div>
-        </div>
-
-        <div class="item">
-            <div class="">
-                <li class="box flex">
-                    <div class="container2">
-                        <div class="overlay">
-                            <img src="http://file.koreafilm.or.kr/thm/02/00/01/46/tn_DPK004440.JPG" alt=""/>
-                        </div>
-                        <div class="button-detail"><a href="#" > 상세보기 </a></div>
-                        <div class="button-book"><a href="#" > 예매하기 </a></div>
-                    </div>
-                    <div class="text-center mx-auto">
-                        <span class="title">영화 제목</span>
-                    </div>
-                </li>
-            </div>
-        </div>
-
-        <div class="item">
-            <div class="">
-                <li class="box flex">
-                    <div class="container2">
-                        <div class="overlay">
-                            <img src="http://file.koreafilm.or.kr/thm/02/00/01/46/tn_DPK004440.JPG" alt=""/>
-                        </div>
-                        <div class="button-detail"><a href="#" > 상세보기 </a></div>
-                        <div class="button-book"><a href="#" > 예매하기 </a></div>
-                    </div>
-                    <div class="text-center mx-auto">
-                        <span class="title">영화 제목</span>
+                    <div class="text-center mx-auto mt-2">
+                        <span class="title" th:text="${list.title}"></span>
                     </div>
                 </li>
             </div>
