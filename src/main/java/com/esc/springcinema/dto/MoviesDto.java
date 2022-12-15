@@ -8,6 +8,7 @@ import java.util.List;
 public class MoviesDto {
     private String docid;
     private String title;
+    private String titleEng;
     private String nation;
     private String company;
     private int runtime;
@@ -16,7 +17,7 @@ public class MoviesDto {
     private String repRlsDate;
     private String keywords;
     private String posters;
-    private String stills;
+    private String stlls;
     private String awards1;
     private String plotText;
 

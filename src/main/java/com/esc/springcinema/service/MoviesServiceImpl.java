@@ -27,4 +27,12 @@ public class MoviesServiceImpl implements MoviesService {
     public List<MoviesDto> selectNowplayingMoviesList() throws Exception {
         return cinemaMapper.selectNowplayingMoviesList();
     }
+
+    // 영화 상세보기
+    // 최종 수정 : 2022-12-15
+    // 마지막 작성자 : eblyncho
+    @Override
+    public MoviesDto selectMovieDetail(String docid) throws Exception {
+        return cinemaMapper.selectMovieDetail(docid);
+    }
 }

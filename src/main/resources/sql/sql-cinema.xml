@@ -18,9 +18,17 @@
 
     <select id="selectNowplayingMoviesList" resultType="com.esc.springcinema.dto.MoviesDto">
         <![CDATA[
-            SELECT title, SUBSTRING_INDEX(posters, '|', 1) AS posters
+            SELECT docid, title, SUBSTRING_INDEX(posters, '|', 1) AS posters
             FROM movies
             WHERE repRlsDate <= NOW()
+        ]]>
+    </select>
+
+    <select id="selectMovieDetail" parameterType="String" resultType="com.esc.springcinema.dto.MoviesDto">
+        <![CDATA[
+        SELECT docid, title, titleEng, SUBSTRING_INDEX(posters, '|', 1) AS posters, nation, runtime, rating, genre, repRlsDate, keywords, awards1, plotText, REPLACE(stlls, '|', ',') AS stlls
+        FROM movies
+        WHERE docid = #{docid}
         ]]>
     </select>
 </mapper>

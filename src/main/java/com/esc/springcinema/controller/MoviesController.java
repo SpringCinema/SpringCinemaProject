@@ -5,6 +5,7 @@ import com.esc.springcinema.service.MoviesService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
@@ -55,5 +56,18 @@ public class MoviesController {
     @RequestMapping("/upcoming")
     public String viewUpcoming() throws Exception {
         return "upcoming";
+    }
+
+    // 영화_상세 페이지
+    // 최종 수정 : 2022-12-15
+    // 마지막 작성자 : eblyncho
+    @RequestMapping("/movieDetail")
+    public ModelAndView openMovieDetail(@RequestParam String docid) throws Exception {
+        ModelAndView mv = new ModelAndView("movieDetail");
+
+        MoviesDto movies = moviesService.selectMovieDetail(docid);
+        mv.addObject("movies", movies);
+
+        return mv;
     }
 }

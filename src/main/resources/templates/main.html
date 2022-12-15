@@ -264,7 +264,7 @@
 <body>
 <div class="container">
     <div class="div-c-youtube">
-        <a href="#" onclick="location.href='#'">
+        <a href="#">
             <div class="faded">
                 <img src="https://img.youtube.com/vi/UOfRrh9mPiE/mqdefault.jpg" alt="유튜브 동영상 이미지입니다." class="img-c-trailer">
             </div>
@@ -282,9 +282,9 @@
                 <li class="box flex" id="li-i-poster">
                     <div class="container2">
                         <div class="overlay">
-                            <img th:src="${list.posters}" alt="영화포스터" th:if="${list.posters != null}"/>
+                            <img th:src="${list.posters}" alt="영화포스터" th:if="${list.posters != null}" class="rounded"/>
                         </div>
-                        <div class="button-detail"><a href="#" id="btn-i-detail" class="rounded"> 상세보기 </a></div>
+                        <div class="button-detail"><a href="/movieDetail?docid=" th:attrappend="href=${list.docid}" id="btn-i-detail" class="rounded"> 상세보기 </a></div>
                         <div class="button-book"><a href="#" id="btn-i-book" class="rounded"> 예매하기 </a></div>
                     </div>
                     <div class="text-center mx-auto mt-2">

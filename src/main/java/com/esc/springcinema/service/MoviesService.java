@@ -15,4 +15,9 @@ public interface MoviesService {
     // 최종 수정 : 2022-12-15
     // 마지막 작성자 : eblyncho
     List<MoviesDto> selectNowplayingMoviesList() throws Exception;
+
+    // 영화 상세보기
+    // 최종 수정 : 2022-12-15
+    // 마지막 작성자 : eblyncho
+    MoviesDto selectMovieDetail(String docid) throws Exception;
 }
