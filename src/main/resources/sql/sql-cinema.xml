@@ -15,4 +15,10 @@
         VALUES(#{id}, #{pwd}, #{name}, #{birth}, #{gender}, #{email}, #{tel},
                NOW())
     </insert>
+
+    <insert id="insertMovieDatas" parameterType="com.esc.springcinema.dto.apiMovieDto.MovieDto">
+        INSERT INTO movies(docid, title, nation, company, runtime, rating, genre, repRlsDate, keywords, posters, stills, awards1, plotText)
+        VALUES(#{docid}, #{title}, #{nation}, #{company}, #{runtime}, #{rating}, #{genre}, #{repRlsDate}, #{keywords},
+               #{posters}, #{stills}, #{awards1}, #{plotText})
+    </insert>
 </mapper>
