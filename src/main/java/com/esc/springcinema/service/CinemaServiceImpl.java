@@ -26,7 +26,9 @@ public class CinemaServiceImpl implements CinemaService{
     }
 
     @Override
-    public int checkPwd(String pwd) throws Exception {
-        return cinemaMapper.checkPwd(pwd);
+    public int checkPwd(String id, String pwd) throws Exception {
+        return cinemaMapper.checkPwd(id, pwd);
     }
+
+
 }

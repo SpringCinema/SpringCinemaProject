@@ -11,5 +11,5 @@ public interface CinemaService {
 
     void deleteAccount(MemberDto delete) throws Exception;
 
-    int checkPwd(String pwd) throws Exception;
+    int checkPwd(String id, String pwd) throws Exception;
 }

@@ -9,19 +9,21 @@
 
     <script>
         $(document).ready(function () {
-            console.log($("#form-i-frm")[0])
+            console.log($("#form-i-update")[0])
             $("#button-i-back").on("click", function () {
                 history.back();
             });
 
             $('#button-i-ok').on('click', function() {
                 $("#input-i-method").val("PUT");
-                const frm = $("#form-i-frm")[0];
+                const frm = $("#form-i-update")[0];
                 frm.action = "/mypage/update/" + $("#input-i-id").val();
                 frm.submit();
             });
         });
     </script>
+
+    <th:block th:replace="fragments/config :: configFragment"></th:block>
 
     <style>
         header {
@@ -38,7 +40,6 @@
             background-color: #FF4500;
         }
     </style>
-    <th:block th:replace="fragments/config :: configFragment"></th:block>
 </head>
 <body><!-- 헤더부분 -->
 <header th:replace="fragments/header :: headerFragment"></header>
@@ -46,7 +47,7 @@
 <!-- 메인부분 -->
 <main class="container mt-2">
 <!-- action태그 추후 수정 -->
-    <form id="form-i-frm" method="post" class="col-sm-7 mx-auto">
+    <form id="form-i-update" method="post" class="col-sm-7 mx-auto">
         <div class="rounded-4 d-flex" style="border: #FF4500 3px solid">
             <div class="col-2 ms-s my-2 text-end">
                 <img src="/img/profile.png" width="150px" height="150px">

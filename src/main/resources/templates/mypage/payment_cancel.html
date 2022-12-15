@@ -24,6 +24,8 @@
         });
     </script>
 
+    <th:block th:replace="fragments/config :: configFragment"></th:block>
+
     <style>
         header {
             width: 1920px;
@@ -39,7 +41,6 @@
             border: #FF4500 solid 3px;
         }
     </style>
-    <th:block th:replace="fragments/config :: configFragment"></th:block>
 </head>
 <body>
 <!-- 헤더 부분 -->
@@ -66,7 +67,6 @@
                 <button type="reset" class="btn btn-secondary me-3" id="button-i-back">뒤로</button>
             </div>
         </div>
-
     </form>
 </main>
 

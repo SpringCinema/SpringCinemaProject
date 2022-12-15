@@ -1,7 +1,6 @@
 package com.esc.springcinema.controller;
 
 import com.esc.springcinema.dto.MemberDto;
-import com.esc.springcinema.mapper.CinemaMapper;
 import com.esc.springcinema.service.CinemaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -20,6 +19,8 @@ public class MypageController {
 
 //    DB 적용
 //    마이 페이지
+//    2022-12-15 양민호
+//    임시적으로 id를 직접 입력한 마이페이지로 이동하게 설계. 추후 sesssion 값 받아오기
     @RequestMapping(value = "/mypage/{id}", method = RequestMethod.GET)
     public ModelAndView openMyPage(@PathVariable("id") String id) throws Exception {
         ModelAndView mv = new ModelAndView("mypage/mypage");
@@ -31,8 +32,8 @@ public class MypageController {
 
 //    (DB 적용)
 //    내 정보 수정 (뷰)
-    @RequestMapping(value = "/mypage/edit/{id}", method = RequestMethod.GET)
-    public ModelAndView updateProfile(@PathVariable("id") String id) throws Exception {
+    @RequestMapping(value = "/mypage/update", method = RequestMethod.POST)
+    public ModelAndView updateProfile(@RequestParam("id") String id) throws Exception {
         ModelAndView mv = new ModelAndView("mypage/profile_update");
         MemberDto myInfo = cinemaService.selectMyInfo(id);
         mv.addObject("myInfo", myInfo);
@@ -41,8 +42,8 @@ public class MypageController {
 
 
 //    (DB 적용)
+//    2022-12-15 양민호
 //    내 정보 수정 (수정 기능)
-//    추후 redirect mypage로
     @RequestMapping(value = "/mypage/update/{id}", method = RequestMethod.PUT)
     public String updateMyInfo(MemberDto update) throws Exception{
         cinemaService.updateMyInfo(update);
@@ -52,16 +53,25 @@ public class MypageController {
 
 //    (DB 적용)
 //    회원 탈퇴 (뷰)
-    @RequestMapping(value = "/mypage/delete/{id}", method = RequestMethod.GET)
-    public ModelAndView deleteProfile(@PathVariable("id") String id) throws Exception {
+    @RequestMapping(value = "/mypage/delete", method = RequestMethod.POST)
+    public ModelAndView deleteProfile(@RequestParam("id") String id) throws Exception {
         ModelAndView mv = new ModelAndView("mypage/profile_delete");
         MemberDto myInfo = cinemaService.selectMyInfo(id);
         mv.addObject("myInfo", myInfo);
         return mv;
     }
 
+//    2022-12-15 양민호
+//    (ajax + DB 적용) 탈퇴 페이지 비밀번호 확인 기능.
+    @ResponseBody
+    @RequestMapping(value = "/mypage/delete/checkPwd", method = RequestMethod.POST)
+    public Object ajaxCalResult(@RequestParam("myid") String myid, @RequestParam("inputpwd") String inputpwd) throws Exception {
+        int chkPwd = cinemaService.checkPwd(myid, inputpwd);
+        return chkPwd;
+    }
 //    (DB 적용)
-//    회원 탈퇴 (기능)
+//    2022-12-15 양민호
+//    회원 탈퇴 (기능) 추후 경로 mypage로 변경 필요
     @RequestMapping(value = "/mypage/out/{id}", method = RequestMethod.DELETE)
     public String deleteAccount(MemberDto delete) throws Exception{
         cinemaService.deleteAccount(delete);
