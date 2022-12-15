@@ -6,8 +6,8 @@
         SELECT COUNT(*) FROM members WHERE id = #{targetId}
     </select>
 
-    <select id="login" parameterType="String" resultType="int">
-        SELECT COUNT(*) FROM members WHERE id = #{targetId} AND pwd = #{pwd}
+    <select id="login" parameterType="String" resultType="com.esc.springcinema.dto.MemberDto">
+        SELECT id, name FROM members WHERE id = #{targetId} AND pwd = #{pwd}
     </select>
 
     <insert id="createMember" parameterType="com.esc.springcinema.dto.MemberDto">

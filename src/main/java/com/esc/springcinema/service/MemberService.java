@@ -14,10 +14,10 @@ public interface MemberService {
     // 로그인
     // 최종 수정 : 2022-12-14
     // 마지막 작성자 : MoonNight285
-    public boolean login(String targetId, String pwd) throws Exception;
+    public MemberDto login(String targetId, String pwd) throws Exception;
     
     // 신규 유저 생성
     // 최종 수정 : 2022-12-14
     // 마지막 작성자 : MoonNight285
     public boolean createMember(MemberDto member) throws Exception;
- }
+}

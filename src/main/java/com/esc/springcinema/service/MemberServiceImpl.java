@@ -20,12 +20,17 @@ public class MemberServiceImpl implements MemberService {
         return cinemaMapper.isUserId(targetId) == 1 ? true : false;
     }
     
-    // 로그인시 일치하는 유저의 아이디의 개수가 1이면 성공 아니면 실패
+    // 로그인시 전달받은 아이디를 검증해서 로그인 여부를 결정
     // 최종 수정 : 2022-12-14
     // 마지막 작성자 : MoonNight285
     @Override
-    public boolean login(String targetId, String pwd) throws Exception {
-        return cinemaMapper.login(targetId, pwd) == 1 ? true : false;
+    public MemberDto login(String targetId, String pwd) throws Exception {
+        MemberDto member = cinemaMapper.login(targetId, pwd);
+        if (member == null) {
+            return null;
+        } else {
+            return member;
+        }
     }
     
     // 회원가입 처리
