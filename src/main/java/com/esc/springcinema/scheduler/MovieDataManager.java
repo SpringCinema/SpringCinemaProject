@@ -26,7 +26,7 @@ public class MovieDataManager {
     
     @RequestMapping("/test")
     private String getMovieDatas() throws Exception {
-        movieService.insertMovieInfo();
+        movieService.init();
         return "";
     }
 }
