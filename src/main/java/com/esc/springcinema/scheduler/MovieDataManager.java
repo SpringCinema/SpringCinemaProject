@@ -7,6 +7,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -28,9 +29,9 @@ public class MovieDataManager {
     }
 
     // 테스트용도
-    // 작성일 : 2022-12-15
+    // 작성일 : 2022-12-16
     // 작성자 : MoonNight285
-    @RequestMapping("/test")
+    @RequestMapping(value = "movieInfo", method = RequestMethod.GET)
     private String getMovieDatas() throws Exception {
         movieService.init();
         return "";
