@@ -12,6 +12,8 @@
             // 페이지 좌측 메뉴 클릭 시 우측 페이지 변경
             $('#ul-i-ul li').click(function () {
                 $('#ul-i-ul li').removeClass();
+                $(this).addClass("li-c-on")
+                $(this).addClass("text-light")
                 let num1 = $(this).attr('id').slice(-1);
                 for (let i = 1; i <= 5; i ++) {
                     let num2 = $(`#div-i-${i}`).attr('id').slice(-1);
@@ -66,8 +68,10 @@
             max-width: none !important;
         }
 
-        .container {
+        main.container {
             width: 1300px;
+            margin-top: 30px;
+            margin-bottom: 310px;
             max-width: none !important;
         }
 
@@ -91,7 +95,7 @@
 <header th:include="fragments/header :: headerFragment"></header>
 
 <!--메인부분-->
-<main class="container mt-2">
+<main class="container">
     <div class="d-flex">
         <!--    메인 좌측 메뉴선택 페이지-->
         <div class="w-25 border-end border-end-2">
