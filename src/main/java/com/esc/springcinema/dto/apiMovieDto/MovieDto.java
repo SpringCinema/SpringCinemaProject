@@ -2,6 +2,8 @@ package com.esc.springcinema.dto.apiMovieDto;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 @XmlRootElement(name = "Row")
 public class MovieDto {
@@ -53,7 +55,10 @@ public class MovieDto {
     public String getTitle() {
         return title;
     }
-    
+
+    // 제목에 태그가 붙어서 들어오는 경우가 있어서 제거후 저장
+    // 작성일 : 2022-12-15
+    // 작성자 : MoonNigth285
     public void setTitle(String title) {
         if (title != null) {
             title = title.trim();
@@ -122,14 +127,19 @@ public class MovieDto {
     public String getRepRlsDate() {
         return repRlsDate;
     }
-    
-    public void setRepRlsDate(String repRlsDate) {
+
+    // API가 날짜형식을 20221215 형태로 주기때문에 하이픈을 붙여서 DB에 저장
+    // 그리고 DB에서 꺼낼때 하이픈이 붙여있는 상태로 저장될수있기때문에 relaceAll을 통해 제거후 다시 붙임
+    // 수정일 : 2022-12-15
+    // 작성자 : MoonNigth285
+    public void setRepRlsDate(String repRlsDate) throws Exception {
         if (repRlsDate != null) {
             repRlsDate = repRlsDate.trim();
-            String year = repRlsDate.substring(0, 4);
-            String month = repRlsDate.substring(4, 6);
-            String day = repRlsDate.substring(6);
-            this.repRlsDate = year + "-" + month + "-" + day;
+            repRlsDate = repRlsDate.replaceAll("-","");
+            SimpleDateFormat dtFormat = new SimpleDateFormat("yyyyMMdd");
+            SimpleDateFormat newDtFormat = new SimpleDateFormat("yyyy-MM-dd");
+            Date formatDate = dtFormat.parse(repRlsDate);
+            this.repRlsDate = newDtFormat.format(formatDate);
         }
     }
     
