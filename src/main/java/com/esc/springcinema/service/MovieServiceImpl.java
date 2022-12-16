@@ -1,8 +1,6 @@
 package com.esc.springcinema.service;
 
-import com.esc.springcinema.dto.apiMovieDto.MovieDto;
-import com.esc.springcinema.dto.apiMovieDto.PlotDto;
-import com.esc.springcinema.dto.apiMovieDto.SearchDto;
+import com.esc.springcinema.dto.apiMovieDto.*;
 import com.esc.springcinema.mapper.CinemaMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -119,5 +117,15 @@ public class MovieServiceImpl implements MovieService {
     @Override
     public PlotDto selectPlotText(String docid) throws Exception {
         return cinemaMapper.selectPlotText(docid);
+    }
+
+    @Override
+    public DirectorDto selectDirector(String docid) throws Exception {
+        return cinemaMapper.selectDirector(docid);
+    }
+
+    @Override
+    public List<ActorDto> selectActor(String docid) throws Exception {
+        return cinemaMapper.selectActor(docid);
     }
 }

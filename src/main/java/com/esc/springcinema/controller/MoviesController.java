@@ -1,5 +1,7 @@
 package com.esc.springcinema.controller;
 
+import com.esc.springcinema.dto.apiMovieDto.ActorDto;
+import com.esc.springcinema.dto.apiMovieDto.DirectorDto;
 import com.esc.springcinema.dto.apiMovieDto.MovieDto;
 import com.esc.springcinema.dto.apiMovieDto.PlotDto;
 import com.esc.springcinema.service.MovieService;
@@ -71,6 +73,12 @@ public class MoviesController {
 
         PlotDto plotText = movieService.selectPlotText(docid);
         mv.addObject("plotText", plotText);
+
+        DirectorDto director = movieService.selectDirector(docid);
+        mv.addObject("director", director);
+
+        List<ActorDto> actorList = movieService.selectActor(docid);
+        mv.addObject("actorList", actorList);
 
         return mv;
     }

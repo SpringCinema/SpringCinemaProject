@@ -111,9 +111,12 @@
                 <span class="me-5">예매율 00.0%</span>
                 <span>전문가 평점 0.0</span><br><br>
                 <span>감독 : </span>
-                <span>감독이름</span>
+                <span th:text="${director.directorNm}">감독이름</span>
                 <span> | 배우 : </span>
-                <span>주연 배우 이름</span><br>
+                <span th:if="${#lists.size(actorList) > 0}" th:each="list : ${actorList}">
+                    <span th:text="${list.actorNm}">주연 배우 이름</span>
+                </span>
+                <br>
                 <span>장르 : </span>
                 <span th:text="${movies.genre}">영화 장르</span>
                 <span th:text="' | ' + ${movies.rating}"></span>

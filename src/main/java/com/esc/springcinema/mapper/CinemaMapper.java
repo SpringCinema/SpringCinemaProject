@@ -1,6 +1,8 @@
 package com.esc.springcinema.mapper;
 
 import com.esc.springcinema.dto.MemberDto;
+import com.esc.springcinema.dto.apiMovieDto.ActorDto;
+import com.esc.springcinema.dto.apiMovieDto.DirectorDto;
 import com.esc.springcinema.dto.apiMovieDto.MovieDto;
 import com.esc.springcinema.dto.apiMovieDto.PlotDto;
 import org.apache.ibatis.annotations.Mapper;
@@ -35,12 +37,13 @@ public interface CinemaMapper {
     // 마지막 작성자 : eblyncho
     List<MovieDto> selectNowplayingMoviesList() throws Exception;
 
-    // 영화 상세보기
-    // 최종 수정 : 2022-12-15
+    // 영화 상세페이지_영화 정보 리턴
+    // 최종 수정 : 2022-12-16
     // 마지막 작성자 : eblyncho
     MovieDto selectMovieDetail(String docid) throws Exception;
-
     PlotDto selectPlotText(String docid) throws Exception;
+    DirectorDto selectDirector(String docid) throws Exception;
+    List<ActorDto> selectActor(String docid) throws Exception;
 
     // API를 통해 가져온 영화 데이터를 저장
     // 최종 수정 : 2022-12-16
@@ -61,4 +64,5 @@ public interface CinemaMapper {
     // 최종 수정 : 2022-12-15
     // 마지막 작성자 : MoonNight285
     int selectMovieDocid(String docid) throws Exception;
+
 }
