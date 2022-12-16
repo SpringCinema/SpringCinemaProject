@@ -2,6 +2,7 @@ package com.esc.springcinema.controller;
 
 import com.esc.springcinema.dto.BooksDto;
 import com.esc.springcinema.dto.MemberDto;
+import com.esc.springcinema.dto.PaymentsDto;
 import com.esc.springcinema.dto.ScreenHallDto;
 import com.esc.springcinema.service.CinemaService;
 import com.esc.springcinema.service.MypageService;
@@ -25,14 +26,15 @@ public class MypageController {
     private MypageService mypageService;
     
 //    DB 적용
-//    마이 페이지(예매한 내역을 불러오는기능 추가했다가 다시 제거)
+//    마이 페이지에 세션을 이용해서 접속하도록 변경(현재 사용하는 세션방식은 불완전함)
 //    2022-12-16 MoonNight285
-//    임시적으로 id를 직접 입력한 마이페이지로 이동하게 설계. 추후 sesssion 값 받아오기
-    @RequestMapping(value = "/mypage/{id}", method = RequestMethod.GET)
-    public ModelAndView openMyPage(@PathVariable("id") String id) throws Exception {
+    @RequestMapping(value = "/mypage", method = RequestMethod.GET)
+    public ModelAndView openMyPage(HttpServletRequest request) throws Exception {
+        request.setCharacterEncoding("UTF-8");
+        HttpSession session = request.getSession();
+        String loggedInUserId = ((MemberDto)session.getAttribute("loggedInUserInfo")).getId();
         ModelAndView mv = new ModelAndView("mypage/mypage");
-
-        MemberDto myInfo = cinemaService.selectMyInfo(id);
+        MemberDto myInfo = mypageService.selectMyInfo(loggedInUserId);
         mv.addObject("myInfo", myInfo);
         
         return mv;
@@ -89,12 +91,60 @@ public class MypageController {
         return view;
     }
 
+    // 마이페이지에서 내가 결제한 내역을 보여주는 기능
+    // 최종 수정일 : 2022-12-16
+    // 마지막 작성자 : MoonNight285
+    @RequestMapping(value = "/mypage/payment", method = RequestMethod.GET)
+    public ModelAndView getPaymentList(HttpServletRequest request) throws Exception {
+        request.setCharacterEncoding("UTF-8");
+        HttpSession session = request.getSession();
+        String loggedInUserId = ((MemberDto)session.getAttribute("loggedInUserInfo")).getId();
+        PaymentsDto payment = mypageService.selectMyPayment(loggedInUserId);
+        ModelAndView view = new ModelAndView("/mypage/mypage_payment");
+        view.addObject("payment", payment);
+        view.addObject("paymentTitle", "결제내역");
+
+        return view;
+    }
+
+    // 마이페이지에서 내가 작성한 댓글목록을 표시
+    // 미완성, DB에서 가져오는 기능은 추가되지않음
+    // 최종 수정일 : 2022-12-16
+    // 마지막 작성자 : MoonNight285
+    @RequestMapping(value = "/mypage/comment", method = RequestMethod.GET)
+    public ModelAndView getCommentList(HttpServletRequest request) throws Exception {
+        request.setCharacterEncoding("UTF-8");
+        HttpSession session = request.getSession();
+        String loggedInUserId = ((MemberDto)session.getAttribute("loggedInUserInfo")).getId();
+        // DB에서 가져오는 댓글목록 가져오는기능 추후 추가바람..
+        ModelAndView view = new ModelAndView("/mypage/mypage_comment");
+        view.addObject("commentTitle", "댓글내역");
+
+        return view;
+    }
+
+    // 마이페이지에서 내가 작성한 문의내역을 표시
+    // 미완성, DB에서 가져오는 기능은 추가되지않음
+    // 최종 수정일 : 2022-12-16
+    // 마지막 작성자 : MoonNight285
+    @RequestMapping(value = "/mypage/question", method = RequestMethod.GET)
+    public ModelAndView getQuestion(HttpServletRequest request) throws Exception {
+        request.setCharacterEncoding("UTF-8");
+        HttpSession session = request.getSession();
+        String loggedInUserId = ((MemberDto)session.getAttribute("loggedInUserInfo")).getId();
+        // DB에서 가져오는 문의목록 추후 추가바람..
+        ModelAndView view = new ModelAndView("/mypage/mypage_question");
+        view.addObject("questionTitle", "문의내역");
+
+        return view;
+    }
+
 //    (DB 적용)
 //    내 정보 수정 (뷰)
     @RequestMapping(value = "/mypage/update", method = RequestMethod.POST)
     public ModelAndView updateProfile(@RequestParam("id") String id) throws Exception {
         ModelAndView mv = new ModelAndView("mypage/profile_update");
-        MemberDto myInfo = cinemaService.selectMyInfo(id);
+        MemberDto myInfo = mypageService.selectMyInfo(id);
         mv.addObject("myInfo", myInfo);
         return mv;
     }
@@ -115,7 +165,7 @@ public class MypageController {
     @RequestMapping(value = "/mypage/delete", method = RequestMethod.POST)
     public ModelAndView deleteProfile(@RequestParam("id") String id) throws Exception {
         ModelAndView mv = new ModelAndView("mypage/profile_delete");
-        MemberDto myInfo = cinemaService.selectMyInfo(id);
+        MemberDto myInfo = mypageService.selectMyInfo(id);
         mv.addObject("myInfo", myInfo);
         return mv;
     }

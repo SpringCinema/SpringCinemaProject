@@ -23,37 +23,56 @@
         });
     </script>
     <style>
+        /* 본문 컨테이너 영역 */
+        #div-i-iframe-main {
+            width:1500px;
+            max-width:none!important;
+            margin: 0px;
+        }
+
+        #p-i-iframe-title {
+            font-family: "KOHINanumOTFL";
+            font-weight: bold;
+        }
+
         #div-i-profile {
             padding: 15px;
+        }
+
+        #div-i-profile p {
+            font-size: 20px;
+            font-family: KOHINanumOTFL;
         }
     </style>
 </head>
 <body>
-<div id="div-i-iframe-main" class="container">
-    <div class="row">
-        <div class="col-xl-12">
-            <p id="p-i-iframe-title" class="mb-2 fs-5" th:text="${profileTitle}">목록이름</p>
+    <div id="div-i-iframe-main" class="container">
+        <div class="row">
+            <div class="col-xl-12">
+                <p id="p-i-iframe-title" class="mb-2 fs-5" th:text="${profileTitle}">목록이름</p>
+            </div>
+        </div>
+        <div class="row">
+            <form id="form-i-profile" action="" method="post" class="rounded-4 row">
+                <div id="div-i-profile" class="col-xl-6 d-flex justify-content-between" style="border: #e3e3e3 2px solid">
+                    <div class="d-flex justify-content-start">
+                        <img src="/img/profile.png" width="150px" height="150px">
+                        <div class="mx-3">
+                            <p th:text="'이름 : '+ ${myInfo.name}"></p>
+                            <p th:text="'아이디 : '+ ${myInfo.id}"></p>
+                            <p th:text="'이메일 : '+ ${myInfo.email}" ></p>
+                        </div>
+                    </div>
+                    <input type="hidden" id="input-i-id" name="id" th:value="${myInfo.id}">
+                    <div>
+                        <button class="btn btn-outline-dark mb-3 mx-1" id="button-i-update">내 정보 수정</button>
+                        <button type="submit" class="btn btn-outline-danger mb-3" id="button-i-delP">회원 탈퇴</button>
+                    </div>
+                </div>
+                <!--        전송 방식 변경을 위한 숨겨진 input 태그-->
+                <input type="hidden" id="input-i-method" name="_method">
+            </form>
         </div>
     </div>
-    <div class="row">
-        <form id="form-i-profile" action="" method="post" class="rounded-4 row">
-            <div id="div-i-profile" class="col-xl-6 d-flex" style="border: #FF4500 3px solid">
-                <img src="/img/profile.png" width="150px" height="150px" class="mx-2">
-                <div>
-                    <p th:text="'이름 : '+ ${myInfo.name}"></p>
-                    <p th:text="'아이디 : '+ ${myInfo.id}"></p>
-                    <p th:text="'이메일 : '+ ${myInfo.email}" ></p>
-                </div>
-                <input type="hidden" id="input-i-id" name="id" th:value="${myInfo.id}">
-                <div class="text-end mx-2">
-                    <button class="btn text-light mb-3" id="button-i-update">내 정보 수정</button>
-                    <button type="submit" class="btn btn-outline-danger mb-3" id="button-i-delP">회원 탈퇴</button>
-                </div>
-            </div>
-            <!--        전송 방식 변경을 위한 숨겨진 input 태그-->
-            <input type="hidden" id="input-i-method" name="_method">
-        </form>
-    </div>
-</div>
 </body>
 </html>

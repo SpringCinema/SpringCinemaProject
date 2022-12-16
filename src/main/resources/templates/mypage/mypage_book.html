@@ -1,8 +1,7 @@
 <!-- 수정일 : 2022-12-16일 -->
 <!-- 마지막으로 수정한 사람 : MoonNight285 -->
-<!-- 마지막으로 작업한 내용 : 페이지 제목 타이틀을 id에서 class로 변경 -->
+<!-- 마지막으로 작업한 내용 : 타임리프 적용하여 동적으로 테이블 그리기(페이징 처리 X) -->
 <!-- 마이페이지 예약 페이지 -->
-<!-- 이 페이지는 스크립트가 적용되어있습니다. mypage.html를 확인하세요! -->
 
 <!DOCTYPE html>
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
@@ -34,6 +33,19 @@
             });
         });
     </script>
+    <style>
+        /* 본문 컨테이너 영역 */
+        #div-i-iframe-main {
+            width:1500px;
+            max-width:none!important;
+            margin: 0px;
+        }
+
+        #p-i-iframe-title {
+            font-family: "KOHINanumOTFL";
+            font-weight: bold;
+        }
+    </style>
 </head>
 <body>
     <div id="div-i-iframe-main" class="container">

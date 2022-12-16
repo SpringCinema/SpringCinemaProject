@@ -2,12 +2,6 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.esc.springcinema.mapper.CinemaMapper">
-<!--    내 정보 불러오는 쿼리 -->
-    <select id="selectMyInfo" resultType="com.esc.springcinema.dto.MemberDto">
-        SELECT * FROM members
-        WHERE id = #{id}
-    </select>
-
 <!--    내 정보 수정 쿼리 -->
     <update id="updateMyInfo" parameterType="com.esc.springcinema.dto.MemberDto">
         UPDATE members SET pwd = #{pwd}, name = #{name}, email = #{email}, tel = #{tel}

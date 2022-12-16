@@ -31,8 +31,6 @@ public interface CinemaMapper {
     // 마지막 작성자 : MoonNight285
     void createMember(MemberDto member) throws Exception;
 
-    MemberDto selectMyInfo(String id) throws Exception;
-
     void updateMyInfo(MemberDto update) throws Exception;
 
     void deleteAccount(MemberDto delete) throws Exception;

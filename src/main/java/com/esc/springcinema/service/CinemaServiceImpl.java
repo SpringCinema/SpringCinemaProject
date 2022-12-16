@@ -12,11 +12,6 @@ public class CinemaServiceImpl implements CinemaService{
     private CinemaMapper cinemaMapper;
 
     @Override
-    public MemberDto selectMyInfo(String id) throws Exception {
-        return cinemaMapper.selectMyInfo(id);
-    }
-
-    @Override
     public void updateMyInfo(MemberDto update) throws Exception {
         cinemaMapper.updateMyInfo(update);
     }
