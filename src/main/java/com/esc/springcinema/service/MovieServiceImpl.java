@@ -41,6 +41,8 @@ public class MovieServiceImpl implements MovieService {
                     "collection=kmdb_new2&detail=Y&listCount=100&" +
                     "releaseDts=" + sdf.format(startDate.getTime()) +
                     "&releaseDte=" + sdf.format(endDate.getTime()) +
+                    "&type=" + URLEncoder.encode("극영화", "UTF-8") +
+                    "&type=" + URLEncoder.encode("애니메이션", "UTF-8") +
                     "&ServiceKey=" + SERVICE_KEY;
 
             insertMovieInfo();
