@@ -2,9 +2,9 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.esc.springcinema.mapper.MypageMapper">
-    <!-- 마이페이지 영화 예약목록 가져오기 -->
+    <!-- 마이페이지 영화 예약목록을 가져오기(예약중, 취소된거 선택가능) -->
     <select id="selectBookList" parameterType="String" resultType="com.esc.springcinema.dto.BooksDto">
         SELECT book_num, reserve_date, title, seat_code, cinema_name,
-               screen_hall_name, view_time, adult_yn, state_yn FROM books WHERE id = #{userId};
+               screen_hall_name, view_time, adult_yn FROM books WHERE id = #{userId} AND state_yn = #{state};
     </select>
 </mapper>
