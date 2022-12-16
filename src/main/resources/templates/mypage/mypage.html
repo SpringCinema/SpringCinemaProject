@@ -111,7 +111,7 @@
         <!--    메인 우측 선택된 메뉴 출력 페이지 (메뉴 선택 시 display 속성값 none/block 변환)-->
         <div class="w-75 ms-5 mt-4">
             <div th:insert="mypage/mypage_profile :: profile" id="div-i-1"></div>
-            <div th:insert="mypage/mypage_book :: book" id="div-i-2" style="display: none"></div>
+            <div th:insert="mypage/mypage_book :: book(${bookList})" id="div-i-2" style="display: none"></div>
             <div th:insert="mypage/mypage_payment :: payment" id="div-i-3" style="display: none"></div>
             <div th:insert="mypage/mypage_comment :: comment" id="div-i-4" style="display: none"></div>
             <div th:insert="mypage/mypage_question :: question" id="div-i-5" style="display: none"></div>

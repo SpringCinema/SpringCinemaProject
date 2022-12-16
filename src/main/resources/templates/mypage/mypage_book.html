@@ -8,29 +8,40 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"></script>
 </head>
 <body>
-<div th:fragment="book">
-    <p id="p-i-title" class="mb-5 fs-5">예매내역</p>
-
+<div th:fragment="book(bookList)">
+    <p id="p-i-title" class="mb-3 fs-5">예매내역</p>
+    <div class="mb-2 d-flex justify-content-end">
+        <button class="btn btn-outline-success mx-2">예매내역</button>
+        <button class="btn btn-outline-danger">취소내역</button>
+    </div>
     <table class="table table-striped text-center">
         <thead class="border-top border-bottom border-3">
-        <th>예매번호</th>
-        <th>예약날짜</th>
-        <th>영화이름</th>
-        <th>좌석번호</th>
-        <th>상영관</th>
-        <th>상영시간</th>
-        <th>성인/청소년</th>
-        <th>예매상태</th>
+            <tr>
+                <th>예매번호</th>
+                <th>예약날짜</th>
+                <th>영화이름</th>
+                <th>영화관이름</th>
+                <th>상영관</th>
+                <th>상영시간</th>
+                <th>좌석번호</th>
+                <th>성인/청소년</th>
+                <th>예매상태</th>
+            </tr>
         </thead>
         <tbody>
-        <td class="border border-2 border-light">테스트 번호</td>
-        <td class="border border-2 border-light">테스트 날짜</td>
-        <td class="border border-2 border-light">테스트 영화</td>
-        <td class="border border-2 border-light">테스트 좌석</td>
-        <td class="border border-2 border-light">테스트 상영관</td>
-        <td class="border border-2 border-light">테스트 상영시간</td>
-        <td class="border border-2 border-light">테스트 성인</td>
-        <td class="border border-2 border-light">테스트 상태</td>
+            <tr th:each="item : ${bookList}">
+                <td class="border border-2 border-light" th:text="${item.bookNum}">테스트 번호</td>
+                <td class="border border-2 border-light" th:text="${item.reserveDate}">테스트 날짜</td>
+                <td class="border border-2 border-light" th:text="${item.title}">테스트 영화이름</td>
+                <td class="border border-2 border-light" th:text="${item.cinemaName}">테스트 영화관이름</td>
+                <td class="border border-2 border-light" th:text="${item.screenHallName}">테스트 상영관</td>
+                <td class="border border-2 border-light" th:text="${item.viewTime}">테스트 상영시간</td>
+                <td class="border border-2 border-light" th:text="${item.seatCode}">테스트 좌석번호</td>
+                <td class="border border-2 border-light" th:if="${item.adultYn} == 'Y'">성인</td>
+                <td class="border border-2 border-light" th:unless="${item.adultYn} == 'Y'">청소년</td>
+                <td class="border border-2 border-light" style="color: green" th:if="${item.stateYn} == 'Y'">예매됨</td>
+                <td class="border border-2 border-light" style="color: red" th:unless="${item.stateYn} == 'Y'">취소됨</td>
+            </tr>
         </tbody>
     </table>
 </div>
