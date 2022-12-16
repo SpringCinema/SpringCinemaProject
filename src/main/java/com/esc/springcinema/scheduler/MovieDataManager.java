@@ -43,6 +43,7 @@ public class MovieDataManager {
     //}
 
     // 테스트용도
+    // 나중에 반드시 삭제할것
     // 작성일 : 2022-12-16
     // 작성자 : MoonNight285
     @RequestMapping(value = "movieInfo", method = RequestMethod.GET)
