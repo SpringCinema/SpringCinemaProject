@@ -1,10 +1,14 @@
 package com.esc.springcinema.mapper;
 
 import com.esc.springcinema.dto.MemberDto;
+
 import com.esc.springcinema.dto.apiMovieDto.ActorDto;
 import com.esc.springcinema.dto.apiMovieDto.DirectorDto;
 import com.esc.springcinema.dto.apiMovieDto.MovieDto;
 import com.esc.springcinema.dto.apiMovieDto.PlotDto;
+
+import com.esc.springcinema.dto.ScreenHallDto;
+
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
@@ -27,6 +31,14 @@ public interface CinemaMapper {
     // 마지막 작성자 : MoonNight285
     void createMember(MemberDto member) throws Exception;
 
+    MemberDto selectMyInfo(String id) throws Exception;
+
+    void updateMyInfo(MemberDto update) throws Exception;
+
+    void deleteAccount(MemberDto delete) throws Exception;
+
+    int checkPwd(String id, String pwd) throws Exception;
+
     // 영화 검색
     // 최종 수정 : 2022-12-15
     // 마지막 작성자 : eblyncho
@@ -35,6 +47,7 @@ public interface CinemaMapper {
     // 메인화면 캐러셀에 현재상영작 불러오기
     // 최종 수정 : 2022-12-15
     // 마지막 작성자 : eblyncho
+
     List<MovieDto> selectNowplayingMoviesList() throws Exception;
 
     // 영화 상세페이지_영화 정보 리턴
@@ -64,5 +77,7 @@ public interface CinemaMapper {
     // 최종 수정 : 2022-12-15
     // 마지막 작성자 : MoonNight285
     int selectMovieDocid(String docid) throws Exception;
+
+    ScreenHallDto selectScreenData(String movieTitle, String cinemaName, String screenHallName);
 
 }

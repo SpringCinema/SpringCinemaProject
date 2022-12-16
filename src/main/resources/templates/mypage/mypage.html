@@ -12,9 +12,8 @@
             // 페이지 좌측 메뉴 클릭 시 우측 페이지 변경
             $('#ul-i-ul li').click(function () {
                 $('#ul-i-ul li').removeClass();
-                $(this).addClass('li-c-on text-light');
-
-
+                $(this).addClass("li-c-on")
+                $(this).addClass("text-light")
                 let num1 = $(this).attr('id').slice(-1);
                 for (let i = 1; i <= 5; i ++) {
                     let num2 = $(`#div-i-${i}`).attr('id').slice(-1);
@@ -25,6 +24,18 @@
                         $(`#div-i-${i}`).css('display', 'none');
                     }
                 }
+            });
+
+            $('#button-i-delP').on('click', function() {
+                const frm = $("#form-i-profile")[0];
+                frm.action = "/mypage/delete";
+                frm.submit();
+            });
+
+            $('#button-i-update').on('click', function() {
+                const frm = $("#form-i-profile")[0];
+                frm.action = "/mypage/update";
+                frm.submit();
             });
 
             $('#button-i-delC').on('click', function() {
@@ -42,6 +53,7 @@
             });
         });
     </script>
+    <th:block th:replace="fragments/config :: configFragment"></th:block>
 
     <style>
         @font-face {
@@ -56,8 +68,10 @@
             max-width: none !important;
         }
 
-        .container {
+        main.container {
             width: 1300px;
+            margin-top: 30px;
+            margin-bottom: 310px;
             max-width: none !important;
         }
 
@@ -74,14 +88,14 @@
             font-family: KOHIBaeumOTF;
         }
     </style>
-    <th:block th:replace="fragments/config :: configFragment"></th:block>
+
 </head>
 <body>
 <!--헤더부분-->
 <header th:include="fragments/header :: headerFragment"></header>
 
 <!--메인부분-->
-<main class="container mt-2">
+<main class="container">
     <div class="d-flex">
         <!--    메인 좌측 메뉴선택 페이지-->
         <div class="w-25 border-end border-end-2">
@@ -101,7 +115,6 @@
             <div th:insert="mypage/mypage_payment :: payment" id="div-i-3" style="display: none"></div>
             <div th:insert="mypage/mypage_comment :: comment" id="div-i-4" style="display: none"></div>
             <div th:insert="mypage/mypage_question :: question" id="div-i-5" style="display: none"></div>
-
         </div>
     </div>
 </main>

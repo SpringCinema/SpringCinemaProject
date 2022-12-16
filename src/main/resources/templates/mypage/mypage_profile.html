@@ -10,20 +10,23 @@
 </head>
 <body>
 <div th:fragment="profile">
-    <div class="rounded-4 row" style="border: #FF4500 3px solid">
+    <form id="form-i-profile" action="" method="post" class="rounded-4 row" style="border: #FF4500 3px solid">
         <div class="col-3 ms-3 mt-3">
             <img src="/img/profile.png" width="150px" height="150px">
         </div>
         <div class="col-7 mt-3">
-            <p>이름 : aaa</p>
-            <p>아이디 : aaaaaa</p>
-            <p>이메일 : aaaa@naver.com</p>
+            <p th:text="'이름 : '+ ${myInfo.name}"></p>
+            <p th:text="'아이디 : '+ ${myInfo.id}"></p>
+            <p th:text="'이메일 : '+ ${myInfo.email}" ></p>
+            <input type="hidden" id="input-i-id" name="id" th:value="${myInfo.id}">
             <div class="text-end">
-                <a class="btn text-light mb-3" href="mypage/update" id="button-i-update">내 정보 수정</a>
-                <a class="btn btn-outline-danger mb-3" href="mypage/delete" id="button-i-delP">회원 탈퇴</a>
+                <button class="btn text-light mb-3" id="button-i-update">내 정보 수정</button>
+                <button type="submit" class="btn btn-outline-danger mb-3" id="button-i-delP">회원 탈퇴</button>
             </div>
         </div>
-    </div>
+        <!--        전송 방식 변경을 위한 숨겨진 input 태그-->
+        <input type="hidden" id="input-i-method" name="_method">
+    </form>
 </div>
 </body>
 </html>

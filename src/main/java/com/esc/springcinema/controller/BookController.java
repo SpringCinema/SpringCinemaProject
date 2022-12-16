@@ -11,7 +11,7 @@ public class BookController {
     // 마지막 작성자 : MoonNight285
     @RequestMapping("/book")
     public String viewBook() {
-        return "book";
+        return "book_test_DB";
     }
 
     // 임시 결제 페이지를 보여줍니다.
