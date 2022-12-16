@@ -2,6 +2,7 @@ package com.esc.springcinema.service;
 
 import com.esc.springcinema.dto.MemberDto;
 import com.esc.springcinema.dto.ScreenHallDto;
+import com.esc.springcinema.dto.apiMovieDto.MovieDto;
 
 import java.util.List;
 
@@ -19,6 +20,10 @@ public interface CinemaService {
 
     ScreenHallDto selectScreenData(String movieTitle, String cinemaName, String screenHallName) throws Exception;
 
-    List<ScreenHallDto> allScreenTitle() throws Exception;
+    List<MovieDto> allScreenTitle() throws Exception;
 //    ---- 까지 ----
+
+    List<ScreenHallDto> selectMovieTime(String movieTitle, String cinemaName) throws Exception;
+
+    List<ScreenHallDto> selectCinemaName(String title) throws Exception;
 }

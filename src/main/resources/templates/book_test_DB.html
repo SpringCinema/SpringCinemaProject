@@ -72,13 +72,21 @@
                 $(this).css("background-color", "#333333");
                 $(this).css("color", "white");
 
-                selectedMovieName = $(this).text();
+                selectedMovieName = $(this).children("div").children("span").text();
 
                 const movieView = $("#p-i-selected-movie");
                 movieView.text(selectedMovieName); // 유저에게 보여주기위한 용도
 
                 const movieSender = $("#input-i-send-movie");
                 movieSender.val(selectedMovieName); // 서버 전달용
+
+                // 2022-12-16 양민호
+                // 영화 선택 시 극장 정보 표시
+                //------ 부터 ------
+                $('#ul-i-findCinema').css("display", 'block');
+                let cinema = $('#input-i-send-cinema').val();
+
+                //------ 까지 ------
             });
 
             // 극장 목록을 클릭하면 색상 강조하고 값 저장
@@ -86,6 +94,7 @@
             cinemaNames.on("click", function () {
                 cinemaNames.css("background-color", "");
                 cinemaNames.css("color", "");
+                $("#div-i-date-content").children("ul").css('display', 'block')
 
                 $(this).css("background-color", "#333333");
                 $(this).css("color", "white");
@@ -104,6 +113,42 @@
             // 일요일은 클래스(li-c-sunday)로 판단
             const dates = $("#div-i-date-content").children("ul").children();
             dates.on("click", function () {
+                // 2022-12-16 양민호
+                // 날짜 선택 시 시간 정보 표시
+                //------ 부터 ------
+                if(($('#input-i-send-cinema').val() != '') && ($('#input-i-send-movie').val() != '')){
+                    $('#div-i-time-content div').css("display", 'block');
+                    let title = $('#input-i-send-movie').val();
+                    let cinema = $('#input-i-send-cinema').val();
+
+                    // ajax 통신을 통해 선택한 정보에 대한 정보 screen_hall에서 가져옴.
+                    $.ajax({
+                        url: "/book/viewTime",
+                        type: "post",
+                        data: {movieTitle: title, cinemaName: cinema},
+                        success:function(data){
+                            if(data.length > 0) {
+                                for(let i = 0; i < data.length; i++) {
+                                    let getScreenHallName = data[i].screenHallName;
+                                    let getAm1 = data[i].am1;
+                                    let getAm2 = data[i].am2;
+                                    let getPm1 = data[i].pm1;
+                                    let getPm2 = data[i].pm1;
+
+                                }
+                            }
+                            else {
+                                console.log("상영 정보가 없습니다.")
+                            }
+                            console.log(data);
+
+                        },
+                        error: function () {
+                            alert("ajax 통신이 오류가 발생했습니다.");
+                        }
+                    });
+                }
+                //------ 까지 ------
                 for (let i = 0; i < dates.length; ++i) {
                     dates.eq(i).css("background-color", "");
 
@@ -188,8 +233,11 @@
                     $(`input[name='inputAdt']:checked`)
                     let date = $("#p-i-selected-date").text().slice(7)
                     let time = $(".clickedTime").text().split("|")[1];
-                    movieSender.val("아바타: 물의 길");
-                    cinemaSender.val("spring cinema 부산점");
+                    let selectTitle = $('#p-i-selected-movie').text();
+                    let selectCinema = $('#p-i-selected-cinema').text().slice(7);
+
+                    movieSender.val(selectTitle);
+                    cinemaSender.val(selectCinema);
                     dateSender.val(date);
                     hallSender.val("1관");
                     timeSender.val(time);
@@ -199,6 +247,7 @@
                 // ------------------까지----------------
                 // 다 선택했으면 서버로 값 넘기기
             });
+
         });
     </script>
     <style>
@@ -356,6 +405,16 @@
         .span-c-time span {
             display: none;
         }
+
+    /*    2022-12-16 양민호*/
+    /*    ---- 부터 ----*/
+        .div-c-movieList {
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space : nowrap;
+
+        }
+    /*    ---- 까지 ----*/
     </style>
 
     <th:block th:replace="fragments/config :: configFragment"></th:block>
@@ -386,62 +445,56 @@
 <!--                    -------------- 부터 ------------ -->
                     <ul>
                         <li th:each="item : ${allScreenTitle}">
-                            <div class="d-flex justify-content-start" th:text="${item.movieTitle}">
-                                <img th:src="/img/twelve.png" class="mx-2">
+                            <div class="d-flex justify-content-start div-c-movieList" th:if="${item.rating} == '전체관람가'">
+<!--                                rating 조건에 따른 연령 표시 이미지 추가 -->
+                                <img src="/img/letter-a.png">
+                                <span th:text="${item.title}" class="ms-1"></span>
+                            </div>
+                            <div class="d-flex justify-content-start div-c-movieList" th:if="${item.rating} == '12세관람가'">
+                                <!--                                rating 조건에 따른 연령 표시 이미지 추가 -->
+                                <img src="/img/twelve.png">
+                                <span th:text="${item.title}" class="ms-1"></span>
+                            </div>
+                            <div class="d-flex justify-content-start div-c-movieList" th:if="${item.rating} == '15세관람가'">
+                                <!--                                rating 조건에 따른 연령 표시 이미지 추가 -->
+                                <img src="/img/fifteen.png">
+                                <span th:text="${item.title}" class="ms-1"></span>
+                            </div>
+                            <div class="d-flex justify-content-start div-c-movieList" th:if="${item.rating} == '18세관람가(청소년관람불가)'">
+                                <!--                                rating 조건에 따른 연령 표시 이미지 추가 -->
+                                <img src="/img/eighteen.png">
+                                <span th:text="${item.title}" class="ms-1"></span>
+                            </div>
+                            <div class="d-flex justify-content-start div-c-movieList" th:if="${item.rating} == ''">
+                                <!--                                rating 조건에 따른 연령 표시 이미지 추가 -->
+                                <span th:text="${item.title}" class="ms-4"></span>
                             </div>
                         </li>
+                    </ul>
 <!--                    -------------- 까지 ------------ -->
                 </div>
                 <div id="div-i-cinema-content">
-                    <ul>
-                        <li>서울</li>
-                        <li>부산</li>
+                    <ul id="ul-i-findCinema" style="display: none">
+                        <li>spring cinema 서울점</li>
+                        <li>spring cinema 부산점</li>
                     </ul>
                 </div>
                 <div id="div-i-date-content" style="width: 100px;">
                     <small id="small-i-year-value" class="d-flex justify-content-center mt-2">2022</small>
                     <h4 id="h4-i-month-value" class="text-center">12</h4>
-                    <ul style="list-style: none"></ul>
+                    <ul style="list-style: none; display: none"></ul>
                 </div>
                 <div id="div-i-time-content">
-                    <ul>
-                        <h6><b>1관(총 82석)</b></h6>
-                        <li>
-                            <span class="span-c-time"><span>1관|</span> 9 : 30</span>
-                            <span class="span-c-seat">76석</span>
-                        </li>
-                        <li>
-                            <span class="span-c-time"><span>1관|</span> 11 : 30</span>
-                            <span class="span-c-seat">66석</span>
-                        </li>
-                        <li>
-                            <span class="span-c-time"><span>1관|</span> 14 : 30</span>
-                            <span class="span-c-seat">82석</span>
-                        </li>
-                        <li>
-                            <span class="span-c-time"><span>1관|</span> 18 : 30</span>
-                            <span class="span-c-seat">55석</span>
-                        </li>
-                    </ul>
-                    <ul>
-                        <h6><b>2관(총 82석)</b></h6>
-                        <li>
-                            <span class="span-c-time"><span>2관|</span> 9 : 30</span>
-                            <span class="span-c-seat">76석</span>
-                        </li>
-                        <li>
-                            <span class="span-c-time"><span>2관|</span> 11 : 30</span>
-                            <span class="span-c-seat">66석</span>
-                        </li>
-                        <li>
-                            <span class="span-c-time"><span>2관|</span> 14 : 30</span>
-                            <span class="span-c-seat">82석</span>
-                        </li>
-                        <li>
-                            <span class="span-c-time"><span>2관|</span> 18 : 30</span>
-                            <span class="span-c-seat">55석</span>
-                        </li>
-                    </ul>
+                    <div style="display: none">
+                        <ul>
+                            <h6><b>1관(총 82석)</b></h6>
+                            <li>
+                                <span class="span-c-time"><span>1관|</span> 9 : 30</span>
+                                <span class="span-c-seat">76석</span>
+                            </li>
+                        </ul>
+                    </div>
+
                 </div>
             </div>
             <div id="div-i-footer" class="col-xl-12 d-flex justify-content-start">

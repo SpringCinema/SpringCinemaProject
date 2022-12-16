@@ -99,6 +99,15 @@ public interface CinemaMapper {
     // 예매페이지의 선택정보 좌석 선택 페이지에 불러오기
     // 최종 수정 : 2022-12-16
     // 마지막 작성자 : yang
-    List<ScreenHallDto> allScreenTitle() throws Exception;
+    List<MovieDto> allScreenTitle() throws Exception;
 
+    // 예매페이지의 극장 이름 불러오기
+    // 최종 수정 : 2022-12-16
+    // 마지막 작성자 : yang
+    List<ScreenHallDto> selectCinemaName(String title) throws Exception;
+
+    // 예매페이지의 선택한 영화/극장의 상영 시간 불러오기
+    // 최종 수정 : 2022-12-16
+    // 마지막 작성자 : yang
+    List<ScreenHallDto> selectMovieTime(String movieTitle, String cinemaName) throws Exception;
 }

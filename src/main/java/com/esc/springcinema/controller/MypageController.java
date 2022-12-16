@@ -66,7 +66,7 @@ public class MypageController {
 //    (ajax + DB 적용) 탈퇴 페이지 비밀번호 확인 기능.
     @ResponseBody
     @RequestMapping(value = "/mypage/delete/checkPwd", method = RequestMethod.POST)
-    public Object ajaxCalResult(@RequestParam("myid") String myid, @RequestParam("inputpwd") String inputpwd) throws Exception {
+    public Object ajaxPwdCheck(@RequestParam("myid") String myid, @RequestParam("inputpwd") String inputpwd) throws Exception {
         int chkPwd = cinemaService.checkPwd(myid, inputpwd);
         return chkPwd;
     }
