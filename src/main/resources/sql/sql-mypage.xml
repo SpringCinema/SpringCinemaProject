@@ -7,4 +7,9 @@
         SELECT book_num, reserve_date, title, seat_code, cinema_name,
                screen_hall_name, view_time, adult_yn FROM books WHERE id = #{userId} AND state_yn = #{state};
     </select>
+
+    <!-- 내 정보 불러오는 쿼리 -->
+    <select id="selectMyInfo" resultType="com.esc.springcinema.dto.MemberDto">
+        SELECT * FROM members WHERE id = #{id}
+    </select>
 </mapper>

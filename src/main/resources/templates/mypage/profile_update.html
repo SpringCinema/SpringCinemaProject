@@ -26,11 +26,6 @@
     <th:block th:replace="fragments/config :: configFragment"></th:block>
 
     <style>
-        header {
-            width: 1920px;
-            max-width: none !important;
-        }
-
         main.container {
             width: 1920px;
             margin-top: 70px;
@@ -43,9 +38,7 @@
         }
     </style>
 </head>
-<body><!-- 헤더부분 -->
-<header th:replace="fragments/header :: headerFragment"></header>
-
+<body>
 <!-- 메인부분 -->
 <main class="container">
 <!-- action태그 추후 수정 -->
@@ -97,8 +90,5 @@
         </div>
     </form>
 </main>
-
-<!-- 푸터부분 -->
-<footer th:replace="fragments/footer :: footerFragment"></footer>
 </body>
 </html>

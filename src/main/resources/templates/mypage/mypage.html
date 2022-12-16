@@ -30,7 +30,8 @@
                 //         $(`#div-i-${i}`).css('display', 'none');
                 //     }
                 // }
-    
+                
+                // 나중에 도메인 주소를 사용해야한다.
                 // 메뉴 클릭시 페이지 이동
                 // 최종 수정일 : 2022-12-16
                 // 작성자 : MoonNigth285
@@ -40,9 +41,10 @@
                 
                 switch (pageName) {
                     case "내 프로필":
+                        targetSrc = "/mypage/userInfo";
                         break;
                     case "예매내역" :
-                        targetSrc = "http://localhost:8080/mypage/book/normal"
+                        targetSrc = "/mypage/book/normal";
                         break;
                     case "결제내역":
                         break;
@@ -55,17 +57,17 @@
                 iFrame.attr("src", targetSrc);
             });
 
-            $('#button-i-delP').on('click', function() {
-                const frm = $("#form-i-profile")[0];
-                frm.action = "/mypage/delete";
-                frm.submit();
-            });
-
-            $('#button-i-update').on('click', function() {
-                const frm = $("#form-i-profile")[0];
-                frm.action = "/mypage/update";
-                frm.submit();
-            });
+            // $('#button-i-delP').on('click', function() {
+            //     const frm = $("#form-i-profile")[0];
+            //     frm.action = "/mypage/delete";
+            //     frm.submit();
+            // });
+            //
+            // $('#button-i-update').on('click', function() {
+            //     const frm = $("#form-i-profile")[0];
+            //     frm.action = "/mypage/update";
+            //     frm.submit();
+            // });
 
             $('#button-i-delC').on('click', function() {
                 let check = confirm('해당 글을 삭제하시겠습니까?');
@@ -115,6 +117,17 @@
         #ul-i-ul {
             padding-left: 0px;
         }
+
+        /* 본문 컨테이너 영역 */
+        #div-i-iframe-main {
+            width:1500px;
+            max-width:none!important;
+        }
+
+        #p-i-iframe-title {
+            font-family: "KOHINanumOTFL";
+            font-weight: bold;
+        }
     </style>
 
 </head>
@@ -143,7 +156,7 @@
 <!--            <div th:insert="mypage/mypage_payment :: payment" id="div-i-3" style="display: none"></div>-->
 <!--            <div th:insert="mypage/mypage_comment :: comment" id="div-i-4" style="display: none"></div>-->
 <!--            <div th:insert="mypage/mypage_question :: question" id="div-i-5" style="display: none"></div>-->
-            <iframe id="iframe-i-move-page" src="" width="1500px" height="700px" scrolling="no"></iframe>
+            <iframe id="iframe-i-move-page" src="/mypage/userInfo" width="1500px" height="700px" scrolling="no"></iframe>
         </div>
     </div>
 </main>

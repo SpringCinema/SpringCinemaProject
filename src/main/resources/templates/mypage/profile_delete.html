@@ -71,9 +71,6 @@
     </style>
 </head>
 <body>
-<!-- 헤더 부분 -->
-<header th:replace="fragments/header :: headerFragment"></header>
-
 <!-- 메인 부분 -->
 <main class="container">
     <form id="form-i-frm" method="post" class="col-sm-9 mx-auto rounded-4">
@@ -93,8 +90,5 @@
         <input type="hidden" id="input-i-id" th:value="${myInfo.id}">
     </form>
 </main>
-
-<!-- 푸터 부분 -->
-<footer th:replace="fragments/footer :: footerFragment"></footer>
 </body>
 </html>

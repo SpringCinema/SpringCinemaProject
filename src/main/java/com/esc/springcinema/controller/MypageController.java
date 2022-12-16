@@ -72,6 +72,22 @@ public class MypageController {
     
         return view;
     }
+    
+    // 마이페이지에서 로그인한 내 정보를 보여주는 기능
+    // 최종 수정일 : 2022-12-16
+    // 마지막 작성자 : MoonNight285
+    @RequestMapping(value = "/mypage/userInfo", method = RequestMethod.GET)
+    public ModelAndView getUserInfo(HttpServletRequest request) throws Exception {
+        request.setCharacterEncoding("UTF-8");
+        HttpSession session = request.getSession();
+        String loggedInUserId = ((MemberDto)session.getAttribute("loggedInUserInfo")).getId();
+        MemberDto member = mypageService.selectMyInfo(loggedInUserId);
+        ModelAndView view = new ModelAndView("mypage/mypage_profile");
+        view.addObject("myInfo", member);
+        view.addObject("profileTitle", "내 프로필");
+        
+        return view;
+    }
 
 //    (DB 적용)
 //    내 정보 수정 (뷰)

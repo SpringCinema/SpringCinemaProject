@@ -1,6 +1,7 @@
 package com.esc.springcinema.mapper;
 
 import com.esc.springcinema.dto.BooksDto;
+import com.esc.springcinema.dto.MemberDto;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
@@ -12,4 +13,9 @@ public interface MypageMapper {
     // 최종 수정 : 2022-12-16
     // 마지막 작성자 : MoonNight285
     List<BooksDto> selectBookList(String userId, String state) throws Exception;
+    
+    // DB에서 마이페이지의 나의 정보를 조회하는 기능
+    // 최종 수정 : 2022-12-16
+    // 마지막 작성자 : MoonNight285
+    MemberDto selectMyInfo(String id) throws Exception;
 }

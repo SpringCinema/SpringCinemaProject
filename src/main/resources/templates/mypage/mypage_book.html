@@ -10,6 +10,7 @@
     <meta charset="UTF-8">
     <title>Title</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link type="text/css" href="/mypage/mypage_common_design.css" rel="stylesheet">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"></script>
     <script>
@@ -33,31 +34,12 @@
             });
         });
     </script>
-    <style>
-        @font-face {
-            font-family: 'KOHINanumOTFL';
-            src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2201-2@1.0/KOHINanumOTFL.woff') format('woff');
-            font-weight: normal;
-            font-style: normal;
-        }
-    
-        /* 본문 컨테이너 영역 */
-        #div-i-main {
-            width:1500px;
-            max-width:none!important;
-        }
-        
-        #p-i-book-title {
-            font-family: "KOHINanumOTFL";
-            font-weight: bold;
-        }
-    </style>
 </head>
 <body>
-    <div id="div-i-main" class="container">
+    <div id="div-i-iframe-main" class="container">
         <div class="row">
             <div class="col-xl-12">
-                <p id="p-i-book-title" class="mb-2 fs-5" th:text="${bookTitle}">목록이름</p>
+                <p id="p-i-iframe-title" class="mb-2 fs-5" th:text="${bookTitle}">목록이름</p>
             </div>
         </div>
         <div class="row">
