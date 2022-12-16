@@ -35,8 +35,6 @@ public class MovieServiceImpl implements MovieService {
         endDate.add(GregorianCalendar.MONTH, 1);
 
         for (int i = 0; i < 12; ++i) {
-            System.out.println(sdf.format(startDate.getTime()));
-
             // 발매일 기준일은 당일기준 한달 전
             strUrl = "https://api.koreafilm.or.kr/openapi-data2/wisenut/search_api/search_xml2.jsp?" +
                     "collection=kmdb_new2&detail=Y&listCount=100&" +
@@ -90,8 +88,6 @@ public class MovieServiceImpl implements MovieService {
                 cinemaMapper.insertMovieDatas(movies.get(i));
                 cinemaMapper.insertDirectors(movies.get(i));
                 cinemaMapper.insertActors(movies.get(i));
-            } else {
-                System.out.println(docid);
             }
         }
     }
