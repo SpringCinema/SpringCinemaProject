@@ -26,9 +26,15 @@
         WHERE id = #{id} AND pwd = #{pwd}
     </select>
 
+<!--    예매페이지에서 선택된 영화 정보 불러오는 쿼리-->
     <select id="selectScreenData" resultType="com.esc.springcinema.dto.ScreenHallDto">
         SELECT * FROM screen_hall
         WHERE cinema_name = #{cinemaName} AND screen_hall_name = #{screenHallName} AND movie_title = #{movieTitle}
+    </select>
+
+<!--    예매페이지에서 screen_hall 정보 불러오는 쿼리-->
+    <select id="allScreenTitle" resultType="com.esc.springcinema.dto.ScreenHallDto">
+        SELECT DISTINCT movie_title FROM screen_hall ORDER BY movie_title
     </select>
 
 

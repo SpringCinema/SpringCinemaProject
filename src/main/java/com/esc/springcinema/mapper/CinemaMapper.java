@@ -25,12 +25,24 @@ public interface CinemaMapper {
     // 마지막 작성자 : MoonNight285
     void createMember(MemberDto member) throws Exception;
 
+    // 마이페이지 정보 출력
+    // 최종 수정 : 2022-12-15
+    // 마지막 작성자 : yang
     MemberDto selectMyInfo(String id) throws Exception;
 
+    // 내 정보 수정 
+    // 최종 수정 : 2022-12-15
+    // 마지막 작성자 : yang
     void updateMyInfo(MemberDto update) throws Exception;
 
+    // 회원탈퇴 
+    // 최종 수정 : 2022-12-15
+    // 마지막 작성자 : yang
     void deleteAccount(MemberDto delete) throws Exception;
 
+    // 회원탈퇴 시 아이디 패스워드 확인
+    // 최종 수정 : 2022-12-15
+    // 마지막 작성자 : yang
     int checkPwd(String id, String pwd) throws Exception;
 
     // 영화 검색
@@ -43,5 +55,13 @@ public interface CinemaMapper {
     // 마지막 작성자 : eblyncho
     List<MoviesDto> selectNowplayingMoviesList() throws Exception;
 
-    ScreenHallDto selectScreenData(String movieTitle, String cinemaName, String screenHallName);
+    // 예매페이지의 선택정보 좌석 선택 페이지에 불러오기
+    // 최종 수정 : 2022-12-15
+    // 마지막 작성자 : yang
+    ScreenHallDto selectScreenData(String movieTitle, String cinemaName, String screenHallName) throws Exception;
+
+    // 예매페이지의 선택정보 좌석 선택 페이지에 불러오기
+    // 최종 수정 : 2022-12-16
+    // 마지막 작성자 : yang
+    List<ScreenHallDto> allScreenTitle() throws Exception;
 }

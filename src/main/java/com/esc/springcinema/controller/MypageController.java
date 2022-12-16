@@ -89,19 +89,19 @@ public class MypageController {
     }
 
 //    (DB 적용)
-//    2022-12-15 양민호
+//    2022-12-16 양민호
 //    book 페이지에서 입력값을 받아오는 좌석 선택 페이지 뷰
 //    현재 book 페이지에 date 와 time값을 제외하고 임의의 고정된 값 받아오고 있음.
     @RequestMapping(value = "/seat" , method = RequestMethod.POST)
-    public ModelAndView openSeat(@RequestParam("movieTitle") String title, @RequestParam("cinemaName") String cinemaName, @RequestParam("date") String date,
-                                @RequestParam("screenHallName") String screenHallName, @RequestParam("time") String time) throws Exception {
+    public ModelAndView openSeat(@RequestParam("movieTitle") String movieTitle, @RequestParam("cinemaName") String cinemaName, @RequestParam("inputDate") String date,
+                                @RequestParam("screenHallName") String screenHallName, @RequestParam("inputTime") String screenTime) throws Exception {
         ModelAndView mv = new ModelAndView("movieseat");
 
-        ScreenHallDto screenData = cinemaService.selectScreenData(title, cinemaName, screenHallName);
+        ScreenHallDto selectScreenData = cinemaService.selectScreenData(movieTitle, cinemaName, screenHallName);
 
 
-        String times = time;
-        String dates = date;
+        String viewTime = screenTime;
+        String screenDate = date;
 
 
         List<Integer> people = new ArrayList<>();
@@ -127,9 +127,9 @@ public class MypageController {
 
         mv.addObject("alp", seatCode);
         mv.addObject("people", people);
-        mv.addObject("times", times);
-        mv.addObject("dates", dates);
-        mv.addObject("screenData", screenData);
+        mv.addObject("viewTime", viewTime);
+        mv.addObject("screenDate", screenDate);
+        mv.addObject("screenData", selectScreenData);
         return mv;
     }
 }

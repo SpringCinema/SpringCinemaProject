@@ -6,6 +6,8 @@ import com.esc.springcinema.mapper.CinemaMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class CinemaServiceImpl implements CinemaService{
     @Autowired
@@ -32,8 +34,13 @@ public class CinemaServiceImpl implements CinemaService{
     }
 
     @Override
-    public ScreenHallDto selectScreenData(String movieTitle, String cinemaName, String screenHallName) {
+    public ScreenHallDto selectScreenData(String movieTitle, String cinemaName, String screenHallName) throws Exception{
         return cinemaMapper.selectScreenData(movieTitle, cinemaName, screenHallName);
+    }
+
+    @Override
+    public List<ScreenHallDto> allScreenTitle() throws Exception {
+        return cinemaMapper.allScreenTitle();
     }
 
 

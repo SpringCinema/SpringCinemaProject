@@ -382,33 +382,15 @@
         <div class="row">
             <div id="div-i-body" class="col-xl-12 d-flex justify-content-between">
                 <div id="div-i-movie-content" style="border-left: 2px solid gray">
+<!--                    2022-12-16 양민호 -->
+<!--                    -------------- 부터 ------------ -->
                     <ul>
-                        <li>
-                            <div class="d-flex justify-content-start">
-                                <img src="/img/twelve.png" class="mx-2">아바타 물의길
+                        <li th:each="item : ${allScreenTitle}">
+                            <div class="d-flex justify-content-start" th:text="${item.movieTitle}">
+                                <img th:src="/img/twelve.png" class="mx-2">
                             </div>
                         </li>
-                        <li>
-                            <div class="d-flex justify-content-start">
-                                <img src="/img/fifteen.png" class="mx-2">올빼미
-                            </div>
-                        </li>
-                        <li>
-                            <div class="d-flex justify-content-start">
-                                <img src="/img/letter-a.png" class="mx-2">신비아파트
-                            </div>
-                        </li>
-                        <li>
-                            <div class="d-flex justify-content-start">
-                                <img src="/img/twelve.png" class="mx-2">탄생
-                            </div>
-                        </li>
-                        <li>
-                            <div class="d-flex justify-content-start">
-                                <img src="/img/eighteen.png" class="mx-2">크리스마스 캐럴
-                            </div>
-                        </li>
-                    </ul>
+<!--                    -------------- 까지 ------------ -->
                 </div>
                 <div id="div-i-cinema-content">
                     <ul>
@@ -485,9 +467,9 @@
             <form action="/seat" method="post" id="form-i-book">
                 <input id="input-i-send-movie" type="hidden" name="movieTitle">
                 <input id="input-i-send-cinema" type="hidden" name="cinemaName">
-                <input id="input-i-send-date" type="hidden" name="date">
+                <input id="input-i-send-date" type="hidden" name="inputDate">
                 <input id="input-i-send-hall" type="hidden" name="screenHallName">
-                <input id="input-i-send-time" type="hidden" name="time">
+                <input id="input-i-send-time" type="hidden" name="inputTime">
                 <button id="btn-i-hidden-next" type="submit"></button>
             </form>
 <!--            -------------------까지-------------------- -->
