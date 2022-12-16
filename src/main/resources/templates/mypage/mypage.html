@@ -1,3 +1,8 @@
+<!-- 수정일 : 2022-12-16일 -->
+<!-- 마지막으로 수정한 사람 : MoonNight285 -->
+<!-- 마지막으로 작업한 내용 : 페이지 제목 타이틀을 id에서 class로 변경, 예약페이지 버튼 클릭시 색상변경 이벤트 추가 -->
+<!-- 마이페이지 -->
+
 <!DOCTYPE html>
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
@@ -9,6 +14,21 @@
 
     <script>
         $(document).ready(function () {
+            // 마이페이지 예약부분 스크립트 시작
+            const btnBookList = $("#btn-i-bookList");
+            const btnCancelList = $("#btn-i-cancelList");
+            
+            btnBookList.on("click", function () {
+                btnBookList.addClass("active");
+                btnCancelList.removeClass("active");
+            });
+            
+            btnCancelList.on("click", function () {
+                btnCancelList.addClass("active");
+                btnBookList.removeClass("active")
+            });
+            // 마이페이지 예약부분 스크립트 종료
+            
             // 페이지 좌측 메뉴 클릭 시 우측 페이지 변경
             $('#ul-i-ul li').click(function () {
                 $('#ul-i-ul li').removeClass();
@@ -84,7 +104,7 @@
             background-color: #FF4500;
         }
 
-        #p-i-title {
+        #p-i-title, .p-c-menu-title {
             font-family: KOHIBaeumOTF;
         }
     </style>
