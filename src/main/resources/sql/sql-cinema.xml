@@ -45,4 +45,19 @@
         WHERE docid = #{docid}
         ]]>
     </select>
+
+    <insert id="insertDirectors" parameterType="com.esc.springcinema.dto.apiMovieDto.MovieDto">
+        INSERT INTO directors(docid, directorNm) VALUES(#{docid}, #{directorsDto.directorDto.directorNm})
+    </insert>
+
+    <insert id="insertActors" parameterType="com.esc.springcinema.dto.apiMovieDto.MovieDto">
+        INSERT INTO actors(docid, actorNm) VALUES
+        <foreach collection="actorsDto.actors" item="item" separator="," index="index">
+            (#{docid}, #{item.actorNm})
+        </foreach>
+    </insert>
+
+    <select id="selectMovieDocid" resultType="int" parameterType="String">
+        SELECT COUNT(*) FROM movies WHERE docid = #{docid}
+    </select>
 </mapper>

@@ -34,9 +34,6 @@ public interface CinemaMapper {
     // 최종 수정 : 2022-12-15
     // 마지막 작성자 : eblyncho
     List<MovieDto> selectNowplayingMoviesList() throws Exception;
-    
-    // API를 통해 가져온 영화 데이터를 저장
-    void insertMovieDatas(MovieDto movies) throws Exception;
 
     // 영화 상세보기
     // 최종 수정 : 2022-12-15
@@ -44,4 +41,24 @@ public interface CinemaMapper {
     MovieDto selectMovieDetail(String docid) throws Exception;
 
     PlotDto selectPlotText(String docid) throws Exception;
+
+    // API를 통해 가져온 영화 데이터를 저장
+    // 최종 수정 : 2022-12-16
+    // 마지막 작성자 : MoonNight285
+    void insertMovieDatas(MovieDto movie) throws Exception;
+    
+    // API를 통해 가져온 디렉터를 저장
+    // 최종 수정 : 2022-12-15
+    // 마지막 작성자 : MoonNight285
+    void insertDirectors(MovieDto movie) throws Exception;
+    
+    // API를 통해 가져온 배우를 저장
+    // 최종 수정 : 2022-12-15
+    // 마지막 작성자 : MoonNight285
+    void insertActors(MovieDto movie) throws Exception;
+
+    // 영화의 아이디가 존재하는지 확인하는 함수
+    // 최종 수정 : 2022-12-15
+    // 마지막 작성자 : MoonNight285
+    int selectMovieDocid(String docid) throws Exception;
 }
