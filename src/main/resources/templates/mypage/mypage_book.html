@@ -2,6 +2,7 @@
 <!-- 마지막으로 수정한 사람 : MoonNight285 -->
 <!-- 마지막으로 작업한 내용 : 페이지 제목 타이틀을 id에서 class로 변경 -->
 <!-- 마이페이지 예약 페이지 -->
+<!-- 이 페이지는 스크립트가 적용되어있습니다. mypage.html를 확인하세요! -->
 
 <!DOCTYPE html>
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
@@ -11,41 +12,97 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            // 마이페이지에서 예약목록의 옵션을 선택하고 서버로 전송하는 기능
+            const btnBookList = $("#btn-i-bookList");
+            const btnCancelList = $("#btn-i-cancelList");
+            const bookTitle = $("#p-i-book-title");
+            const bookTypeSender = $("#form-i-send-book-type");
+            
+            btnBookList.on("click", function () {
+                btnBookList.addClass("active");
+                bookTitle.text("예매내역");
+                bookTypeSender.attr("action", "http://localhost:8080/mypage/book/normal");
+            });
+            
+            btnCancelList.on("click", function () {
+                btnCancelList.addClass("active");
+                bookTitle.text("취소내역");
+                bookTypeSender.attr("action", "http://localhost:8080/mypage/book/cancellation");
+            });
+        });
+    </script>
+    <style>
+        @font-face {
+            font-family: 'KOHINanumOTFL';
+            src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2201-2@1.0/KOHINanumOTFL.woff') format('woff');
+            font-weight: normal;
+            font-style: normal;
+        }
+    
+        /* 본문 컨테이너 영역 */
+        #div-i-main {
+            width:1500px;
+            max-width:none!important;
+        }
+        
+        #p-i-book-title {
+            font-family: "KOHINanumOTFL";
+            font-weight: bold;
+        }
+    </style>
 </head>
 <body>
-<div th:fragment="book(bookList)">
-    <p class="mb-3 fs-5 p-c-menu-title">예매내역</p>
-    <div class="mb-2 d-flex justify-content-end">
-        <button id="btn-i-bookList" class="btn btn-outline-success mx-2 active">예매내역</button>
-        <button id="btn-i-cancelList" class="btn btn-outline-danger">취소내역</button>
+    <div id="div-i-main" class="container">
+        <div class="row">
+            <div class="col-xl-12">
+                <p id="p-i-book-title" class="mb-2 fs-5" th:text="${bookTitle}">목록이름</p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xl-12">
+                <div class="mb-2 d-flex justify-content-end">
+                    <form id="form-i-send-book-type" action="" method="get">
+                        <button id="btn-i-bookList" class="btn btn-outline-success mx-2"
+                                th:classappend="${bookType} == 'normal' ? 'active' : ''">예매내역</button>
+                        <button id="btn-i-cancelList" class="btn btn-outline-danger"
+                                th:classappend="${bookType} == 'cancellation' ? 'active' : ''">취소내역</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xl-12">
+                <table class="table table-striped text-center">
+                    <thead class="border-top border-bottom border-3">
+                        <tr>
+                            <th style="width: 85px;">예매번호</th>
+                            <th style="width: 100px;">예약날짜</th>
+                            <th style="width: 350px;">영화이름</th>
+                            <th style="width: 150px;">영화관이름</th>
+                            <th style="width: 75px;">상영관</th>
+                            <th style="width: 75px;">상영시간</th>
+                            <th style="width: 50px;">좌석</th>
+                            <th style="width: 80px;">성인/청소년</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="item : ${bookList}">
+                            <td style="width: 85px;" class="border border-2 border-light" th:text="${item.bookNum}">테스트 번호</td>
+                            <td style="width: 100px;" class="border border-2 border-light" th:text="${item.reserveDate}">테스트 날짜</td>
+                            <td style="width: 350px;" class="border border-2 border-light" th:text="${item.title}">테스트 영화이름</td>
+                            <td style="width: 150px;" class="border border-2 border-light" th:text="${item.cinemaName}">테스트 영화관이름</td>
+                            <td style="width: 75px;" class="border border-2 border-light" th:text="${item.screenHallName}">테스트 상영관</td>
+                            <td style="width: 75px;" class="border border-2 border-light" th:text="${item.viewTime}">테스트 상영시간</td>
+                            <td style="width: 50px;" class="border border-2 border-light" th:text="${item.seatCode}">테스트 좌석번호</td>
+                            <td style="width: 50px;" class="border border-2 border-light" th:if="${item.adultYn} == 'Y'">성인</td>
+                            <td style="width: 80px;" class="border border-2 border-light" th:unless="${item.adultYn} == 'Y'">청소년</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
     </div>
-    <table class="table table-striped text-center">
-        <thead class="border-top border-bottom border-3">
-            <tr>
-                <th>예매번호</th>
-                <th>예약날짜</th>
-                <th>영화이름</th>
-                <th>영화관이름</th>
-                <th>상영관</th>
-                <th>상영시간</th>
-                <th>좌석번호</th>
-                <th>성인/청소년</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr th:each="item : ${bookList}">
-                <td class="border border-2 border-light" th:text="${item.bookNum}">테스트 번호</td>
-                <td class="border border-2 border-light" th:text="${item.reserveDate}">테스트 날짜</td>
-                <td class="border border-2 border-light" th:text="${item.title}">테스트 영화이름</td>
-                <td class="border border-2 border-light" th:text="${item.cinemaName}">테스트 영화관이름</td>
-                <td class="border border-2 border-light" th:text="${item.screenHallName}">테스트 상영관</td>
-                <td class="border border-2 border-light" th:text="${item.viewTime}">테스트 상영시간</td>
-                <td class="border border-2 border-light" th:text="${item.seatCode}">테스트 좌석번호</td>
-                <td class="border border-2 border-light" th:if="${item.adultYn} == 'Y'">성인</td>
-                <td class="border border-2 border-light" th:unless="${item.adultYn} == 'Y'">청소년</td>
-            </tr>
-        </tbody>
-    </table>
-</div>
 </body>
 </html>

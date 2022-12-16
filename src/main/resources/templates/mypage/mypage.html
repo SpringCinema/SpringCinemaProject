@@ -14,36 +14,45 @@
 
     <script>
         $(document).ready(function () {
-            // 마이페이지 예약부분 스크립트 시작
-            const btnBookList = $("#btn-i-bookList");
-            const btnCancelList = $("#btn-i-cancelList");
-            
-            btnBookList.on("click", function () {
-                btnBookList.addClass("active");
-                btnCancelList.removeClass("active");
-            });
-            
-            btnCancelList.on("click", function () {
-                btnCancelList.addClass("active");
-                btnBookList.removeClass("active")
-            });
-            // 마이페이지 예약부분 스크립트 종료
-            
             // 페이지 좌측 메뉴 클릭 시 우측 페이지 변경
             $('#ul-i-ul li').click(function () {
                 $('#ul-i-ul li').removeClass();
-                $(this).addClass("li-c-on")
-                $(this).addClass("text-light")
-                let num1 = $(this).attr('id').slice(-1);
-                for (let i = 1; i <= 5; i ++) {
-                    let num2 = $(`#div-i-${i}`).attr('id').slice(-1);
-                    if(num1 == num2) {
-                        $(`#div-i-${i}`).css('display', 'block');
-                    }
-                    else {
-                        $(`#div-i-${i}`).css('display', 'none');
-                    }
+                $(this).addClass("li-c-on");
+                $(this).addClass("text-light");
+                
+                // let num1 = $(this).attr('id').slice(-1);
+                // for (let i = 1; i <= 5; i ++) {
+                //     let num2 = $(`#div-i-${i}`).attr('id').slice(-1);
+                //     if(num1 == num2) {
+                //         $(`#div-i-${i}`).css('display', 'block');
+                //     }
+                //     else {
+                //         $(`#div-i-${i}`).css('display', 'none');
+                //     }
+                // }
+    
+                // 메뉴 클릭시 페이지 이동
+                // 최종 수정일 : 2022-12-16
+                // 작성자 : MoonNigth285
+                const pageName = $(this).text();
+                const iFrame = $("#iframe-i-move-page");
+                let targetSrc = "";
+                
+                switch (pageName) {
+                    case "내 프로필":
+                        break;
+                    case "예매내역" :
+                        targetSrc = "http://localhost:8080/mypage/book/normal"
+                        break;
+                    case "결제내역":
+                        break;
+                    case "댓글":
+                        break;
+                    case "문의내역":
+                        break;
                 }
+                
+                iFrame.attr("src", targetSrc);
             });
 
             $('#button-i-delP').on('click', function() {
@@ -89,9 +98,8 @@
         }
 
         main.container {
-            width: 1300px;
-            margin-top: 30px;
-            margin-bottom: 310px;
+            width: 1500px;
+            margin: 30px 0px;
             max-width: none !important;
         }
 
@@ -103,9 +111,9 @@
         .li-c-on, #button-i-update {
             background-color: #FF4500;
         }
-
-        #p-i-title, .p-c-menu-title {
-            font-family: KOHIBaeumOTF;
+        
+        #ul-i-ul {
+            padding-left: 0px;
         }
     </style>
 
@@ -130,11 +138,12 @@
 
         <!--    메인 우측 선택된 메뉴 출력 페이지 (메뉴 선택 시 display 속성값 none/block 변환)-->
         <div class="w-75 ms-5 mt-4">
-            <div th:insert="mypage/mypage_profile :: profile" id="div-i-1"></div>
-            <div th:insert="mypage/mypage_book :: book(${bookList})" id="div-i-2" style="display: none"></div>
-            <div th:insert="mypage/mypage_payment :: payment" id="div-i-3" style="display: none"></div>
-            <div th:insert="mypage/mypage_comment :: comment" id="div-i-4" style="display: none"></div>
-            <div th:insert="mypage/mypage_question :: question" id="div-i-5" style="display: none"></div>
+<!--            <div th:insert="mypage/mypage_profile :: profile" id="div-i-1"></div>-->
+<!--            <div th:insert="mypage/mypage_book :: book(${bookList})" id="div-i-2" style="display: none"></div>-->
+<!--            <div th:insert="mypage/mypage_payment :: payment" id="div-i-3" style="display: none"></div>-->
+<!--            <div th:insert="mypage/mypage_comment :: comment" id="div-i-4" style="display: none"></div>-->
+<!--            <div th:insert="mypage/mypage_question :: question" id="div-i-5" style="display: none"></div>-->
+            <iframe id="iframe-i-move-page" src="" width="1500px" height="700px" scrolling="no"></iframe>
         </div>
     </div>
 </main>
