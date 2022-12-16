@@ -1,8 +1,10 @@
 package com.esc.springcinema.controller;
 
+import com.esc.springcinema.dto.BooksDto;
 import com.esc.springcinema.dto.MemberDto;
 import com.esc.springcinema.dto.ScreenHallDto;
 import com.esc.springcinema.service.CinemaService;
+import com.esc.springcinema.service.MypageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -16,11 +18,13 @@ public class MypageController {
 
     @Autowired
     private CinemaService cinemaService;
-
-
+    
+    @Autowired
+    private MypageService mypageService;
+    
 //    DB 적용
-//    마이 페이지
-//    2022-12-15 양민호
+//    마이 페이지(예매한 내역을 불러오는기능 추가)
+//    2022-12-16 MoonNight285
 //    임시적으로 id를 직접 입력한 마이페이지로 이동하게 설계. 추후 sesssion 값 받아오기
     @RequestMapping(value = "/mypage/{id}", method = RequestMethod.GET)
     public ModelAndView openMyPage(@PathVariable("id") String id) throws Exception {
@@ -28,6 +32,10 @@ public class MypageController {
 
         MemberDto myInfo = cinemaService.selectMyInfo(id);
         mv.addObject("myInfo", myInfo);
+    
+        List<BooksDto> bookList = mypageService.selectBookList(id);
+        mv.addObject("bookList", bookList);
+        
         return mv;
     }
 
