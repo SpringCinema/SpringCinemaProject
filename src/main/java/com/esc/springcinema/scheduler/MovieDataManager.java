@@ -17,16 +17,30 @@ import java.util.Date;
 @Component
 @Controller
 public class MovieDataManager {
+    private boolean isFirstUpdate = true;
     @Autowired
     private MovieService movieService;
 
-    // 새벽3시에 한번씩 영화목록을 업데이트 해준다.
-    // 작성일 : 2022-12-15
+    // 새벽 4시에 한번씩 영화목록을 업데이트 해준다.
+    // 마지막 작성일 : 2022-12-16
     // 작성자 : MoonNight285
-    @Scheduled(cron = "0 0 3 * * *")
+    @Scheduled(cron = "0 0 4 * * *")
     public void updateMovieInfo() throws Exception {
         movieService.init();
     }
+    
+    // * 서버 가동할때마다 API 통신을 하기때문에 개발단계에서는 일부러 주석처리함 *
+    // 서버키면 영화목록을 갱신을 안했다면 갱신시켜준다.
+    // 반복시간은 1일로 설정되어있는데 일 하지말라고 일부러 1일로 설정함
+    // 마지막 작성일 : 2022-12-16
+    // 작성자 : MoonNight285
+    // @Scheduled(fixedRate = 86400000)
+    // public void bootServer() throws Exception {
+    //    if (isFirstUpdate == true) {
+    //        updateMovieInfo();
+    //        isFirstUpdate = false;
+    //    }
+    //}
 
     // 테스트용도
     // 작성일 : 2022-12-16
