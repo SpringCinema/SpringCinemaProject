@@ -10,6 +10,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,7 +25,7 @@ public class MypageController {
     private MypageService mypageService;
     
 //    DB 적용
-//    마이 페이지(예매한 내역을 불러오는기능 추가)
+//    마이 페이지(예매한 내역을 불러오는기능 추가했다가 다시 제거)
 //    2022-12-16 MoonNight285
 //    임시적으로 id를 직접 입력한 마이페이지로 이동하게 설계. 추후 sesssion 값 받아오기
     @RequestMapping(value = "/mypage/{id}", method = RequestMethod.GET)
@@ -32,11 +34,43 @@ public class MypageController {
 
         MemberDto myInfo = cinemaService.selectMyInfo(id);
         mv.addObject("myInfo", myInfo);
-    
-        List<BooksDto> bookList = mypageService.selectBookList(id);
-        mv.addObject("bookList", bookList);
         
         return mv;
+    }
+    
+    // 마이페이지의 영화예매내역 중 예매중인 영화목록 표시
+    // 최종 수정일 : 2022-12-16
+    // 마지막 작성자 : MoonNight285
+    @RequestMapping(value = "/mypage/book/normal", method = RequestMethod.GET)
+    public ModelAndView getNormalBookList(HttpServletRequest request) throws Exception {
+        request.setCharacterEncoding("UTF-8");
+        HttpSession session = request.getSession();
+        String loggedInUserId = ((MemberDto)session.getAttribute("loggedInUserInfo")).getId();
+        List<BooksDto> bookList = mypageService.selectBookList(loggedInUserId, "Y");
+        ModelAndView view = new ModelAndView("mypage/mypage_book");
+        view.addObject("bookList", bookList);
+        view.addObject("bookTitle", "예매내역");
+        view.addObject("selected", "active");
+        view.addObject("bookType", "normal");
+        
+        return view;
+    }
+    
+    // 마이페이지의 영화예매내역 중 예매 취소된 영화목록 표시
+    // 최종 수정일 : 2022-12-16
+    // 마지막 작성자 : MoonNight285
+    @RequestMapping(value = "/mypage/book/cancellation", method = RequestMethod.GET)
+    public ModelAndView getCancellationBookList(HttpServletRequest request) throws Exception {
+        request.setCharacterEncoding("UTF-8");
+        HttpSession session = request.getSession();
+        String loggedInUserId = ((MemberDto)session.getAttribute("loggedInUserInfo")).getId();
+        List<BooksDto> bookList = mypageService.selectBookList(loggedInUserId, "N");
+        ModelAndView view = new ModelAndView("mypage/mypage_book");
+        view.addObject("bookList" , bookList);
+        view.addObject("bookTitle", "취소내역");
+        view.addObject("bookType", "cancellation");
+    
+        return view;
     }
 
 //    (DB 적용)

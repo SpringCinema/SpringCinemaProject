@@ -17,7 +17,7 @@ public class MypageServiceImpl implements MypageService {
     // 최종 수정 : 2022-12-16
     // 마지막 작성자 : MoonNight285
     @Override
-    public List<BooksDto> selectBookList(String userId) throws Exception {
-        return mypageMapper.selectBookList(userId);
+    public List<BooksDto> selectBookList(String userId, String state) throws Exception {
+        return mypageMapper.selectBookList(userId, state);
     }
 }
