@@ -53,11 +53,65 @@
                NOW())
     </insert>
 
-    <select id="selectNowplayingMoviesList" resultType="com.esc.springcinema.dto.MoviesDto">
+    <select id="selectNowplayingMoviesList" resultType="com.esc.springcinema.dto.apiMovieDto.MovieDto">
         <![CDATA[
-            SELECT title, SUBSTRING_INDEX(posters, '|', 1) AS posters
+            SELECT docid, title, SUBSTRING_INDEX(posters, '|', 1) AS posters
             FROM movies
-            WHERE repRlsDate <= NOW()
+            WHERE repRlsDate <= NOW() AND repRlsDate >= DATE_ADD(NOW(), INTERVAL -10 DAY)
+        ]]>
+    </select>
+
+    <insert id="insertMovieDatas" parameterType="com.esc.springcinema.dto.apiMovieDto.MovieDto">
+        INSERT INTO movies(docid, title, titleEng, nation, company, runtime, rating, genre, repRlsDate, keywords, posters, stlls, awards1, plotText)
+        VALUES(#{docid}, #{title}, #{titleEng}, #{nation}, #{company}, #{runtime}, #{rating}, #{genre}, #{repRlsDate}, #{keywords},
+               #{posters}, #{stlls}, #{awards1}, #{plotsDto.plotDto.plotText})
+    </insert>
+
+    <select id="selectMovieDetail" parameterType="String" resultType="com.esc.springcinema.dto.apiMovieDto.MovieDto">
+        <![CDATA[
+        SELECT docid, title, titleEng, SUBSTRING_INDEX(posters, '|', 1) AS posters, nation, runtime, rating, genre, repRlsDate, keywords, awards1, REPLACE(stlls, '|', ',') AS stlls
+        FROM movies
+        WHERE docid = #{docid}
+        ]]>
+    </select>
+
+    <select id="selectPlotText" parameterType="String" resultType="com.esc.springcinema.dto.apiMovieDto.PlotDto">
+        <![CDATA[
+        SELECT plotText
+        FROM movies
+        WHERE docid = #{docid}
+        ]]>
+    </select>
+
+    <insert id="insertDirectors" parameterType="com.esc.springcinema.dto.apiMovieDto.MovieDto">
+        INSERT INTO directors(docid, directorNm) VALUES(#{docid}, #{directorsDto.directorDto.directorNm})
+    </insert>
+
+    <insert id="insertActors" parameterType="com.esc.springcinema.dto.apiMovieDto.MovieDto">
+        INSERT INTO actors(docid, actorNm) VALUES
+        <foreach collection="actorsDto.actors" item="item" separator="," index="index">
+            (#{docid}, #{item.actorNm})
+        </foreach>
+    </insert>
+
+    <select id="selectMovieDocid" resultType="int" parameterType="String">
+        SELECT COUNT(*) FROM movies WHERE docid = #{docid}
+    </select>
+
+    <select id="selectDirector" parameterType="String" resultType="com.esc.springcinema.dto.apiMovieDto.DirectorDto">
+        <![CDATA[
+        SELECT directorNm
+        FROM directors
+        WHERE docid = #{docid}
+        ]]>
+    </select>
+
+    <select id="selectActor" parameterType="String" resultType="com.esc.springcinema.dto.apiMovieDto.ActorDto">
+        <![CDATA[
+        SELECT actorNm
+        FROM actors
+        WHERE docid = #{docid} AND actorNm != ''
+        LIMIT 4
         ]]>
     </select>
 </mapper>

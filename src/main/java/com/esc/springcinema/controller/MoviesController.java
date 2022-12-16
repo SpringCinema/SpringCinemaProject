@@ -1,10 +1,14 @@
 package com.esc.springcinema.controller;
 
-import com.esc.springcinema.dto.MoviesDto;
-import com.esc.springcinema.service.MoviesService;
+import com.esc.springcinema.dto.apiMovieDto.ActorDto;
+import com.esc.springcinema.dto.apiMovieDto.DirectorDto;
+import com.esc.springcinema.dto.apiMovieDto.MovieDto;
+import com.esc.springcinema.dto.apiMovieDto.PlotDto;
+import com.esc.springcinema.service.MovieService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
@@ -13,7 +17,7 @@ import java.util.List;
 public class MoviesController {
 
     @Autowired
-    private MoviesService moviesService;
+    private MovieService movieService;
 
     // 메인화면 캐러셀에 현재상영작 불러오기
     // 최종 수정 : 2022-12-15
@@ -22,7 +26,7 @@ public class MoviesController {
     public ModelAndView viewNowplayingMoviesList() throws Exception {
         ModelAndView mv = new ModelAndView("main");
 
-        List<MoviesDto> nowplayingList = moviesService.selectNowplayingMoviesList();
+        List<MovieDto> nowplayingList = movieService.selectNowplayingMoviesList();
         mv.addObject("nowplayingList", nowplayingList);
 
         return mv;
@@ -35,8 +39,46 @@ public class MoviesController {
     public ModelAndView viewMoviesList() throws Exception {
         ModelAndView mv = new ModelAndView("search");
 
-        List<MoviesDto> dataList = moviesService.selectMoviesList();
+        List<MovieDto> dataList = movieService.selectMoviesList();
         mv.addObject("dataList", dataList);
+
+        return mv;
+    }
+
+    // 영화_현재상영작 페이지
+    // 최종 수정 : 2022-12-15
+    // 마지막 작성자 : eblyncho
+    @RequestMapping("/nowplaying")
+    public String viewNowPlaying() throws Exception {
+        return "nowplaying";
+    }
+
+    // 영화_상영예정작 페이지
+    // 최종 수정 : 2022-12-15
+    // 마지막 작성자 : eblyncho
+    @RequestMapping("/upcoming")
+    public String viewUpcoming() throws Exception {
+        return "upcoming";
+    }
+
+    // 영화_상세 페이지
+    // 최종 수정 : 2022-12-15
+    // 마지막 작성자 : eblyncho
+    @RequestMapping("/movieDetail")
+    public ModelAndView openMovieDetail(@RequestParam String docid) throws Exception {
+        ModelAndView mv = new ModelAndView("movieDetail");
+
+        MovieDto movies = movieService.selectMovieDetail(docid);
+        mv.addObject("movies", movies);
+
+        PlotDto plotText = movieService.selectPlotText(docid);
+        mv.addObject("plotText", plotText);
+
+        DirectorDto director = movieService.selectDirector(docid);
+        mv.addObject("director", director);
+
+        List<ActorDto> actorList = movieService.selectActor(docid);
+        mv.addObject("actorList", actorList);
 
         return mv;
     }
