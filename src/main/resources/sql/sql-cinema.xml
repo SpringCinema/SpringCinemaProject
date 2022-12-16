@@ -20,7 +20,7 @@
         <![CDATA[
             SELECT docid, title, SUBSTRING_INDEX(posters, '|', 1) AS posters
             FROM movies
-            WHERE repRlsDate <= NOW()
+            WHERE repRlsDate <= NOW() AND repRlsDate >= DATE_ADD(NOW(), INTERVAL -10 DAY)
         ]]>
     </select>
 
@@ -43,6 +43,23 @@
         SELECT plotText
         FROM movies
         WHERE docid = #{docid}
+        ]]>
+    </select>
+
+    <select id="selectDirector" parameterType="String" resultType="com.esc.springcinema.dto.apiMovieDto.DirectorDto">
+        <![CDATA[
+        SELECT directorNm
+        FROM directors
+        WHERE docid = #{docid}
+        ]]>
+    </select>
+
+    <select id="selectActor" parameterType="String" resultType="com.esc.springcinema.dto.apiMovieDto.ActorDto">
+        <![CDATA[
+        SELECT actorNm
+        FROM actors
+        WHERE docid = #{docid} AND actorNm != ''
+        LIMIT 4
         ]]>
     </select>
 </mapper>

@@ -1,8 +1,6 @@
 package com.esc.springcinema.service;
 
-import com.esc.springcinema.dto.apiMovieDto.MovieDto;
-import com.esc.springcinema.dto.apiMovieDto.PlotDto;
-import com.esc.springcinema.dto.apiMovieDto.ResultDto;
+import com.esc.springcinema.dto.apiMovieDto.*;
 
 import java.util.List;
 
@@ -25,4 +23,8 @@ public interface MovieService {
     MovieDto selectMovieDetail(String docid) throws Exception;
 
     PlotDto selectPlotText(String docid) throws Exception;
+
+    DirectorDto selectDirector(String docid) throws Exception;
+
+    List<ActorDto> selectActor(String docid) throws Exception;
 }

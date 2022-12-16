@@ -1,6 +1,8 @@
 package com.esc.springcinema.mapper;
 
 import com.esc.springcinema.dto.MemberDto;
+import com.esc.springcinema.dto.apiMovieDto.ActorDto;
+import com.esc.springcinema.dto.apiMovieDto.DirectorDto;
 import com.esc.springcinema.dto.apiMovieDto.MovieDto;
 import com.esc.springcinema.dto.apiMovieDto.PlotDto;
 import org.apache.ibatis.annotations.Mapper;
@@ -44,4 +46,8 @@ public interface CinemaMapper {
     MovieDto selectMovieDetail(String docid) throws Exception;
 
     PlotDto selectPlotText(String docid) throws Exception;
+
+    DirectorDto selectDirector(String docid) throws Exception;
+
+    List<ActorDto> selectActor(String docid) throws Exception;
 }
