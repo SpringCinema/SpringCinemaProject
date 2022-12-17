@@ -167,13 +167,18 @@ public class MypageController {
         return "redirect:/seat";
     }
 
-//    (DB 적용)
-//    회원 탈퇴 (뷰)
-    @RequestMapping(value = "/mypage/delete", method = RequestMethod.POST)
-    public ModelAndView deleteProfile(@RequestParam("id") String id) throws Exception {
+    // (DB 적용)
+    // 회원 탈퇴 (뷰)
+    // 마이페이지 내 프로필에서 회원 탈퇴를 누르면 뷰를 만들어서 보여준다.
+    @RequestMapping(value = "/mypage/delete", method = RequestMethod.GET)
+    public ModelAndView deleteProfile(HttpServletRequest request) throws Exception {
+        request.setCharacterEncoding("UTF-8");
+        HttpSession session = request.getSession();
+        String loggedInUserId = ((MemberDto)session.getAttribute("loggedInUserInfo")).getId();
         ModelAndView mv = new ModelAndView("mypage/profile_delete");
-        MemberDto myInfo = mypageService.selectMyInfo(id);
+        MemberDto myInfo = mypageService.selectMyInfo(loggedInUserId);
         mv.addObject("myInfo", myInfo);
+
         return mv;
     }
 
