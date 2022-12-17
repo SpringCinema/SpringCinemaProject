@@ -1,13 +1,53 @@
-<!-- 수정일 : 2022-12-13일 -->
-<!-- 마지막으로 수정한 사람 : MoonNight285 -->
-<!-- 마지막으로 작업한 내용 : 헤더,푸터 추가 -->
-<!-- 결제처리 페이지(결제모듈 사용안될시 사용할 페이지) -->
+<!-- 수정일 : 2022-12-17일 -->
+<!-- 마지막으로 수정한 사람 : EblynCho -->
+<!-- 마지막으로 작업한 내용 : 결제 모듈 테스트 -->
+<!-- 결제 전 예매정보 확인 페이지 -->
 
 <!DOCTYPE html>
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>스프링 시네마 - 결제</title>
+
+    <!-- iamport.payment.js -->
+    <script type="text/javascript" src="https://cdn.iamport.kr/js/iamport.payment-1.2.0.js"></script>
+
+    <th:block th:replace="fragments/config :: configFragment"></th:block>
+
+    <script th:inline="javascript">
+        $(document).ready(function () {
+            $('#btn-i-back').on('click', function () {
+                history.back();
+            });
+
+            // 결제 버튼 클릭
+            $('#btn-i-payment').click(function(){
+                const pathName = location.pathname;
+                const href = location.href;
+                const m_redirect = href.replaceAll(pathName, "");
+
+                IMP.init("imp56680440");
+                IMP.request_pay({ // param
+                    pg: "html5_inicis",
+                    pay_method: "card",
+                    merchant_uid: "orderNum",
+                    name: "영화",
+                    amount: 100, //금액
+                    buyer_email : "aaa@aa.com",
+                    buyer_name : "홍길동",
+                    buyer_tel : "1234-56687"
+                }, function (rsp) {
+                    if (rsp.success) {
+                        alert("[완료] imp_uid : "+rsp.imp_uid+" / merchant_uid : " +rsp.merchant_uid);
+                        location.replace = "/paymentComplete";
+                    } else {
+                        // alert("[실패] 코드("+rsp.error_code+") / 메세지(" + rsp.error_msg + ")");
+                        location.href = "/paymentCancel";
+                    }
+                });
+            });
+        });
+    </script>
 
     <style>
         @font-face {
@@ -131,7 +171,7 @@
         }
     </style>
 
-    <th:block th:replace="fragments/config :: configFragment"></th:block>
+
 </head>
 <body>
     <header th:replace="fragments/header :: headerFragment"></header>
@@ -161,7 +201,7 @@
                         <p>좌석</p>
                     </div>
                     <div class="ms-4 mt-5">
-                        <p class="title">아바타: 물의길</p>
+                        <p class="title" >아바타: 물의길</p>
                         <p>SPRING CINEMA 부산점</p>
                         <p>1관</p>
                         <p>2022-12-20</p>
@@ -170,7 +210,7 @@
                     </div>
                 </div>
                 <div class="ms-4" style="margin-top: 40px">
-                    <a href="/main"><img  src="/img/payment_back.png" style="width: 80px"></a>
+                    <a href="#" id="btn-i-back"><img src="/img/payment_back.png" style="width: 80px"></a>
                 </div>
             </div>
             <div id="div-i-sidebar" class="col-xl-12">
