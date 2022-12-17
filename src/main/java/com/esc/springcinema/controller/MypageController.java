@@ -139,13 +139,20 @@ public class MypageController {
         return view;
     }
 
-//    (DB 적용)
-//    내 정보 수정 (뷰)
-    @RequestMapping(value = "/mypage/update", method = RequestMethod.POST)
-    public ModelAndView updateProfile(@RequestParam("id") String id) throws Exception {
+    // (DB 적용)
+    // 내 정보 수정 (뷰)
+    // 내 프로필에서 내 정보 수정을 눌렀을때 뷰를 내려준다.
+    // 최종 수정일 : 2022-12-17
+    @RequestMapping(value = "/mypage/update", method = RequestMethod.GET)
+    public ModelAndView updateProfile(HttpServletRequest request) throws Exception {
+        request.setCharacterEncoding("UTF-8");
+        HttpSession session = request.getSession();
+        String loggedInUserId = ((MemberDto)session.getAttribute("loggedInUserInfo")).getId();
         ModelAndView mv = new ModelAndView("mypage/profile_update");
-        MemberDto myInfo = mypageService.selectMyInfo(id);
+        MemberDto myInfo = mypageService.selectMyInfo(loggedInUserId);
         mv.addObject("myInfo", myInfo);
+        mv.addObject("profileTitle", "내 정보 수정");
+
         return mv;
     }
 
