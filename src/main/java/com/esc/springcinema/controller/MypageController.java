@@ -189,14 +189,20 @@ public class MypageController {
         int chkPwd = cinemaService.checkPwd(myid, inputpwd);
         return chkPwd;
     }
-//    (DB 적용)
-//    2022-12-15 양민호
-//    회원 탈퇴 (기능) 추후 경로 mypage로 변경 필요
+
+    // (DB 적용)
+    // 2022-12-17 MoonNight285
+    // 회원 탈퇴 (기능) 추후 경로 mypage로 변경 필요(작업됨)
+    // 탈퇴후 메인으로 부모창이 이동해야하는데 아직 미적용
     @RequestMapping(value = "/mypage/out/{id}", method = RequestMethod.DELETE)
-    public String deleteAccount(MemberDto delete) throws Exception{
+    public String deleteAccount(MemberDto delete, HttpServletRequest request) throws Exception{
         cinemaService.deleteAccount(delete);
 
-        return "redirect:/seat";
+        HttpSession session = request.getSession();
+        session.removeAttribute("loggedInUserInfo");
+        session.invalidate();
+
+        return "redirect:/main";
     }
 
 
