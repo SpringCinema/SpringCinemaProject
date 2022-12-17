@@ -160,11 +160,10 @@ public class MypageController {
 //    (DB 적용)
 //    2022-12-15 양민호
 //    내 정보 수정 (수정 기능)
-    @RequestMapping(value = "/mypage/update/{id}", method = RequestMethod.PUT)
+    @RequestMapping(value = "/mypage/update", method = RequestMethod.POST)
     public String updateMyInfo(MemberDto update) throws Exception{
         cinemaService.updateMyInfo(update);
-
-        return "redirect:/seat";
+        return "redirect:/mypage/update";
     }
 
     // (DB 적용)

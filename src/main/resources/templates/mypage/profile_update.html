@@ -11,13 +11,16 @@
         $(document).ready(function () {
             console.log($("#form-i-update")[0])
             $("#button-i-back").on("click", function () {
-                history.back();
+                const frm = $("#form-i-update")[0];
+                frm.action = "/mypage/userInfo";
+                frm.method = "get";
+                frm.submit();
             });
 
             $('#button-i-ok').on('click', function() {
-                $("#input-i-method").val("PUT");
                 const frm = $("#form-i-update")[0];
-                frm.action = "/mypage/update/" + $("#input-i-id").val();
+                frm.action = "/mypage/update";
+                frm.method = "post";
                 frm.submit();
             });
         });
@@ -58,7 +61,7 @@
     </div>
     <div class="row">
         <div class="col-xl-7 d-flex" style="border: 2px solid #e3e3e3; padding: 15px;">
-            <form>
+            <form id="form-i-update">
                 <div class="d-flex">
                     <img src="/img/profile.png" width="150px" height="150px">
                     <div style="border-right: 2px solid #e3e3e3; padding-right: 20px;">
