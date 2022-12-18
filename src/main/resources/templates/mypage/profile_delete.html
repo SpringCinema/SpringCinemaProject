@@ -30,11 +30,22 @@
                         if(data == 1) {
                             const chk = confirm("정말 탈퇴하시겠습니까?");
                             if(chk == true){
-                                alert("회원탈퇴 되었습니다.");
-                                $("#input-i-method").val("DELETE");
-                                const frm = $("#form-i-frm")[0];
-                                frm.action = "/mypage/out/" + $("#input-i-id").val();
-                                frm.submit();
+                                // 탈퇴시 ajax 통신 사용해서 탈퇴처리후 부모창을 처리결과창으로 이동시킨다.
+                                // 최종 수정일 : 2022-12-18
+                                // 최종 작성자 : MoonNight285
+                                $.ajax({
+                                    url: "/mypage/out",
+                                    type: "delete",
+                                    data: {id : $("#input-i-id").val()},
+                                    success: function (data) {
+                                        if (data == "UserDeleted") {
+                                            window.parent.location.href = "/complete?msgType=UserDeleted";
+                                        }
+                                    },
+                                    error: function () {
+                                        alert("회원탈퇴 진행중 서버와 통신이 실패했습니다.");
+                                    }
+                                });
                             }
                         }
                         else {

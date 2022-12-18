@@ -194,7 +194,8 @@ public class MypageController {
     // 2022-12-17 MoonNight285
     // 회원 탈퇴 (기능) 추후 경로 mypage로 변경 필요(작업됨)
     // 탈퇴후 메인으로 부모창이 이동해야하는데 아직 미적용
-    @RequestMapping(value = "/mypage/out/{id}", method = RequestMethod.DELETE)
+    @ResponseBody
+    @RequestMapping(value = "/mypage/out", method = RequestMethod.DELETE)
     public String deleteAccount(MemberDto delete, HttpServletRequest request) throws Exception{
         cinemaService.deleteAccount(delete);
 
@@ -202,7 +203,7 @@ public class MypageController {
         session.removeAttribute("loggedInUserInfo");
         session.invalidate();
 
-        return "redirect:/main";
+        return "UserDeleted";
     }
 
 
