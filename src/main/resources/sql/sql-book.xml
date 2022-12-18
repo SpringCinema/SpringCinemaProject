@@ -22,5 +22,6 @@
     <select id="selectMovieTime" resultType="com.esc.springcinema.dto.ScreenHallDto">
     SELECT * FROM screen_hall
     WHERE movie_title = #{movieTitle} AND cinema_name = #{cinemaName}
+    ORDER BY screen_hall_name;
     </select>
 </mapper>

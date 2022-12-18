@@ -32,6 +32,17 @@ public class BookController {
         return mv;
     }
 
+    // 예매 페이지에서 선택된 영화의 극장을 가져오는 부분
+    // 최종 수정 : 2022-12-18
+    // 마지막 작성자 : yang
+    @ResponseBody
+    @RequestMapping(value = "/book/cinema", method = RequestMethod.POST)
+    public Object ajaxCinemaName(@RequestParam("movieTitle") String title) throws Exception{
+        List<ScreenHallDto> cinemaName = cinemaService.selectCinemaName(title);
+
+        return cinemaName;
+    }
+
     // 예매 페이지에서 선택된 영화의 상영시간을 가져오는 부분
     // 최종 수정 : 2022-12-16
     // 마지막 작성자 : yang
