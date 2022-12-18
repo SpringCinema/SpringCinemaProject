@@ -31,12 +31,6 @@ public interface CinemaMapper {
     // 마지막 작성자 : MoonNight285
     void createMember(MemberDto member) throws Exception;
 
-    void updateMyInfo(MemberDto update) throws Exception;
-
-    void deleteAccount(MemberDto delete) throws Exception;
-
-    int checkPwd(String id, String pwd) throws Exception;
-
     // 영화 검색
     // 최종 수정 : 2022-12-15
     // 마지막 작성자 : eblyncho

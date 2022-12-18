@@ -92,17 +92,35 @@ public class MypageController {
     }
 
     // 마이페이지에서 내가 결제한 내역을 보여주는 기능
-    // 최종 수정일 : 2022-12-16
+    // 최종 수정일 : 2022-12-18
     // 마지막 작성자 : MoonNight285
-    @RequestMapping(value = "/mypage/payment", method = RequestMethod.GET)
-    public ModelAndView getPaymentList(HttpServletRequest request) throws Exception {
+    @RequestMapping(value = "/mypage/payment/normal", method = RequestMethod.GET)
+    public ModelAndView getNormalPaymentList(HttpServletRequest request) throws Exception {
         request.setCharacterEncoding("UTF-8");
         HttpSession session = request.getSession();
         String loggedInUserId = ((MemberDto)session.getAttribute("loggedInUserInfo")).getId();
-        PaymentsDto payment = mypageService.selectMyPayment(loggedInUserId);
+        PaymentsDto payment = mypageService.selectMyPayment(loggedInUserId, "결제완료");
         ModelAndView view = new ModelAndView("/mypage/mypage_payment");
         view.addObject("payment", payment);
         view.addObject("paymentTitle", "결제내역");
+        view.addObject("paymentType", "normal");
+
+        return view;
+    }
+
+    // 마이페이지에서 내가 결제취소한 내역을 보여주는 기능
+    // 최종 수정일 : 2022-12-18
+    // 마지막 작성자 : MoonNight285
+    @RequestMapping(value = "/mypage/payment/cancellation", method = RequestMethod.GET)
+    public ModelAndView getCancellationPaymentList(HttpServletRequest request) throws Exception {
+        request.setCharacterEncoding("UTF-8");
+        HttpSession session = request.getSession();
+        String loggedInUserId = ((MemberDto)session.getAttribute("loggedInUserInfo")).getId();
+        PaymentsDto payment = mypageService.selectMyPayment(loggedInUserId, "취소완료");
+        ModelAndView view = new ModelAndView("/mypage/mypage_payment");
+        view.addObject("payment", payment);
+        view.addObject("paymentTitle", "취소내역");
+        view.addObject("paymentType", "cancellation");
 
         return view;
     }
@@ -162,7 +180,7 @@ public class MypageController {
 //    내 정보 수정 (수정 기능)
     @RequestMapping(value = "/mypage/update", method = RequestMethod.POST)
     public String updateMyInfo(MemberDto update) throws Exception{
-        cinemaService.updateMyInfo(update);
+        mypageService.updateMyInfo(update);
         return "redirect:/mypage/update";
     }
 
@@ -186,18 +204,17 @@ public class MypageController {
     @ResponseBody
     @RequestMapping(value = "/mypage/delete/checkPwd", method = RequestMethod.POST)
     public Object ajaxCalResult(@RequestParam("myid") String myid, @RequestParam("inputpwd") String inputpwd) throws Exception {
-        int chkPwd = cinemaService.checkPwd(myid, inputpwd);
+        int chkPwd = mypageService.checkPwd(myid, inputpwd);
         return chkPwd;
     }
 
     // (DB 적용)
-    // 2022-12-17 MoonNight285
-    // 회원 탈퇴 (기능) 추후 경로 mypage로 변경 필요(작업됨)
-    // 탈퇴후 메인으로 부모창이 이동해야하는데 아직 미적용
+    // 2022-12-18 MoonNight285
+    // 회원탈퇴후 ajax 로 결과값을 내려주고 뷰에서 메인으로 이동함
     @ResponseBody
     @RequestMapping(value = "/mypage/out", method = RequestMethod.DELETE)
     public String deleteAccount(MemberDto delete, HttpServletRequest request) throws Exception{
-        cinemaService.deleteAccount(delete);
+        mypageService.deleteAccount(delete);
 
         HttpSession session = request.getSession();
         session.removeAttribute("loggedInUserInfo");

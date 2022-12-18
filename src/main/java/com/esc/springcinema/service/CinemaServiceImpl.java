@@ -12,21 +12,6 @@ public class CinemaServiceImpl implements CinemaService{
     private CinemaMapper cinemaMapper;
 
     @Override
-    public void updateMyInfo(MemberDto update) throws Exception {
-        cinemaMapper.updateMyInfo(update);
-    }
-
-    @Override
-    public void deleteAccount(MemberDto delete) throws Exception {
-        cinemaMapper.deleteAccount(delete);
-    }
-
-    @Override
-    public int checkPwd(String id, String pwd) throws Exception {
-        return cinemaMapper.checkPwd(id, pwd);
-    }
-
-    @Override
     public ScreenHallDto selectScreenData(String movieTitle, String cinemaName, String screenHallName) {
         return cinemaMapper.selectScreenData(movieTitle, cinemaName, screenHallName);
     }

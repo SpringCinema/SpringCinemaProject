@@ -1,6 +1,6 @@
-<!-- 수정일 : 2022-12-16일 -->
+<!-- 수정일 : 2022-12-18일 -->
 <!-- 마지막으로 수정한 사람 : MoonNight285 -->
-<!-- 마지막으로 작업한 내용 : 타임리프 적용하여 동적으로 테이블 그리기(페이징 처리 X) -->
+<!-- 마지막으로 작업한 내용 : 불필요한 코드 제거 및 버튼 클릭 이동경로 수정 -->
 <!-- 마이페이지 예약 페이지 -->
 
 <!DOCTYPE html>
@@ -17,19 +17,16 @@
             // 마이페이지에서 예약목록의 옵션을 선택하고 서버로 전송하는 기능
             const btnBookList = $("#btn-i-bookList");
             const btnCancelList = $("#btn-i-cancelList");
-            const bookTitle = $("#p-i-book-title");
             const bookTypeSender = $("#form-i-send-book-type");
             
             btnBookList.on("click", function () {
                 btnBookList.addClass("active");
-                bookTitle.text("예매내역");
-                bookTypeSender.attr("action", "http://localhost:8080/mypage/book/normal");
+                bookTypeSender.attr("action", "/mypage/book/normal");
             });
             
             btnCancelList.on("click", function () {
                 btnCancelList.addClass("active");
-                bookTitle.text("취소내역");
-                bookTypeSender.attr("action", "http://localhost:8080/mypage/book/cancellation");
+                bookTypeSender.attr("action", "/mypage/book/cancellation");
             });
         });
     </script>
