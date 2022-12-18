@@ -34,7 +34,11 @@ public class UserController {
     public String testLogin(@RequestParam("targetId") String targetId, @RequestParam("pwd") String pwd) throws Exception {
         MemberDto result = memberService.login(targetId, pwd);
         if (result != null) {
-            return "true";
+            if (result.getOutDate() == null) {
+                return "true"; // 회원 탈퇴 유저가 아니면
+            } else {
+                return "false"; // 회원 탈퇴 유저인경우
+            }
         } else {
             return "false";
         }
