@@ -41,7 +41,7 @@
             font-weight: bold;
         }
 
-        .a-c-payment-cancle {
+        .a-c-payment-cancel {
             color: white;
             text-decoration: none;
             background-color: red;
@@ -49,7 +49,7 @@
             border-radius: 5px;
         }
 
-        .a-c-payment-cancle:hover {
+        .a-c-payment-cancel:hover {
             color: #ffe200;
         }
     </style>
@@ -86,16 +86,18 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td style="width: 100px;" class="border border-2 border-light" th:text="${payment.getPaymentNum()}">텍스트</td>
-                            <td style="width: 100px;" class="border border-2 border-light" th:text="${payment.getMoney()}">텍스트</td>
-                            <td style="width: 250px;" class="border border-2 border-light" th:text="${payment.getTitle()}">텍스트</td>
-                            <td style="width: 100px;" class="border border-2 border-light" th:text="${payment.getPayDate()}">텍스트</td>
-                            <td style="width: 100px;" class="border border-2 border-light">
-                                <span th:text="${payment.getPayType()}">텍스트</span>&nbsp;
-                                <a th:if="${paymentType} == 'normal'" class="a-c-payment-cancle" href="/mypage/paycancle">결제취소</a>
-                            </td>
-                        </tr>
+                        <form>
+                            <tr th:each="item : ${paymentList}">
+                                <td style="width: 100px;" class="border border-2 border-light" th:text="${item.getPaymentNum()}">텍스트</td>
+                                <td style="width: 100px;" class="border border-2 border-light" th:text="${item.getMoney()}">텍스트</td>
+                                <td style="width: 250px;" class="border border-2 border-light" th:text="${item.getTitle()}">텍스트</td>
+                                <td style="width: 100px;" class="border border-2 border-light" th:text="${item.getPayDate()}">텍스트</td>
+                                <td style="width: 100px;" class="border border-2 border-light">
+                                    <span th:text="${item.getPayType()}">텍스트</span>&nbsp;
+                                    <a th:if="${paymentType} == 'normal'" class="a-c-payment-cancel" href="/mypage/paycancle">결제취소</a>
+                                </td>
+                            </tr>
+                        </form>
                     </tbody>
                 </table>
             </div>

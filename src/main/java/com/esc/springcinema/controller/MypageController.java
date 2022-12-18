@@ -99,9 +99,9 @@ public class MypageController {
         request.setCharacterEncoding("UTF-8");
         HttpSession session = request.getSession();
         String loggedInUserId = ((MemberDto)session.getAttribute("loggedInUserInfo")).getId();
-        PaymentsDto payment = mypageService.selectMyPayment(loggedInUserId, "결제완료");
+        List<PaymentsDto> paymentList = mypageService.selectMyPayment(loggedInUserId, "결제완료");
         ModelAndView view = new ModelAndView("/mypage/mypage_payment");
-        view.addObject("payment", payment);
+        view.addObject("paymentList", paymentList);
         view.addObject("paymentTitle", "결제내역");
         view.addObject("paymentType", "normal");
 
@@ -116,9 +116,9 @@ public class MypageController {
         request.setCharacterEncoding("UTF-8");
         HttpSession session = request.getSession();
         String loggedInUserId = ((MemberDto)session.getAttribute("loggedInUserInfo")).getId();
-        PaymentsDto payment = mypageService.selectMyPayment(loggedInUserId, "취소완료");
+        List<PaymentsDto> paymentList = mypageService.selectMyPayment(loggedInUserId, "취소완료");
         ModelAndView view = new ModelAndView("/mypage/mypage_payment");
-        view.addObject("payment", payment);
+        view.addObject("paymentList", paymentList);
         view.addObject("paymentTitle", "취소내역");
         view.addObject("paymentType", "cancellation");
 
@@ -228,6 +228,7 @@ public class MypageController {
     @RequestMapping(value = "/mypage/paycancle", method = RequestMethod.GET)
     public ModelAndView cancelPay() throws Exception {
         ModelAndView mv = new ModelAndView("mypage/payment_cancel");
+        mv.addObject("cancelTitle", "취소하실 영화정보");
         return mv;
     }
 

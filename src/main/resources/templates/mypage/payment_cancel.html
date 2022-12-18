@@ -27,54 +27,66 @@
     <th:block th:replace="fragments/config :: configFragment"></th:block>
 
     <style>
-        header {
-            width: 1920px;
+        #div-i-iframe-main {
+            width: 1500px;
             max-width: none !important;
+            margin: 0px;
         }
 
-        main.container {
-            width: 1300px;
-            margin-top: 50px;
-            margin-bottom: 330px;
-            max-width: none !important;
+        #div-i-img-wrapper {
+            padding: 10px;
+            width: 165px;
+            height: 165px;
+            margin-right: 15px;
+            margin-top: 10px;
         }
 
-        #form-i-border {
-            border: #FF4500 solid 3px;
+        #div-i-movie-info-wrapper {
+            width: 30%;
+            border-right: 3px #e3e3e3 solid;
+            margin-right: 15px;
+            margin-bottom: 15px;
+        }
+
+        #p-i-iframe-title {
+            font-family: "KOHINanumOTFL";
+            font-weight: bold;
         }
     </style>
 </head>
 <body>
-<!-- 헤더 부분 -->
-<header th:replace="fragments/header :: headerFragment"></header>
-
-<!-- 메인 부분 -->
-<main class="container">
-    <form action="" method="post" class="row rounded-4" id="form-i-border">
-        <div class="my-3 col-2 text-center">
-            <img src="#" style="width: 150px; height: 150px; border: 1px solid">
-        </div>
-        <div class="my-3 col-6 border-end">
-            <p>영화제목 : </p>
-            <p>상영관 : </p>
-            <p>상영시간 : </p>
-            <p>금액 : </p>
-        </div>
-        <div class="my-3 col-4">
-            <p class="pt-4">결제번호 : </p>
-            <p>결제날짜 : </p>
-            <p>결제수단 : </p>
-            <div class="text-end">
-                <button type="submit" class="btn btn-danger" id="button-i-cancel">결제 취소</button>
-                <button type="reset" class="btn btn-secondary me-3" id="button-i-back">뒤로</button>
+    <!-- 메인 부분 -->
+    <main id="div-i-iframe-main" class="container">
+        <div class="row">
+            <div class="col-xl-12">
+                <p id="p-i-iframe-title" class="mb-2 fs-5" th:text="${cancelTitle}">제목</p>
             </div>
         </div>
-    </form>
-</main>
-
-<!-- 푸터 부분 -->
-<footer th:replace="fragments/footer :: footerFragment"></footer>
-
-
+        <div class="row">
+            <form action="" method="post" class="row rounded-4" id="form-i-border">
+                <div class="col-xl-8 d-flex" style="border: 2px #e3e3e3 solid">
+                    <div id="div-i-img-wrapper">
+                        <img src="#" style="width: 150px; height: 150px; border: 1px solid">
+                    </div>
+                    <div id="div-i-movie-info-wrapper" class="mt-4">
+                        <p style="word-wrap: break-word" th:text="'영화제목 : '${movieName}" class="mb-2">영화제목 : </p>
+                        <p th:text="'예약번호 : '${bookNum}" class="mb-2">예약번호 : </p>
+                        <p th:text="'상영관 : '${cinemaName}" class="mb-2">상영관 : </p>
+                        <p th:text="'상영시간 : '${viewTime}" class="mb-2">상영시간 : </p>
+                    </div>
+                    <div style="width: 50%">
+                        <p th:text="'결제번호 : '${paymentNum}" class="mt-4 mb-2">결제번호 : </p>
+                        <p th:text="'결제날짜 : '${paymentDate}" class="mb-2">결제날짜 : </p>
+                        <p th:text="'결제수단 : '${paymentType}" class="mb-2">결제수단 : </p>
+                        <p th:text="'금액 : '${money}" class="mb-0">금액 : </p>
+                        <div style="width: 100%" class="d-flex justify-content-end mx-3 mb-2">
+                            <button type="submit" class="btn btn-danger mx-2" id="button-i-cancel">결제 취소</button>
+                            <button type="reset" class="btn btn-secondary me-3" id="button-i-back">뒤로</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </main>
 </body>
 </html>

@@ -35,7 +35,7 @@ public class MypageServiceImpl implements MypageService {
     // 최종 수정 : 2022-12-18
     // 마지막 작성자 : MoonNight285
     @Override
-    public PaymentsDto selectMyPayment(String id, String state) throws Exception {
+    public List<PaymentsDto> selectMyPayment(String id, String state) throws Exception {
         return mypageMapper.selectMyPayment(id, state);
     }
 
