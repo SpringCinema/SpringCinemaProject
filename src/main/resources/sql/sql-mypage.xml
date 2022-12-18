@@ -18,21 +18,28 @@
         SELECT * FROM payments WHERE id = #{id} AND state = #{state}
     </select>
 
-    <!--    내 정보 수정 쿼리 -->
+    <!-- 내 정보 수정 쿼리 -->
     <update id="updateMyInfo" parameterType="com.esc.springcinema.dto.MemberDto">
         UPDATE members SET pwd = #{pwd}, name = #{name}, email = #{email}, tel = #{tel}
         WHERE id = #{id}
     </update>
 
-    <!--    비밀번호 중복 확인 쿼리 -->
+    <!-- 비밀번호 중복 확인 쿼리 -->
     <select id="checkPwd" parameterType="String" resultType="int">
         SELECT COUNT(*) FROM members
         WHERE id = #{id} AND pwd = #{pwd}
     </select>
 
-    <!--    회원 탈퇴 쿼리 -->
+    <!-- 회원 탈퇴 쿼리 -->
     <update id="deleteAccount" parameterType="com.esc.springcinema.dto.MemberDto">
         UPDATE members SET out_date = NOW()
         WHERE id = #{id} AND pwd = #{pwd}
     </update>
+
+    <!-- 마이페이지에서 결제취소 눌렀을때 표시되야하는 데이터 조회 -->
+    <select id="selectCancelMovieInfo" parameterType="String" resultType="HashMap">
+        SELECT b.title, b.book_num, b.screen_hall_name, b.view_time, p.payment_num, p.pay_date, p.pay_type, p.money
+        FROM books AS b INNER JOIN payments AS p ON b.id = p.id AND b.title = p.title
+        WHERE b.id = #{id} AND b.title = #{title}
+    </select>
 </mapper>
