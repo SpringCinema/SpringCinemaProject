@@ -38,24 +38,7 @@ public class PaymentsController {
         resultView.addObject("btnMsg", "메인으로");
         return resultView;
     }
-    
-//    // 결제 완료 후 페이지 이동
-//    // 최종 수정 : 2022-12-17
-//    // 마지막 작성자 : EblynCho
-//    @RequestMapping(value = "/paymentComplete", method = RequestMethod.GET)
-//    public ModelAndView paymentComplete(HttpServletRequest request) throws Exception {
-////        PaymentsDto payment = new PaymentsDto();
-////
-////        boolean result = paymentService.paymentComplete(payment);
-//        ModelAndView resultView = new ModelAndView("common/process_complete");
-////        if (result == true) {
-//            resultView.addObject("title", "스프링 시네마 - 예매 완료");
-//            resultView.addObject("headMsg", "예매가 완료되었습니다.");
-//            resultView.addObject("link", "/main");
-//            resultView.addObject("btnMsg", "메인으로");
-////        }
-//        return resultView;
-//    }
+
 
     // 결제 실패 후 페이지 이동
     // 최종 수정 : 2022-12-17

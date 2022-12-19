@@ -16,6 +16,15 @@
 
     <script th:inline="javascript">
         $(document).ready(function () {
+            $.ajax({
+                url:'/seat',
+                type:'POST',
+                success: function(data){
+                    let title = $('#input-i-send-movie').val();
+                    console.log(title);
+                }
+            });
+
             $('#btn-i-back').on('click', function () {
                 history.back();
             });
@@ -201,9 +210,9 @@
                         <p>좌석</p>
                     </div>
                     <div class="ms-4 mt-5">
-                        <p class="title" >아바타: 물의길</p>
-                        <p>SPRING CINEMA 부산점</p>
-                        <p>1관</p>
+                        <p class="title"></p>
+<!--                        <p th:value="${screenData.cinemaName}">SPRING CINEMA 부산점</p>-->
+<!--                        <p th:value="${screenData.screenHallName}">1관</p>-->
                         <p>2022-12-20</p>
                         <p>일반 3명</p>
                         <p>A1/A2/A3</p>
