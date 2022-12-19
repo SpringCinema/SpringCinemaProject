@@ -5,8 +5,8 @@ import com.esc.springcinema.dto.MemberDto;
 import com.esc.springcinema.dto.PaymentsDto;
 import org.apache.ibatis.annotations.Mapper;
 
-import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Mapper
 public interface MypageMapper {
@@ -44,5 +44,5 @@ public interface MypageMapper {
     // 마이페이지에서 결제취소 누르면 필요한 데이터 조회
     // 최종 수정 : 2022-12-18
     // 마지막 작성자 : MoonNight285
-    HashMap<String, String> selectCancelMovieInfo(String id, String title) throws Exception;
+    Map<String, String> selectCancelMovieInfo(String bookNum, String id) throws Exception;
 }

@@ -94,7 +94,7 @@
                                 <td style="width: 100px;" class="border border-2 border-light" th:text="${item.getPayDate()}">텍스트</td>
                                 <td style="width: 100px;" class="border border-2 border-light">
                                     <span th:text="${item.getPayType()}">텍스트</span>&nbsp;
-                                    <a th:if="${paymentType} == 'normal'" class="a-c-payment-cancel" href="/mypage/paycancle">결제취소</a>
+                                    <a th:if="${paymentType} == 'normal'" class="a-c-payment-cancel" th:href="@{/mypage/paycancle(bookNum=${item.getBookNum()})}">결제취소</a>
                                 </td>
                             </tr>
                         </form>

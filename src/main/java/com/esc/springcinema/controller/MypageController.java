@@ -15,6 +15,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 public class MypageController {
@@ -224,11 +225,29 @@ public class MypageController {
     }
 
 
-//    결제 취소
+    // 결제 취소
+    // 2022-12-19 MoonNight285
+    // 결제 항목에서 취소누르면 완전 취소되기전에 한번 어떤영화를 선택했는지 보여주는 페이지
     @RequestMapping(value = "/mypage/paycancle", method = RequestMethod.GET)
-    public ModelAndView cancelPay() throws Exception {
+    public ModelAndView cancelPay(HttpServletRequest request, @RequestParam("bookNum") String bookNum) throws Exception {
+        request.setCharacterEncoding("UTF-8");
+        HttpSession session = request.getSession();
+        String loggedInUserId = ((MemberDto)session.getAttribute("loggedInUserInfo")).getId();
+        
+        Map<String, String> paymentCancleInfo = mypageService.selectCancelMovieInfo(bookNum, loggedInUserId);
+        
         ModelAndView mv = new ModelAndView("mypage/payment_cancel");
         mv.addObject("cancelTitle", "취소하실 영화정보");
+        mv.addObject("title", paymentCancleInfo.get("title"));
+        mv.addObject("bookNum", paymentCancleInfo.get("book_num"));
+        mv.addObject("cinemaName", paymentCancleInfo.get("cinema_name"));
+        mv.addObject("screenHallName", paymentCancleInfo.get("screen_hall_name"));
+        mv.addObject("viewTime", paymentCancleInfo.get("view_time"));
+        mv.addObject("paymentNum", paymentCancleInfo.get("payment_num"));
+        mv.addObject("payDate", paymentCancleInfo.get("pay_date"));
+        mv.addObject("payType", paymentCancleInfo.get("pay_type"));
+        mv.addObject("money", paymentCancleInfo.get("money"));
+        
         return mv;
     }
 

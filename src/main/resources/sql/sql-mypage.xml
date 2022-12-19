@@ -37,9 +37,9 @@
     </update>
 
     <!-- 마이페이지에서 결제취소 눌렀을때 표시되야하는 데이터 조회 -->
-    <select id="selectCancelMovieInfo" parameterType="String" resultType="HashMap">
-        SELECT b.title, b.book_num, b.screen_hall_name, b.view_time, p.payment_num, p.pay_date, p.pay_type, p.money
-        FROM books AS b INNER JOIN payments AS p ON b.id = p.id AND b.title = p.title
-        WHERE b.id = #{id} AND b.title = #{title}
+    <select id="selectCancelMovieInfo" parameterType="String" resultType="map">
+        SELECT DISTINCT b.title, b.book_num, b.cinema_name, b.screen_hall_name, b.view_time, p.payment_num, p.pay_date, p.pay_type, p.money
+        FROM books AS b INNER JOIN payments AS p ON b.book_num = p.book_num
+        WHERE p.book_num = #{bookNum} AND p.id = #{id}
     </select>
 </mapper>

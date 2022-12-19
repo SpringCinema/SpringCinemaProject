@@ -3,12 +3,12 @@ package com.esc.springcinema.service;
 import com.esc.springcinema.dto.BooksDto;
 import com.esc.springcinema.dto.MemberDto;
 import com.esc.springcinema.dto.PaymentsDto;
-import com.esc.springcinema.mapper.CinemaMapper;
 import com.esc.springcinema.mapper.MypageMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class MypageServiceImpl implements MypageService {
@@ -60,5 +60,13 @@ public class MypageServiceImpl implements MypageService {
     @Override
     public void deleteAccount(MemberDto delete) throws Exception {
         mypageMapper.deleteAccount(delete);
+    }
+    
+    // 마이페이지에서 결제취소 누르면 필요한 데이터 조회
+    // 최종 수정 : 2022-12-19
+    // 마지막 작성자 : MoonNight285
+    @Override
+    public Map<String, String> selectCancelMovieInfo(String bookNum, String id) throws Exception {
+        return mypageMapper.selectCancelMovieInfo(bookNum, id);
     }
 }
