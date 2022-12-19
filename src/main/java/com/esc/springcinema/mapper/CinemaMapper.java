@@ -1,5 +1,6 @@
 package com.esc.springcinema.mapper;
 
+import com.esc.springcinema.dto.BooksDto;
 import com.esc.springcinema.dto.MemberDto;
 
 import com.esc.springcinema.dto.apiMovieDto.ActorDto;
@@ -110,4 +111,9 @@ public interface CinemaMapper {
     // 최종 수정 : 2022-12-16
     // 마지막 작성자 : yang
     List<ScreenHallDto> selectMovieTime(String movieTitle, String cinemaName) throws Exception;
+
+    // 영화 상영 날짜에 예약된 좌석 수 불러오기
+    // 최종 수정 : 2022-12-19
+    // 마지막 작성자 : yang
+    int countBook(String title, String cinemaName, String screenHallName, String viewTime) throws Exception;
 }

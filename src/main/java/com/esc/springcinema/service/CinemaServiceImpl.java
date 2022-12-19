@@ -1,5 +1,6 @@
 package com.esc.springcinema.service;
 
+import com.esc.springcinema.dto.BooksDto;
 import com.esc.springcinema.dto.MemberDto;
 import com.esc.springcinema.dto.ScreenHallDto;
 import com.esc.springcinema.dto.apiMovieDto.MovieDto;
@@ -52,6 +53,11 @@ public class CinemaServiceImpl implements CinemaService{
     @Override
     public List<ScreenHallDto> selectCinemaName(String title) throws Exception {
         return cinemaMapper.selectCinemaName(title);
+    }
+
+    @Override
+    public int countBook(String title, String cinemaName, String screenHallName, String viewTime) throws Exception {
+        return cinemaMapper.countBook(title, cinemaName, screenHallName, viewTime);
     }
 
 
