@@ -171,23 +171,9 @@
                     $('#div-i-date-content').children('ul').css('display', 'block');
                     cinemaSender.val(selectedCinemaName);
                 }
-                //------ 까지 ------
-            });
 
-            // 날짜 목록을 클릭하면 색상 강조하고 값 저장
-            // 날짜 목록을 선택하면 저장된 값을 통해 날짜 정보를 가공해서 표시
-            // 일요일은 클래스(li-c-sunday)로 판단
-            const dates = $("#div-i-date-content").children("ul").children();
-            dates.on("click", function () {
-                // 2022-12-18 양민호
-                // 날짜 선택 시 시간 정보 표시
-                //------ 부터 ------
-
-                $('#div-i-time-content div').css("display", 'block');
                 let title = $('#input-i-send-movie').val();
                 let cinema = $('#input-i-send-cinema').val();
-
-
                 $('#div-i-time-content').children('div').children().remove();
                 // ajax 통신을 통해 선택한 정보에 대한 정보 screen_hall에서 가져옴.
                 $.ajax({
@@ -216,7 +202,7 @@
                                     console.log(time);
                                     tag = "<ul><h6><b>" + getScreenHallName + "(총 120석)</b></h6>";
                                     tag += "<li><span class='span-c-time'><span class='span-c-hall'>" + getScreenHallName + "|</span>" +
-                                        time + "</span><span class='span-c-emptySeat ms-1'>80석</span></li></ul>";
+                                        time + "</span><span class='span-c-remainSeats ms-1'>80석</span></li></ul>";
                                     $('#div-i-time-content').children('div').append(tag);
                                 }
                                 else if(totalTime.length == 16) {
@@ -224,9 +210,9 @@
                                     const time2 = totalTime.slice(8, -3);
                                     tag = "<ul><h6><b>" + getScreenHallName + "(총 120석)</b></h6>";
                                     tag += "<li><span class='span-c-time'><span class='span-c-hall'>" + getScreenHallName + "|</span>" +
-                                        time1 + "</span><span class='span-c-emptySeat ms-1'>80석</span></li>";
+                                        time1 + "</span><span class='span-c-remainSeats ms-1'>80석</span></li>";
                                     tag += "<li class='ms-3'><span class='span-c-time'><span class='span-c-hall'>" + getScreenHallName + "|</span>" +
-                                        time2 + "</span><span class='span-c-emptySeat ms-1'>80석</span></li>";
+                                        time2 + "</span><span class='span-c-remainSeats ms-1'>80석</span></li>";
                                     $('#div-i-time-content').children('div').append(tag);
                                 }
                                 else if(totalTime.length == 24) {
@@ -235,11 +221,11 @@
                                     const time3 = totalTime.slice(16, -3);
                                     tag = "<ul><h6><b>" + getScreenHallName + "(총 120석)</b></h6>";
                                     tag += "<li><span class='span-c-time'><span class='span-c-hall'>" + getScreenHallName + "|</span>" +
-                                        time1 + "</span><span class='span-c-emptySeat ms-1'>80석</span></li>";
+                                        time1 + "</span><span class='span-c-remainSeats ms-1'>80석</span></li>";
                                     tag += "<li class='ms-3'><span class='span-c-time'><span class='span-c-hall'>" + getScreenHallName + "|</span>" +
-                                        time2 + "</span><span class='span-c-emptySeat ms-1'>80석</span></li>";
+                                        time2 + "</span><span class='span-c-remainSeats ms-1'>80석</span></li>";
                                     tag += "<li><span class='span-c-time'><span class='span-c-hall'>" + getScreenHallName + "|</span>" +
-                                        time3 + "</span><span class='span-c-emptySeat ms-1'>80석</span></li>";
+                                        time3 + "</span><span class='span-c-remainSeats ms-1'>80석</span></li>";
                                     $('#div-i-time-content').children('div').append(tag);
                                 }
                                 else {
@@ -249,13 +235,13 @@
                                     const time4 = totalTime.slice(24, -3);
                                     tag = "<ul><h6><b>" + getScreenHallName + "(총 120석)</b></h6>";
                                     tag += "<li><span class='span-c-time'><span class='span-c-hall'>" + getScreenHallName + "|</span>" +
-                                        time1 + "</span><span class='span-c-emptySeat ms-1'>80석</span></li>";
+                                        time1 + "</span><span class='span-c-remainSeats ms-1'>80석</span></li>";
                                     tag += "<li class='ms-3'><span class='span-c-time'><span class='span-c-hall'>" + getScreenHallName + "|</span>" +
-                                        time2 + "</span><span class='span-c-emptySeat ms-1'>80석</span></li>";
+                                        time2 + "</span><span class='span-c-remainSeats ms-1'>80석</span></li>";
                                     tag += "<li><span class='span-c-time'><span class='span-c-hall'>" + getScreenHallName + "|</span>" +
-                                        time3 + "</span><span class='span-c-emptySeat ms-1'>80석</span></li>";
+                                        time3 + "</span><span class='span-c-remainSeats ms-1'>80석</span></li>";
                                     tag += "<li class='ms-3'><span class='span-c-time'><span class='span-c-hall'>" + getScreenHallName + "|</span>" +
-                                        time4 + "</span><span class='span-c-emptySeat ms-1'>80석</span></li>";
+                                        time4 + "</span><span class='span-c-remainSeats ms-1'>80석</span></li>";
                                     $('#div-i-time-content').children('div').append(tag);
                                 }
                             }
@@ -266,6 +252,44 @@
                     }
                 });
                 //------ 까지 ------
+            });
+
+            // 날짜 목록을 클릭하면 색상 강조하고 값 저장
+            // 날짜 목록을 선택하면 저장된 값을 통해 날짜 정보를 가공해서 표시
+            // 일요일은 클래스(li-c-sunday)로 판단
+            const dates = $("#div-i-date-content").children("ul").children();
+            dates.on("click", function () {
+                // 2022-12-19 양민호
+                // 잔여 좌석 표시 ajax 통신
+                //------ 부터 ------
+
+                $('#div-i-time-content div').css("display", 'block');
+
+                // let ul_length = $('#div-i-time-content').children('div').children('ul').length;
+                // for (let i = 0; i < ul_length; i++) {
+                //     let li_length = $('#div-i-time-content').children('div').children('ul').eq(i).children('li').length;
+                //     for(let j = 0; j < li_length; j++) {
+                //         let time =  $('#div-i-time-content').children('div').children('ul').eq(i).children('li').eq(j).children('span:first-child').text().slice(3, 8);
+                //         let seat =  $('#div-i-time-content').children('div').children('ul').eq(i).children('li').eq(j).children('span:last-child').text();
+                //         let title = $('#input-i-send-movie').val();
+                //         let hall = $('#input-i-send-hall').val();
+                //         let cinema = $('#input-i-send-cinema').val();
+                //
+                //         $.ajax({
+                //             url: "/book/remainSeats",
+                //             type: "post",
+                //             data: {title: title, cinema:cinema, time:time, hall:hall},
+                //             success:function(data){
+                //
+                //             },
+                //             error: function () {
+                //                 alert("ajax 통신이 오류가 발생했습니다.");
+                //             }
+                //         });
+                //     }
+                // }
+
+
                 for (let i = 0; i < dates.length; ++i) {
                     dates.eq(i).css("background-color", "");
 
@@ -424,7 +448,7 @@
 
         /* 내용부분 박스에서 컨텐츠 요소에 마우스 올렸을때 포인터 변경 */
         #div-i-movie-content ul li:hover, #div-i-cinema-content ul li:hover, #div-i-date-content ul li:hover,
-        #div-i-time-content ul li:hover {
+        .span-c-time:hover {
             cursor: pointer;
         }
 
@@ -435,7 +459,7 @@
         }
 
         /* 내용부분 박스에서 컨텐츠 요소에 마우스 올렸을때 색상변경(시간대에만 적용) */
-        #div-i-time-content ul li:hover .span-c-time {
+        .span-c-time:hover {
             background-color: #333333;
             color: white;
         }
