@@ -47,6 +47,13 @@
             const today = new Date();
             const year = today.getFullYear();
             const month = today.getMonth() + 1;
+            const date = today.getDate();
+            const hours = today.getHours();
+            let minute = today.getMinutes();
+            if(minute < 10) {
+                minute = '0' + minute;
+            }
+
             yearValue.text(year);
             monthValue.text(month);
 
@@ -331,19 +338,29 @@
             // 시간 목록을 클릭하면 색상 강조하고 값 저장
             // 시간 목록을 클릭하면 상영관 정보도 같이 저장되어야함
             // 시간 목록을 선택하면 상영관과 시간 정보를 가공해서 표시
-            // 2022-12-18 양민호
+            // 2022-12-20 양민호
             // 동적이벤트 append를 사용하였기에 상위 태그 기준으로 click이벤트 발생
             // -------------부터 -------------
             $(document).on("click", ".span-c-time", function() {
-                const times = $(".span-c-time");
-                // -------------까지 -------------
-                times.css("background-color", "");
-                times.css("color", "");
+
                 let seat =  $(this).next().text();
-                // 잔여좌석이 없을 경우 클릭 방지
-                if (seat != '0석') {
+                let time =  $(this).text().slice(3);
+                time = time.slice(0, 2) + time.slice(3);
+                const dtY = $("#input-i-send-date").val().slice(0, 4);
+                const dtM = $("#input-i-send-date").val().slice(6, 8);
+                const dtD = $("#input-i-send-date").val().slice(10, 12);
+                const todayYmd = year  + String(month) +  date;
+                const selectYmd = dtY + String(dtM) + dtD
+                const now = String(hours) + String(minute);
+
+
+                if(seat != '0석'|| (selectYmd == todayYmd && time > now) || (selectYmd > todayYmd)) {
+                    const times = $(".span-c-time");
                     times.removeClass();
                     times.addClass('span-c-time');
+                    times.css("background-color", "");
+                    times.css("color", "");
+
                     $(this).addClass('clickedTime');
 
                     $(this).css("background-color", "#333333");
@@ -364,7 +381,52 @@
                     const timeSender = $("#input-i-send-time");
                     timeSender.val(selectedTime);
                 }
+
+                // 잔여좌석이 없을 경우 / 상영 시간이 지난 경우 클릭 방지
+                if(seat == '0석' || (selectYmd == todayYmd && time < now)) {
+                    $(this).off('click');
+                    $(this).css('background-color', '#f2f0e5');
+                    $(this).css('color', 'black');
+
+                    const hallView = $("#p-i-selected-hall");
+                    hallView.text("선택상영관 : 없음");
+                    const timeView = $("#p-i-selected-time");
+                    timeView.text("선택시간 : 없음");
+                    const hallSender = $("#input-i-send-hall");
+                    hallSender.val('');
+                    const timeSender = $("#input-i-send-time");
+                    timeSender.val('');
+                }
             });
+
+            // 잔여 좌석이 없거나 상영시간이 지난 경우 체크 방지
+            $(document).on('mouseenter mouseleave', ".span-c-time", function() {
+                $(this).css('cursor', 'pointer');
+
+                const seat =  $(this).next().text();
+                let time =  $(this).text().slice(3);
+                time = time.slice(0, 2) + time.slice(3);
+                const dtY = $("#input-i-send-date").val().slice(0, 4);
+                const dtM = $("#input-i-send-date").val().slice(6, 8);
+                const dtD = $("#input-i-send-date").val().slice(10, 12);
+                const todayYmd = year  + String(month) +  date;
+                const selectYmd = dtY + String(dtM) + dtD
+                const now = String(hours) + String(minute);
+
+                if(seat == '0석') {
+                    $(this).css('cursor', 'default');
+                    $(this).off('click');
+                    $(this).css('background-color', '#f2f0e5');
+                    $(this).css('color', 'black');
+                }
+                else if(todayYmd == selectYmd && now > time) {
+                    $(this).css('cursor', 'default');
+                    $(this).off('click');
+                    $(this).css('background-color', '#f2f0e5');
+                    $(this).css('color', 'black');
+                }
+            });
+            // ------------- 까지 -------------
 
             // 좌석선택 버튼을 클릭시 선택안한 데이터가 있는지 체크하고 선택한 데이터를 서버로 넘김
             const btnNext = $("#btn-i-next");

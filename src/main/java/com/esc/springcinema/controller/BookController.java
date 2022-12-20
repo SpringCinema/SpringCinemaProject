@@ -1,6 +1,5 @@
 package com.esc.springcinema.controller;
 
-import com.esc.springcinema.dto.BooksDto;
 import com.esc.springcinema.dto.ScreenHallDto;
 import com.esc.springcinema.dto.apiMovieDto.MovieDto;
 import com.esc.springcinema.service.CinemaService;
