@@ -94,7 +94,8 @@ public class MypageController {
 //    현재 book 페이지에 date 와 time값을 제외하고 임의의 고정된 값 받아오고 있음.
     @RequestMapping(value = "/seat" , method = RequestMethod.POST)
     public ModelAndView openSeat(@RequestParam("movieTitle") String movieTitle, @RequestParam("cinemaName") String cinemaName, @RequestParam("inputDate") String date,
-                                @RequestParam("screenHallName") String screenHallName, @RequestParam("inputTime") String screenTime) throws Exception {
+                                @RequestParam("screenHallName") String screenHallName, @RequestParam("inputTime") String screenTime,
+                                @RequestParam("docid") String docid) throws Exception {
         ModelAndView mv = new ModelAndView("movieseat");
 
         ScreenHallDto selectScreenData = cinemaService.selectScreenData(movieTitle, cinemaName, screenHallName);
@@ -102,6 +103,7 @@ public class MypageController {
 
         String viewTime = screenTime;
         String screenDate = date;
+        docid = docid;
 
 
         List<Integer> people = new ArrayList<>();
@@ -130,6 +132,7 @@ public class MypageController {
         mv.addObject("viewTime", viewTime);
         mv.addObject("screenDate", screenDate);
         mv.addObject("screenData", selectScreenData);
+        mv.addObject("docid", docid);
         return mv;
     }
 }
