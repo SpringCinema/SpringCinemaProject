@@ -63,16 +63,16 @@
     <th:block th:replace="fragments/config :: configFragment"></th:block>
 
     <style>
-        header {
-            width: 1920px;
-            max-width: none !important;
-        }
-
         main.container {
             width: 1300px;
             margin-top: 140px;
             margin-bottom: 330px;
             max-width: none !important;
+        }
+
+        #div-i-form-wrapper {
+            padding-top: 100px;
+            padding-right: 100px;
         }
 
         #form-i-frm {
@@ -84,7 +84,7 @@
 <body>
     <!-- 메인 부분 -->
     <main class="container">
-        <div class="row" style="padding-top: 100px">
+        <div id="div-i-form-wrapper" class="row">
             <form id="form-i-frm" method="post" class="col-sm-9 mx-auto rounded-4">
                 <div class="row mt-3">
                     <label for="input-i-pwd" class="col-3 text-end pt-2">비밀번호</label>

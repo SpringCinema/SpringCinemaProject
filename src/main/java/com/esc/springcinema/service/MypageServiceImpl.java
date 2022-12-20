@@ -81,6 +81,11 @@ public class MypageServiceImpl implements MypageService {
     @Override
     public String selectMovieFirstPoster(String title) throws Exception {
         String posters = mypageMapper.selectMovieFirstPoster(title); // 포스터가 여러개가 들어온다.
-        return posters.split("\\|")[0]; // 가장 첫번째 포스터를 반환한다.
+
+        if (posters != null && posters != "") {
+            return posters.split("\\|")[0]; // 가장 첫번째 포스터를 반환한다.
+        } else {
+            return posters;
+        }
     }
 }

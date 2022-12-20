@@ -42,6 +42,10 @@
             font-family: "KOHINanumOTFL";
             font-weight: bold;
         }
+
+        table {
+            table-layout: fixed;
+        }
     </style>
 </head>
 <body>
@@ -68,27 +72,27 @@
                 <table class="table table-striped text-center">
                     <thead class="border-top border-bottom border-3">
                         <tr>
-                            <th style="width: 85px;">예매번호</th>
-                            <th style="width: 150px;">예약날짜</th>
+                            <th style="width: 140px;">예매번호</th>
+                            <th style="width: 225px;">예약날짜</th>
                             <th style="width: 350px;">영화이름</th>
-                            <th style="width: 150px;">영화관이름</th>
-                            <th style="width: 50px;">상영관</th>
-                            <th style="width: 150px;">상영시간</th>
-                            <th style="width: 50px;">좌석</th>
-                            <th style="width: 80px;">성인/청소년</th>
+                            <th style="width: 175px;">영화관이름</th>
+                            <th style="width: 65px;">상영관</th>
+                            <th style="width: 225px;">상영시간</th>
+                            <th style="width: 60px;">좌석</th>
+                            <th style="width: 110px;">성인/청소년</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr th:each="item : ${bookList.getList()}">
-                            <td style="width: 85px;" class="border border-2 border-light" th:text="${item.bookNum}">테스트 번호</td>
-                            <td style="width: 150px;" class="border border-2 border-light" th:text="${item.reserveDate}">테스트 날짜</td>
-                            <td style="width: 350px;" class="border border-2 border-light" th:text="${item.title}">테스트 영화이름</td>
-                            <td style="width: 150px;" class="border border-2 border-light" th:text="${item.cinemaName}">테스트 영화관이름</td>
-                            <td style="width: 50px;" class="border border-2 border-light" th:text="${item.screenHallName}">테스트 상영관</td>
-                            <td style="width: 150px;" class="border border-2 border-light" th:text="${item.viewTime}">테스트 상영시간</td>
-                            <td style="width: 50px;" class="border border-2 border-light" th:text="${item.seatCode}">테스트 좌석번호</td>
-                            <td style="width: 50px;" class="border border-2 border-light" th:if="${item.adultYn} == 'Y'">성인</td>
-                            <td style="width: 80px;" class="border border-2 border-light" th:unless="${item.adultYn} == 'Y'">청소년</td>
+                            <td class="border border-2 border-light" th:text="${item.bookNum}">2022120255555</td>
+                            <td class="border border-2 border-light" th:text="${item.reserveDate}">테스트 날짜</td>
+                            <td style="text-overflow: ellipsis; overflow: hidden; white-space: nowrap;" th:title="${item.title}" class="border border-2 border-light" th:text="${item.title}">아바타: 물의 길</td>
+                            <td class="border border-2 border-light" th:text="${item.cinemaName}">spring cinema 부산점	</td>
+                            <td class="border border-2 border-light" th:text="${item.screenHallName}">2관</td>
+                            <td class="border border-2 border-light" th:text="${item.viewTime}">2022년 12월 28일 15:30:00</td>
+                            <td class="border border-2 border-light" th:text="${item.seatCode}">C11</td>
+                            <td class="border border-2 border-light" th:if="${item.adultYn} == 'Y'">성인</td>
+                            <td class="border border-2 border-light" th:unless="${item.adultYn} == 'Y'">청소년</td>
                         </tr>
                     </tbody>
                 </table>

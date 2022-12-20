@@ -4,8 +4,8 @@
 <mapper namespace="com.esc.springcinema.mapper.MypageMapper">
     <!-- 마이페이지 영화 예약목록을 가져오기(예약중, 취소된거 선택가능) -->
     <select id="selectBookList" parameterType="String" resultType="com.esc.springcinema.dto.BooksDto">
-        SELECT book_num, reserve_date, title, seat_code, cinema_name,
-               screen_hall_name, view_time, adult_yn FROM books WHERE id = #{id} AND state_yn = #{state}
+        SELECT book_num, DATE_FORMAT(reserve_date, '%Y년 %m월 %d일 %T') AS reserve_date, title, seat_code, cinema_name,
+        screen_hall_name, DATE_FORMAT(view_time, '%Y년 %m월 %d일 %T') AS view_time, adult_yn FROM books WHERE id = #{id} AND state_yn = #{state}
     </select>
 
     <!-- 내 정보 불러오는 쿼리 -->
@@ -15,7 +15,8 @@
 
     <!-- 내 결제내역 불러오는 쿼리 -->
     <select id="selectMyPayment" parameterType="String" resultType="com.esc.springcinema.dto.PaymentsDto">
-        SELECT * FROM payments WHERE id = #{id} AND state = #{state}
+        SELECT payment_num, book_num, money, title, DATE_FORMAT(pay_date, '%Y년 %m월 %d일 %T') AS pay_date,
+        pay_type FROM payments WHERE id = #{id} AND state = #{state}
     </select>
 
     <!-- 내 정보 수정 쿼리 -->
@@ -38,7 +39,9 @@
 
     <!-- 마이페이지에서 결제취소 눌렀을때 표시되야하는 데이터 조회 -->
     <select id="selectCancelMovieInfo" parameterType="String" resultType="map">
-        SELECT DISTINCT b.title, b.book_num, b.cinema_name, b.screen_hall_name, b.view_time, p.payment_num, p.pay_date, p.pay_type, p.money
+        SELECT DISTINCT b.title, b.book_num, b.cinema_name, b.screen_hall_name,
+        DATE_FORMAT(b.view_time, '%Y년 %m월 %d일 %T') AS view_time, p.payment_num,
+        DATE_FORMAT(p.pay_date, '%Y년 %m월 %d일 %T') AS pay_date, p.pay_type, p.money
         FROM books AS b INNER JOIN payments AS p ON b.book_num = p.book_num
         WHERE p.book_num = #{bookNum} AND p.id = #{id}
     </select>

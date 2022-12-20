@@ -2,6 +2,7 @@ package com.esc.springcinema.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -35,5 +36,13 @@ public class ProcessController {
         modelAndView.addObject("link", link); // 버튼에 연결되는 링크
 
         return modelAndView;
+    }
+
+    // 특정 페이지가 아직 미완성일때 임시로 보여주는 페이지
+    // 최종 수정 : 2022-12-20
+    // 마지막 작성자 : MoonNight285
+    @RequestMapping(value = "/construction", method = RequestMethod.GET)
+    public String viewConstruction() {
+        return "/common/construction";
     }
 }
