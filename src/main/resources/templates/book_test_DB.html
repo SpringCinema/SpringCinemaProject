@@ -79,7 +79,8 @@
                 $(this).css("background-color", "#333333");
                 $(this).css("color", "white");
 
-                selectedMovieName = $(this).children("div").children("span").text();
+
+                selectedMovieName = $(this).find("span").first().text().trim();
 
                 const movieView = $("#p-i-selected-movie");
                 movieView.text(selectedMovieName); // 유저에게 보여주기위한 용도
@@ -87,6 +88,8 @@
                 const movieSender = $("#input-i-send-movie");
                 movieSender.val(selectedMovieName); // 서버 전달용
 
+                const docId = $(this).find('span').last().text().trim();
+                $('#input-i-send-docid').val(docId); // 서버 전달용 docid
 
                 // 2022-12-18 양민호
                 // 영화 선택 시 극장 정보 표시
@@ -666,25 +669,30 @@
 <!--                                rating 조건에 따른 연령 표시 이미지 추가 -->
                                 <img src="/img/letter-a.png">
                                 <span th:text="${item.title}" th:title="${item.title}" class="ms-1"></span>
+                                <span style="display: none" th:text="${item.docid}"></span>
                             </div>
                             <div class="d-flex justify-content-start div-c-movieList" th:if="${item.rating} == '12세관람가'">
                                 <!--                                rating 조건에 따른 연령 표시 이미지 추가 -->
                                 <img src="/img/twelve.png">
                                 <span th:text="${item.title}" th:title="${item.title}" class="ms-1"></span>
+                                <span style="display: none" th:text="${item.docid}"></span>
                             </div>
                             <div class="d-flex justify-content-start div-c-movieList" th:if="${item.rating} == '15세관람가'">
                                 <!--                                rating 조건에 따른 연령 표시 이미지 추가 -->
                                 <img src="/img/fifteen.png">
                                 <span th:text="${item.title}" th:title="${item.title}" class="ms-1"></span>
+                                <span style="display: none" th:text="${item.docid}"></span>
                             </div>
                             <div class="d-flex justify-content-start div-c-movieList" th:if="${item.rating} == '18세관람가(청소년관람불가)'">
                                 <!--                                rating 조건에 따른 연령 표시 이미지 추가 -->
                                 <img src="/img/eighteen.png">
                                 <span th:text="${item.title}" th:title="${item.title}" class="ms-1"></span>
+                                <span style="display: none" th:text="${item.docid}"></span>
                             </div>
                             <div class="d-flex justify-content-start div-c-movieList" th:if="${item.rating} == ''">
                                 <!--                                rating 조건에 따른 연령 표시 이미지 추가 -->
                                 <span th:text="${item.title}" th:title="${item.title}" style="margin-left: 28px"></span>
+                                <span style="display: none" th:text="${item.docid}"></span>
                             </div>
                         </li>
                     </ul>
@@ -733,6 +741,7 @@
                 <input id="input-i-send-date" type="hidden" name="inputDate">
                 <input id="input-i-send-hall" type="hidden" name="screenHallName">
                 <input id="input-i-send-time" type="hidden" name="inputTime">
+                <input id="input-i-send-docid" type="hidden" name="docid">
                 <button id="btn-i-hidden-next" type="submit"></button>
             </form>
 <!--            -------------------까지-------------------- -->
