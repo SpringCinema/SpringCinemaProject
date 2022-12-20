@@ -5,7 +5,6 @@ import com.esc.springcinema.dto.MemberDto;
 import com.esc.springcinema.dto.PaymentsDto;
 import com.github.pagehelper.Page;
 
-import java.util.List;
 import java.util.Map;
 
 public interface MypageService {
@@ -43,4 +42,9 @@ public interface MypageService {
     // 최종 수정 : 2022-12-19
     // 마지막 작성자 : MoonNight285
     Map<String, String> selectCancelMovieInfo(String bookNum, String id) throws Exception;
+    
+    // 결제취소정보에 표시될 포스터를 조회하기 위한기능
+    // 최종 수정 : 2022-12-20
+    // 마지막 작성자 : MoonNight285
+    String selectMovieFirstPoster(String title) throws Exception;
 }

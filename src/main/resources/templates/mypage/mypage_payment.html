@@ -1,6 +1,6 @@
 <!-- 수정일 : 2022-12-20일 -->
 <!-- 마지막으로 수정한 사람 : MoonNight285 -->
-<!-- 마지막으로 작업한 내용 : 페이징 처리 -->
+<!-- 마지막으로 작업한 내용 : 결제취소할때 타이틀값을 서버로 넘기기 -->
 <!-- 마이페이지 결제내역 페이지 -->
 
 <!DOCTYPE html>
@@ -94,7 +94,8 @@
                                 <td style="width: 100px;" class="border border-2 border-light" th:text="${item.getPayDate()}">텍스트</td>
                                 <td style="width: 100px;" class="border border-2 border-light">
                                     <span th:text="${item.getPayType()}">텍스트</span>&nbsp;
-                                    <a th:if="${paymentType} == 'normal'" class="a-c-payment-cancel" th:href="@{/mypage/paycancle(bookNum=${item.getBookNum()})}">결제취소</a>
+                                    <a th:if="${paymentType} == 'normal'" class="a-c-payment-cancel" th:href="@{/mypage/paycancle(bookNum=${item.getBookNum()},
+                                        title=${item.getTitle()})}">결제취소</a>
                                 </td>
                             </tr>
                         </form>

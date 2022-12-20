@@ -74,4 +74,13 @@ public class MypageServiceImpl implements MypageService {
     public Map<String, String> selectCancelMovieInfo(String bookNum, String id) throws Exception {
         return mypageMapper.selectCancelMovieInfo(bookNum, id);
     }
+    
+    // 결제취소정보에 표시될 포스터를 조회하기 위한기능
+    // 최종 수정 : 2022-12-20
+    // 마지막 작성자 : MoonNight285
+    @Override
+    public String selectMovieFirstPoster(String title) throws Exception {
+        String posters = mypageMapper.selectMovieFirstPoster(title); // 포스터가 여러개가 들어온다.
+        return posters.split("\\|")[0]; // 가장 첫번째 포스터를 반환한다.
+    }
 }

@@ -42,4 +42,9 @@
         FROM books AS b INNER JOIN payments AS p ON b.book_num = p.book_num
         WHERE p.book_num = #{bookNum} AND p.id = #{id}
     </select>
+
+    <!-- 영화이름을 기준으로 포스터 조회 -->
+    <select id="selectMovieFirstPoster" parameterType="String" resultType="String">
+        SELECT posters FROM movies WHERE title = #{title}
+    </select>
 </mapper>

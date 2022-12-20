@@ -1,3 +1,8 @@
+<!-- 수정일 : 2022-12-20일 -->
+<!-- 마지막으로 수정한 사람 : MoonNight285 -->
+<!-- 마지막으로 작업한 내용 : 영화의 이미지를 불러오기 -->
+<!-- 마이페이지 결제내역 페이지 -->
+
 <!DOCTYPE html>
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
@@ -66,7 +71,7 @@
             <form action="" method="post" class="row rounded-4" id="form-i-border">
                 <div class="col-xl-8 d-flex" style="border: 2px #e3e3e3 solid">
                     <div id="div-i-img-wrapper">
-                        <img src="#" style="width: 150px; height: 150px; border: 1px solid">
+                        <img th:src="@{${poster}}" src="#" style="width: 150px; height: 200px; border: 1px solid">
                     </div>
                     <div id="div-i-movie-info-wrapper" class="mt-4">
                         <p style="word-wrap: break-word" class="mb-2">영화제목 : <span th:text="${title}"></span></p>
