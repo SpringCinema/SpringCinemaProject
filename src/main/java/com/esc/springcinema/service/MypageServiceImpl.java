@@ -9,7 +9,6 @@ import com.github.pagehelper.PageHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.Map;
 
 @Service
@@ -36,10 +35,12 @@ public class MypageServiceImpl implements MypageService {
     }
 
     // DB에서 마이페이지의 나의 결제 내역을 조회하는 기능
-    // 최종 수정 : 2022-12-18
+    // 최종 수정 : 2022-12-20
     // 마지막 작성자 : MoonNight285
     @Override
-    public List<PaymentsDto> selectMyPayment(String id, String state) throws Exception {
+    public Page<PaymentsDto> selectMyPayment(String id, String state, int pageNo) throws Exception {
+        // startPate => 첫번째 매개변수로 화면에 출력할 페이지, 두번째 매개변수로 화면에 출력할 컨텐츠의 수 설정
+        PageHelper.startPage(pageNo, 12);
         return mypageMapper.selectMyPayment(id, state);
     }
 

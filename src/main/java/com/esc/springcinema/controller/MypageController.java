@@ -96,14 +96,15 @@ public class MypageController {
     }
 
     // 마이페이지에서 내가 결제한 내역을 보여주는 기능
-    // 최종 수정일 : 2022-12-18
+    // 페이징 처리 완료
+    // 최종 수정일 : 2022-12-20
     // 마지막 작성자 : MoonNight285
     @RequestMapping(value = "/mypage/payment/normal", method = RequestMethod.GET)
-    public ModelAndView getNormalPaymentList(HttpServletRequest request) throws Exception {
+    public ModelAndView getNormalPaymentList(HttpServletRequest request, @RequestParam(value = "pageNo", defaultValue = "1") int pageNo) throws Exception {
         request.setCharacterEncoding("UTF-8");
         HttpSession session = request.getSession();
         String loggedInUserId = ((MemberDto)session.getAttribute("loggedInUserInfo")).getId();
-        List<PaymentsDto> paymentList = mypageService.selectMyPayment(loggedInUserId, "결제완료");
+        PageInfo<PaymentsDto> paymentList = new PageInfo<>(mypageService.selectMyPayment(loggedInUserId, "결제완료", pageNo), 10);
         ModelAndView view = new ModelAndView("/mypage/mypage_payment");
         view.addObject("paymentList", paymentList);
         view.addObject("paymentTitle", "결제내역");
@@ -113,14 +114,15 @@ public class MypageController {
     }
 
     // 마이페이지에서 내가 결제취소한 내역을 보여주는 기능
-    // 최종 수정일 : 2022-12-18
+    // 페이징 처리 완료
+    // 최종 수정일 : 2022-12-20
     // 마지막 작성자 : MoonNight285
     @RequestMapping(value = "/mypage/payment/cancellation", method = RequestMethod.GET)
-    public ModelAndView getCancellationPaymentList(HttpServletRequest request) throws Exception {
+    public ModelAndView getCancellationPaymentList(HttpServletRequest request, @RequestParam(value = "pageNo", defaultValue = "1") int pageNo) throws Exception {
         request.setCharacterEncoding("UTF-8");
         HttpSession session = request.getSession();
         String loggedInUserId = ((MemberDto)session.getAttribute("loggedInUserInfo")).getId();
-        List<PaymentsDto> paymentList = mypageService.selectMyPayment(loggedInUserId, "취소완료");
+        PageInfo<PaymentsDto> paymentList = new PageInfo<>(mypageService.selectMyPayment(loggedInUserId, "취소완료", pageNo), 10);
         ModelAndView view = new ModelAndView("/mypage/mypage_payment");
         view.addObject("paymentList", paymentList);
         view.addObject("paymentTitle", "취소내역");
