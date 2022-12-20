@@ -4,6 +4,8 @@ import com.esc.springcinema.dto.BooksDto;
 import com.esc.springcinema.dto.MemberDto;
 import com.esc.springcinema.dto.PaymentsDto;
 import com.esc.springcinema.mapper.MypageMapper;
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,7 +21,9 @@ public class MypageServiceImpl implements MypageService {
     // 최종 수정 : 2022-12-16
     // 마지막 작성자 : MoonNight285
     @Override
-    public List<BooksDto> selectBookList(String userId, String state) throws Exception {
+    public Page<BooksDto> selectBookList(String userId, String state, int pageNo) throws Exception {
+        // startPate => 첫번째 매개변수로 화면에 출력할 페이지, 두번째 매개변수로 화면에 출력할 컨텐츠의 수 설정
+        PageHelper.startPage(pageNo, 12);
         return mypageMapper.selectBookList(userId, state);
     }
     

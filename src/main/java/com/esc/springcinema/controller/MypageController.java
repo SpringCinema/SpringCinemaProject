@@ -6,6 +6,7 @@ import com.esc.springcinema.dto.PaymentsDto;
 import com.esc.springcinema.dto.ScreenHallDto;
 import com.esc.springcinema.service.CinemaService;
 import com.esc.springcinema.service.MypageService;
+import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -45,11 +46,11 @@ public class MypageController {
     // 최종 수정일 : 2022-12-16
     // 마지막 작성자 : MoonNight285
     @RequestMapping(value = "/mypage/book/normal", method = RequestMethod.GET)
-    public ModelAndView getNormalBookList(HttpServletRequest request) throws Exception {
+    public ModelAndView getNormalBookList(HttpServletRequest request, @RequestParam(value = "pageNo", defaultValue = "1") int pageNo) throws Exception {
         request.setCharacterEncoding("UTF-8");
         HttpSession session = request.getSession();
         String loggedInUserId = ((MemberDto)session.getAttribute("loggedInUserInfo")).getId();
-        List<BooksDto> bookList = mypageService.selectBookList(loggedInUserId, "Y");
+        PageInfo<BooksDto> bookList = new PageInfo<>(mypageService.selectBookList(loggedInUserId, "Y", pageNo), 10);
         ModelAndView view = new ModelAndView("mypage/mypage_book");
         view.addObject("bookList", bookList);
         view.addObject("bookTitle", "예매내역");
@@ -63,11 +64,11 @@ public class MypageController {
     // 최종 수정일 : 2022-12-16
     // 마지막 작성자 : MoonNight285
     @RequestMapping(value = "/mypage/book/cancellation", method = RequestMethod.GET)
-    public ModelAndView getCancellationBookList(HttpServletRequest request) throws Exception {
+    public ModelAndView getCancellationBookList(HttpServletRequest request, @RequestParam(value = "pageNo", defaultValue = "1") int pageNo) throws Exception {
         request.setCharacterEncoding("UTF-8");
         HttpSession session = request.getSession();
         String loggedInUserId = ((MemberDto)session.getAttribute("loggedInUserInfo")).getId();
-        List<BooksDto> bookList = mypageService.selectBookList(loggedInUserId, "N");
+        PageInfo<BooksDto> bookList = new PageInfo<>(mypageService.selectBookList(loggedInUserId, "N", pageNo), 10);
         ModelAndView view = new ModelAndView("mypage/mypage_book");
         view.addObject("bookList" , bookList);
         view.addObject("bookTitle", "취소내역");

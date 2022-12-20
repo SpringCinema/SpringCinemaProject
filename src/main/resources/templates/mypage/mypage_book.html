@@ -63,35 +63,59 @@
                 </div>
             </div>
         </div>
-        <div class="row">
+        <div class="row" style="height: 575px">
             <div class="col-xl-12">
                 <table class="table table-striped text-center">
                     <thead class="border-top border-bottom border-3">
                         <tr>
                             <th style="width: 85px;">예매번호</th>
-                            <th style="width: 100px;">예약날짜</th>
+                            <th style="width: 150px;">예약날짜</th>
                             <th style="width: 350px;">영화이름</th>
                             <th style="width: 150px;">영화관이름</th>
-                            <th style="width: 75px;">상영관</th>
-                            <th style="width: 75px;">상영시간</th>
+                            <th style="width: 50px;">상영관</th>
+                            <th style="width: 150px;">상영시간</th>
                             <th style="width: 50px;">좌석</th>
                             <th style="width: 80px;">성인/청소년</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr th:each="item : ${bookList}">
+                        <tr th:each="item : ${bookList.getList()}">
                             <td style="width: 85px;" class="border border-2 border-light" th:text="${item.bookNum}">테스트 번호</td>
-                            <td style="width: 100px;" class="border border-2 border-light" th:text="${item.reserveDate}">테스트 날짜</td>
+                            <td style="width: 150px;" class="border border-2 border-light" th:text="${item.reserveDate}">테스트 날짜</td>
                             <td style="width: 350px;" class="border border-2 border-light" th:text="${item.title}">테스트 영화이름</td>
                             <td style="width: 150px;" class="border border-2 border-light" th:text="${item.cinemaName}">테스트 영화관이름</td>
-                            <td style="width: 75px;" class="border border-2 border-light" th:text="${item.screenHallName}">테스트 상영관</td>
-                            <td style="width: 75px;" class="border border-2 border-light" th:text="${item.viewTime}">테스트 상영시간</td>
+                            <td style="width: 50px;" class="border border-2 border-light" th:text="${item.screenHallName}">테스트 상영관</td>
+                            <td style="width: 150px;" class="border border-2 border-light" th:text="${item.viewTime}">테스트 상영시간</td>
                             <td style="width: 50px;" class="border border-2 border-light" th:text="${item.seatCode}">테스트 좌석번호</td>
                             <td style="width: 50px;" class="border border-2 border-light" th:if="${item.adultYn} == 'Y'">성인</td>
                             <td style="width: 80px;" class="border border-2 border-light" th:unless="${item.adultYn} == 'Y'">청소년</td>
                         </tr>
                     </tbody>
                 </table>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xl-12">
+                <nav>
+                    <ul class="pagination justify-content-center">
+                        <!--타임리프 classappend를 사용해서 이전 페이지 정보가 없으면 class에 disabled를 추가-->
+                        <li class="page-item" th:classappend="${bookList.getPrePage() == 0} ? 'disabled'">
+                            <!--()를 사용하여 매개변수를 추가, pageNo 라는 이름으로 매개변수를 전달..-->
+                            <a class="page-link" th:if="${bookType} == 'normal'" th:href="@{/mypage/book/normal(pageNo=${bookList.getPrePage()})}">&laquo</a>
+                            <a class="page-link" th:if="${bookType} == 'cancellation'" th:href="@{/mypage/book/cancellation(pageNo=${bookList.getPrePage()})}">&laquo</a>
+                        </li>
+                        <!--타임리프의 숫자 객체인 numbers를 이용하면 숫자 배열을 만들어준다.-->
+                        <li class="page-item" th:each="page : ${#numbers.sequence(bookList.getNavigateFirstPage(), bookList.getNavigateLastPage())}"
+                            th:class="${page == bookList.getPageNum()} ? 'active'">
+                            <a class="page-link" th:if="${bookType} == 'normal'" th:text="${page}" th:href="@{/mypage/book/normal(pageNo=${page})}"></a>
+                            <a class="page-link" th:if="${bookType} == 'cancellation'" th:text="${page}" th:href="@{/mypage/book/cancellation(pageNo=${page})}"></a>
+                        </li>
+                        <li class="page-item" th:classappend="${bookList.getNextPage() == 0} ? 'disabled'">
+                            <a class="page-link" th:if="${bookType} == 'normal'" th:href="@{/mypage/book/normal(pageNo=${bookList.getNextPage()})}">&raquo</a>
+                            <a class="page-link" th:if="${bookType} == 'cancellation'" th:href="@{/mypage/book/cancellation(pageNo=${bookList.getNextPage()})}">&raquo</a>
+                        </li>
+                    </ul>
+                </nav>
             </div>
         </div>
     </div>

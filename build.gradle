@@ -39,6 +39,8 @@ dependencies {
     implementation 'jakarta.xml.bind:jakarta.xml.bind-api:2.3.3'
     // https://mvnrepository.com/artifact/com.sun.xml.bind/jaxb-impl
     implementation 'com.sun.xml.bind:jaxb-impl:2.3.3'
+    // https://mvnrepository.com/artifact/com.github.pagehelper/pagehelper-spring-boot-starter
+    implementation 'com.github.pagehelper:pagehelper-spring-boot-starter:1.4.5'
 }
 
 tasks.named('test') {

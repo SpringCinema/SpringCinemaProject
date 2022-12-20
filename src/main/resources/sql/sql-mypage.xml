@@ -5,7 +5,7 @@
     <!-- 마이페이지 영화 예약목록을 가져오기(예약중, 취소된거 선택가능) -->
     <select id="selectBookList" parameterType="String" resultType="com.esc.springcinema.dto.BooksDto">
         SELECT book_num, reserve_date, title, seat_code, cinema_name,
-               screen_hall_name, view_time, adult_yn FROM books WHERE id = #{id} AND state_yn = #{state};
+               screen_hall_name, view_time, adult_yn FROM books WHERE id = #{id} AND state_yn = #{state}
     </select>
 
     <!-- 내 정보 불러오는 쿼리 -->
