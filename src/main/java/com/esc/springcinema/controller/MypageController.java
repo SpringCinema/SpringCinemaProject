@@ -43,7 +43,8 @@ public class MypageController {
     }
     
     // 마이페이지의 영화예매내역 중 예매중인 영화목록 표시
-    // 최종 수정일 : 2022-12-16
+    // 페이징 처리 완료
+    // 최종 수정일 : 2022-12-20
     // 마지막 작성자 : MoonNight285
     @RequestMapping(value = "/mypage/book/normal", method = RequestMethod.GET)
     public ModelAndView getNormalBookList(HttpServletRequest request, @RequestParam(value = "pageNo", defaultValue = "1") int pageNo) throws Exception {
@@ -61,7 +62,8 @@ public class MypageController {
     }
     
     // 마이페이지의 영화예매내역 중 예매 취소된 영화목록 표시
-    // 최종 수정일 : 2022-12-16
+    // 페이징 처리 완료
+    // 최종 수정일 : 2022-12-20
     // 마지막 작성자 : MoonNight285
     @RequestMapping(value = "/mypage/book/cancellation", method = RequestMethod.GET)
     public ModelAndView getCancellationBookList(HttpServletRequest request, @RequestParam(value = "pageNo", defaultValue = "1") int pageNo) throws Exception {

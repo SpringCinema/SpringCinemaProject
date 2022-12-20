@@ -13,7 +13,7 @@ import java.util.Map;
 public interface MypageMapper {
     // DB에서 마이페이지의 예약 목록을 조회하는 기능
     // state에 상태값 선택가능
-    // 최종 수정 : 2022-12-16
+    // 최종 수정 : 2022-12-20
     // 마지막 작성자 : MoonNight285
     Page<BooksDto> selectBookList(String id, String state) throws Exception;
     

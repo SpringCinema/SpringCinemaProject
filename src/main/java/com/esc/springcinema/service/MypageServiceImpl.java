@@ -18,7 +18,7 @@ public class MypageServiceImpl implements MypageService {
     private MypageMapper mypageMapper;
     
     // 마이페이지 영화 예약목록 조회
-    // 최종 수정 : 2022-12-16
+    // 최종 수정 : 2022-12-20
     // 마지막 작성자 : MoonNight285
     @Override
     public Page<BooksDto> selectBookList(String userId, String state, int pageNo) throws Exception {
