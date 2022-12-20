@@ -137,63 +137,35 @@
             // });
             // /*]]>*/
 
-            // 좌석선택 버튼을 클릭시 선택안한 데이터가 있는지 체크하고 선택한 데이터를 서버로 넘김
+
+
             /*<![CDATA[*/
             $("#btn-i-payment").on("click", function () {
-                const movieSender = $("#input-i-send-movie");
-                const cinemaSender = $("#input-i-send-cinema");
-                const hallSender = $("#input-i-send-hall");
-                const dateSender = $("#input-i-send-date");
-                const timeSender = $("#input-i-send-time");
-
-                // const seatCode = $("#input-i-send-seatCode");
-                // const adtPrice = $("#input-i-send-adtPrice");
-                // const teenPrice = $("#input-i-send-teenPrice");
-                // const totalPrice = $("#input-i-send-totalPrice");
+                let selectTitle = /*[[${screenData.movieTitle}]]*/;
 
                 if ($('#input-i-seatCode').val() == "") {
                     const btnError = $("#btn-i-hidden-error");
                     btnError.click();
                     return;
                 } else {
-                    let selectTitle = /*[[${screenData.movieTitle}]]*/;
-
-                    movieSender.val(selectTitle);
-                    // movieSender.val(/*[[${screenData.movieTitle}]]*/);
-                    // cinemaSender.val(/*[[${screenData.cinemaName}]]*/);
-                    // hallSender.val(/*[[${screenData.screenHallName}]]*/);
-                    // dateSender.val(/*[[${screenDate}]]*/);
-                    // timeSender.val(/*[[${viewTime}]]*/);
-                    const frm = $('#form-i-payment')[0];
-                    frm.submit();
+                    // location.href="/payment";
+                    $.ajax({
+                        url: "/payment",
+                        type: "POST",
+                        async : false,
+                        data: {title: selectTitle},
+                        success: function (data) {
+                            alert("통신 성공!");
+                            console.log(selectTitle);
+                            location.href="/payment";
+                        },
+                        error: function () {
+                            alert("통신 실패");
+                        }
+                    });
                 }
             });
             /*]]>*/
-
-
-            // /*<![CDATA[*/
-            // $("#btn-i-payment").on("click", function () {
-            //
-            //     if ($('#input-i-seatCode').val() == "") {
-            //         const btnError = $("#btn-i-hidden-error");
-            //         btnError.click();
-            //         return;
-            //     } else {
-            //         $.ajax({
-            //             url: "/payment",
-            //             type: "POST",
-            //             data: "{title: th:value=\"${screenData.movieTitle}\"}",
-            //             success: function (data) {
-            //                 // alert("통신 성공!");
-            //                 location.href="/payment";
-            //             },
-            //             error: function () {
-            //                 alert("통신 실패");
-            //             }
-            //         })
-            //     }
-            // });
-            // /*]]>*/
         });
 
     </script>
@@ -343,18 +315,18 @@
         <!--            2022-12-17 조은비 -->
         <!--            -------------------부터-------------------- -->
         <!--            임시 name값 추가-->
-        <form action="/payment" method="post" id="form-i-payment">
-            <input id="input-i-send-movie" type="hidden" name="movieTitle">
-            <input id="input-i-send-cinema" type="hidden" name="cinemaName">
-            <input id="input-i-send-date" type="hidden" name="date">
-            <input id="input-i-send-hall" type="hidden" name="screenHallName">
-            <input id="input-i-send-time" type="hidden" name="time">
-            <input id="input-i-send-seatCode" type="hidden" name="seatCode">
-            <input id="input-i-send-adtPrice" type="hidden" name="adtPrice">
-            <input id="input-i-send-teenPrice" type="hidden" name="teenPrice">
-            <input id="input-i-send-totalPrice" type="hidden" name="totalPrice">
-            <button id="btn-i-hidden-next" type="submit"></button>
-        </form>
+<!--        <form action="/payment" method="post" id="form-i-payment">-->
+<!--            <input id="input-i-send-movie" type="hidden" name="movieTitle">-->
+<!--            <input id="input-i-send-cinema" type="hidden" name="cinemaName">-->
+<!--            <input id="input-i-send-date" type="hidden" name="date">-->
+<!--            <input id="input-i-send-hall" type="hidden" name="screenHallName">-->
+<!--            <input id="input-i-send-time" type="hidden" name="time">-->
+<!--            <input id="input-i-send-seatCode" type="hidden" name="seatCode">-->
+<!--            <input id="input-i-send-adtPrice" type="hidden" name="adtPrice">-->
+<!--            <input id="input-i-send-teenPrice" type="hidden" name="teenPrice">-->
+<!--            <input id="input-i-send-totalPrice" type="hidden" name="totalPrice">-->
+<!--            <button id="btn-i-hidden-next" type="submit"></button>-->
+<!--        </form>-->
         <!--            -------------------까지-------------------- -->
 <!--        좌석 선택 부분-->
         <div class="border-top">

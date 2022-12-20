@@ -14,13 +14,16 @@
 
     <th:block th:replace="fragments/config :: configFragment"></th:block>
 
-    <script th:inline="javascript">
+    <script>
         $(document).ready(function () {
             $.ajax({
-                url:'/seat',
+                url:'/payment',
                 type:'POST',
                 success: function(data){
-                    let title = $('#input-i-send-movie').val();
+
+                    // let title = data.key;
+                    let title = data.title;
+                    // let title = $('#input-i-send-movie').val();
                     console.log(title);
                 }
             });
@@ -178,6 +181,14 @@
             padding : 20px;
             margin-bottom: 50px;
         }
+
+        input {
+            border: 0;
+            background: none;
+        }
+        label {
+            width: 50px;
+        }
     </style>
 
 
@@ -202,20 +213,18 @@
                         <img src="http://file.koreafilm.or.kr/thm/02/00/01/46/tn_DPK004440.JPG" alt="영화포스터"  />
                     </div>
                     <div class="ms-5 mt-5">
-                        <p class="title">영화</p>
-                        <p>극장</p>
-                        <p>상영관</p>
-                        <p>일시</p>
-                        <p>인원</p>
-                        <p>좌석</p>
-                    </div>
-                    <div class="ms-4 mt-5">
-                        <p class="title"></p>
-<!--                        <p th:value="${screenData.cinemaName}">SPRING CINEMA 부산점</p>-->
-<!--                        <p th:value="${screenData.screenHallName}">1관</p>-->
-                        <p>2022-12-20</p>
-                        <p>일반 3명</p>
-                        <p>A1/A2/A3</p>
+                        <label for="movieTitle" class="m-2">영화</label>
+                        <input type="text" id="movieTitle" class="ms-2" th:value="${title}" readonly><br>
+                        <label for="cinemaName" class="m-2">극장</label>
+                        <input type="text" id="cinemaName" class="ms-2" value="극장" readonly><br>
+                        <label for="screenHallName" class="m-2">상영관</label>
+                        <input type="text" id="screenHallName" class="ms-2" value="상영관" readonly><br>
+                        <label for="selectScreenData" class="m-2">일시</label>
+                        <input type="text" id="selectScreenData" class="ms-2" value="일시" readonly><br>
+                        <label for="people" class="m-2">인원</label>
+                        <input type="text" id="people" class="ms-2" value="인원" readonly><br>
+                        <label for="seatCode" class="m-2">좌석</label>
+                        <input type="text" id="seatCode" class="ms-2" value="좌석" readonly><br>
                     </div>
                 </div>
                 <div class="ms-4" style="margin-top: 40px">
