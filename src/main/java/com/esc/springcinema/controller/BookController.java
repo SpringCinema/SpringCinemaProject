@@ -56,6 +56,18 @@ public class BookController {
         return selectMovieTime;
     }
 
+    // 영화 상영 날짜에 예약된 좌석 수 가져오는 부분
+    // 최종 수정 : 2022-12-19
+    // 마지막 작성자 : yang
+    @ResponseBody
+    @RequestMapping(value = "/book/remainSeats", method = RequestMethod.POST)
+    public Object ajaxBookSeat(@RequestParam("title") String title, @RequestParam("cinema") String cinemaName,
+                                @RequestParam("hall") String screenHallName, @RequestParam("viewTime") String viewTime) throws Exception{
+        int reservedSeat = cinemaService.countBook(title, cinemaName, screenHallName, viewTime);
+
+        return reservedSeat;
+    }
+
     // 임시 결제 페이지를 보여줍니다.
     // 최종 수정 : 2022-12-12
     // 마지막 작성자 : MoonNight285

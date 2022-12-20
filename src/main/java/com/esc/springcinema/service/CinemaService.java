@@ -1,5 +1,6 @@
 package com.esc.springcinema.service;
 
+import com.esc.springcinema.dto.BooksDto;
 import com.esc.springcinema.dto.MemberDto;
 import com.esc.springcinema.dto.ScreenHallDto;
 import com.esc.springcinema.dto.apiMovieDto.MovieDto;
@@ -26,4 +27,6 @@ public interface CinemaService {
     List<ScreenHallDto> selectMovieTime(String movieTitle, String cinemaName) throws Exception;
 
     List<ScreenHallDto> selectCinemaName(String title) throws Exception;
+
+    int countBook(String title, String cinemaName, String screenHallName, String viewTime) throws Exception;
 }

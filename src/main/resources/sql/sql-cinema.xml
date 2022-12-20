@@ -26,6 +26,13 @@
         WHERE id = #{id} AND pwd = #{pwd}
     </select>
 
+<!--    예약테이블 특정 날짜 상영 영화 예약 수 확인 쿼리 -->
+    <select id="countBook" parameterType="String" resultType="int">
+        SELECT COUNT(*) FROM books
+        WHERE title = #{title} AND cinema_name = #{cinemaName} AND screen_hall_name = #{screenHallName} AND view_time = #{viewTime}
+        AND state_yn = 'Y'
+    </select>
+
     <select id="isUserId" parameterType="String" resultType="int">
         SELECT COUNT(*) FROM members WHERE id = #{targetId}
     </select>
