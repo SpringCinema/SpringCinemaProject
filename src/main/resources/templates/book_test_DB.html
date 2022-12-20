@@ -264,6 +264,13 @@
                 //------ 부터 ------
 
                 $('#div-i-time-content div').css("display", 'block');
+                $('#p-i-selected-hall').text('선택상영관 : 없음');
+                $('#p-i-selected-time').text('선택시간 : 없음');
+                $("#input-i-send-hall").val('');
+                $("#input-i-send-time").val('');
+                $(".span-c-time").removeClass('clickedTime');
+                $(".span-c-time").css('background-color', '');
+                $(".span-c-time").css('color', '');
 
 
                 for (let i = 0; i < dates.length; ++i) {
@@ -332,31 +339,31 @@
                 // -------------까지 -------------
                 times.css("background-color", "");
                 times.css("color", "");
-                // 2022-12-15 양민호
-                // -----------부터-------------
-                // 선택된 시간 리스트 부분에 고유 클래스명 추가
-                times.removeClass();
-                times.addClass('span-c-time');
-                $(this).addClass('clickedTime');
-                // -----------까지--------------
+                let seat =  $(this).next().text();
+                // 잔여좌석이 없을 경우 클릭 방지
+                if (seat != '0석') {
+                    times.removeClass();
+                    times.addClass('span-c-time');
+                    $(this).addClass('clickedTime');
 
-                $(this).css("background-color", "#333333");
-                $(this).css("color", "white");
+                    $(this).css("background-color", "#333333");
+                    $(this).css("color", "white");
 
-                selectedHall = $(this).text().split("|")[0]; // X관
-                selectedTime = $(this).text().split("|")[1]; // 9 : 30(예시)
+                    selectedHall = $(this).text().split("|")[0]; // X관
+                    selectedTime = $(this).text().split("|")[1]; // 9 : 30(예시)
 
-                const hallView = $("#p-i-selected-hall");
-                hallView.text("선택상영관 : " + selectedHall);
+                    const hallView = $("#p-i-selected-hall");
+                    hallView.text("선택상영관 : " + selectedHall);
 
-                const timeView = $("#p-i-selected-time");
-                timeView.text("선택시간 : " + selectedTime);
+                    const timeView = $("#p-i-selected-time");
+                    timeView.text("선택시간 : " + selectedTime);
 
-                const hallSender = $("#input-i-send-hall");
-                hallSender.val(selectedHall);
+                    const hallSender = $("#input-i-send-hall");
+                    hallSender.val(selectedHall);
 
-                const timeSender = $("#input-i-send-time");
-                timeSender.val(selectedTime);
+                    const timeSender = $("#input-i-send-time");
+                    timeSender.val(selectedTime);
+                }
             });
 
             // 좌석선택 버튼을 클릭시 선택안한 데이터가 있는지 체크하고 선택한 데이터를 서버로 넘김
@@ -397,18 +404,6 @@
                 // ------------------까지----------------
                 // 다 선택했으면 서버로 값 넘기기
             });
-
-            // 2022-12-18 양민호
-            // 영화 제목이 긴 경우 마우스 호버 이벤트
-            // data-bs-toggle="popover" data-bs-trigger="hover focus" data-bs-content="Disabled popover">
-            $(`.div-c-movieList`).find('span').hover(function () {
-                if($(this).text().length >= 16) {
-
-                }
-                },
-                function () {
-
-                });
         });
     </script>
     <style>
@@ -608,26 +603,26 @@
                             <div class="d-flex justify-content-start div-c-movieList" th:if="${item.rating} == '전체관람가'">
 <!--                                rating 조건에 따른 연령 표시 이미지 추가 -->
                                 <img src="/img/letter-a.png">
-                                <span th:text="${item.title}" class="ms-1"></span>
+                                <span th:text="${item.title}" th:title="${item.title}" class="ms-1"></span>
                             </div>
                             <div class="d-flex justify-content-start div-c-movieList" th:if="${item.rating} == '12세관람가'">
                                 <!--                                rating 조건에 따른 연령 표시 이미지 추가 -->
                                 <img src="/img/twelve.png">
-                                <span th:text="${item.title}" class="ms-1"></span>
+                                <span th:text="${item.title}" th:title="${item.title}" class="ms-1"></span>
                             </div>
                             <div class="d-flex justify-content-start div-c-movieList" th:if="${item.rating} == '15세관람가'">
                                 <!--                                rating 조건에 따른 연령 표시 이미지 추가 -->
                                 <img src="/img/fifteen.png">
-                                <span th:text="${item.title}" class="ms-1"></span>
+                                <span th:text="${item.title}" th:title="${item.title}" class="ms-1"></span>
                             </div>
                             <div class="d-flex justify-content-start div-c-movieList" th:if="${item.rating} == '18세관람가(청소년관람불가)'">
                                 <!--                                rating 조건에 따른 연령 표시 이미지 추가 -->
                                 <img src="/img/eighteen.png">
-                                <span th:text="${item.title}" class="ms-1"></span>
+                                <span th:text="${item.title}" th:title="${item.title}" class="ms-1"></span>
                             </div>
                             <div class="d-flex justify-content-start div-c-movieList" th:if="${item.rating} == ''">
                                 <!--                                rating 조건에 따른 연령 표시 이미지 추가 -->
-                                <span th:text="${item.title}" class="ms-4"></span>
+                                <span th:text="${item.title}" th:title="${item.title}" style="margin-left: 28px"></span>
                             </div>
                         </li>
                     </ul>
