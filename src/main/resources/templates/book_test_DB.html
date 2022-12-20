@@ -34,6 +34,22 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"></script>
     <script>
         $(document).ready(function () {
+            // 2022-12-20 양민호
+            // 메인페이지 / 영화상세페이지에서 예매버튼 클릭했을 경우 해당 영화 자동 선택 이벤트
+            const getDoc = $('#div-i-getDoc').text();
+            const len = $('#div-i-movie-content').find('li').length;
+            if(getDoc != '') {
+                for(let i = 0; i < len; i++) {
+                    const docId = $('.div-c-movieList').find('span:last-child').eq(i).text();
+
+                    if(getDoc.includes(docId)) {
+                        setTimeout(function () {
+                            $('#div-i-movie-content').find('li').eq(i).trigger('click');
+                        }, 1);
+                    }
+                }
+            }
+
             const yearValue = $("#small-i-year-value");
             const monthValue = $("#h4-i-month-value");
             let selectedMovieName;
@@ -641,6 +657,7 @@
 </head>
 <body>
     <header th:replace="fragments/header :: headerFragment"></header>
+    <div id="div-i-getDoc" style="display: none" th:text="${docId}"></div>
     <div id="div-i-main" class="container">
         <div class="row">
             <div class="col-xl-12 d-flex justify-content-between">

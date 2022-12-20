@@ -25,10 +25,11 @@ public class BookController {
     // 최종 수정 : 2022-12-16
     // 마지막 작성자 : yang
     @RequestMapping("/book")
-    public ModelAndView viewBook() throws Exception{
+    public ModelAndView viewBook(@RequestParam(value = "docid", required = false) String docid) throws Exception{
         ModelAndView mv = new ModelAndView("book_test_DB");
         List<MovieDto> allScreenTitle = cinemaService.allScreenTitle();
         mv.addObject("allScreenTitle", allScreenTitle);
+        mv.addObject("docId", docid);
         return mv;
     }
 
