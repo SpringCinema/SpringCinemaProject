@@ -136,36 +136,40 @@
             //     });
             // });
             // /*]]>*/
-
-
+            
 
             /*<![CDATA[*/
             $("#btn-i-payment").on("click", function () {
-                let selectTitle = /*[[${screenData.movieTitle}]]*/;
+                let selectedTitle = /*[[${screenData.movieTitle}]]*/;
+                let selectedCinema = /*[[${screenData.cinemaName}]]*/;
+                let selectedScreenHall = /*[[${screenData.screenHallName}]]*/;
+                let selectedDate = /*[[${screenDate} + ' ' + ${viewTime}]]*/;
+                let adtVal = parseInt($(`input[name='inputAdt']:checked`).val());
+                let teenVal = parseInt($(`input[name='inputTeen']:checked`).val());
+                let people = '일반 : ' + adtVal + ' , 청소년 : ' + teenVal;
+                let seatCode = ($('#input-i-seatCode').text()).slice(0, -1);
+
+                let adtPrice = adtVal * 10000;
+                let teenPrice = teenVal * 5000;
+                let totalPrice = adtPrice + teenPrice;
 
                 if ($('#input-i-seatCode').val() == "") {
                     const btnError = $("#btn-i-hidden-error");
                     btnError.click();
                     return;
                 } else {
-                    // location.href="/payment";
-                    $.ajax({
-                        url: "/payment",
-                        type: "POST",
-                        async : false,
-                        data: {title: selectTitle},
-                        success: function (data) {
-                            alert("통신 성공!");
-                            console.log(selectTitle);
-                            location.href="/payment";
-                        },
-                        error: function () {
-                            alert("통신 실패");
-                        }
-                    });
+                    sessionStorage.setItem("title", selectedTitle);
+                    sessionStorage.setItem("cinema", selectedCinema);
+                    sessionStorage.setItem("screenHall", selectedScreenHall);
+                    sessionStorage.setItem("selectedDate", selectedDate);
+                    sessionStorage.setItem("people", people);
+                    sessionStorage.setItem("seatCode", seatCode);
+                    sessionStorage.setItem("totalPrice", totalPrice);
+
+                    location.href="/payment";
                 }
             });
-            /*]]>*/
+        /*]]>*/
         });
 
     </script>

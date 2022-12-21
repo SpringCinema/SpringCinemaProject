@@ -16,17 +16,24 @@
 
     <script>
         $(document).ready(function () {
-            $.ajax({
-                url:'/payment',
-                type:'POST',
-                success: function(data){
 
-                    // let title = data.key;
-                    let title = data.title;
-                    // let title = $('#input-i-send-movie').val();
-                    console.log(title);
-                }
-            });
+            let selectedTitle = sessionStorage.getItem("title");
+            let selectedCinema = sessionStorage.getItem("cinema");
+            let selectedScreenHall = sessionStorage.getItem("screenHall");
+            let selectedDate = sessionStorage.getItem("selectedDate");
+            let people = sessionStorage.getItem("people");
+            let seatCode = sessionStorage.getItem("seatCode");
+            let totalPrice = sessionStorage.getItem("totalPrice");
+
+            // console.log(selectedTitle);
+
+            $('#movieTitle').val(selectedTitle);
+            $('#cinemaName').val(selectedCinema);
+            $('#screenHallName').val(selectedScreenHall);
+            $('#selectScreenData').val(selectedDate);
+            $('#people').val(people);
+            $('#seatCode').val(seatCode);
+            $('#p-i-money-value').val(totalPrice);
 
             $('#btn-i-back').on('click', function () {
                 history.back();
@@ -59,6 +66,38 @@
                 });
             });
         });
+
+
+        // /*<![CDATA[*/
+        // $("#btn-i-payment").on("click", function () {
+        //     let selectTitle = /*[[${screenData.movieTitle}]]*/;
+        //
+        //     if ($('#input-i-seatCode').val() == "") {
+        //         const btnError = $("#btn-i-hidden-error");
+        //         btnError.click();
+        //         return;
+        //     } else {
+        //         // location.href="/payment";
+        //         let json = {"title": selectTitle};
+        //         $.ajax({
+        //             url: "/paymentInfo",
+        //             type: "POST",
+        //             async : false,
+        //             data: JSON.stringify(json),
+        //             contentType: "application/json",
+        //             success: function (data) {
+        //                 alert("통신 성공!");
+        //                 console.log(selectTitle);
+        //                 location.href="/payment";
+        //             },
+        //             error: function () {
+        //                 alert("통신 실패");
+        //             }
+        //         });
+        //     }
+        // });
+        // /*]]>*/
+
     </script>
 
     <style>
@@ -214,17 +253,17 @@
                     </div>
                     <div class="ms-5 mt-5">
                         <label for="movieTitle" class="m-2">영화</label>
-                        <input type="text" id="movieTitle" class="ms-2" th:value="${title}" readonly><br>
+                        <input type="text" id="movieTitle" class="ms-2" readonly><br>
                         <label for="cinemaName" class="m-2">극장</label>
-                        <input type="text" id="cinemaName" class="ms-2" value="극장" readonly><br>
+                        <input type="text" id="cinemaName" class="ms-2" readonly><br>
                         <label for="screenHallName" class="m-2">상영관</label>
-                        <input type="text" id="screenHallName" class="ms-2" value="상영관" readonly><br>
+                        <input type="text" id="screenHallName" class="ms-2" readonly><br>
                         <label for="selectScreenData" class="m-2">일시</label>
-                        <input type="text" id="selectScreenData" class="ms-2" value="일시" readonly><br>
+                        <input type="text" id="selectScreenData" class="ms-2" style="width: 250px;" readonly><br>
                         <label for="people" class="m-2">인원</label>
-                        <input type="text" id="people" class="ms-2" value="인원" readonly><br>
+                        <input type="text" id="people" class="ms-2" readonly><br>
                         <label for="seatCode" class="m-2">좌석</label>
-                        <input type="text" id="seatCode" class="ms-2" value="좌석" readonly><br>
+                        <input type="text" id="seatCode" class="ms-2" readonly><br>
                     </div>
                 </div>
                 <div class="ms-4" style="margin-top: 40px">
@@ -235,7 +274,7 @@
                 <div class="d-flex align-content-between justify-content-center flex-wrap" style="height: 470px;">
                     <div class="div-c-sidebar-item">
                         <p id="p-i-money-header">결제하실 금액</p>
-                        <p id="p-i-money-value">50000원</p>
+                        <input id="p-i-money-value"></input>
                     </div>
                     <div class="text-center">
                         <button id="btn-i-payment" type="button" class="btn btn-dark"><p>결제하기</p></button>

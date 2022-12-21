@@ -5,10 +5,7 @@ import com.esc.springcinema.dto.apiMovieDto.MovieDto;
 import com.esc.springcinema.service.CinemaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.HashMap;
@@ -71,32 +68,20 @@ public class BookController {
     // 임시 결제 페이지를 보여줍니다.
     // 최종 수정 : 2022-12-12
     // 마지막 작성자 : MoonNight285
-//    @RequestMapping("/payment")
-//    public String viewPayment() {
-//        return "payment";
-//    }
-//    @RequestMapping(value = "/paymentInfo")
-//    public String viewPaymentInfo(@RequestParam Map<String, Object> param) throws Exception {
-//        String title = (String) param.get("title");
-//        return "payment";
-//    }
-
-    @RequestMapping(value = "/payment")
-    public String viewPaymentInfo(@RequestParam Map<String, Object> param) {
-//        ModelAndView mv = new ModelAndView("payment");
-        String title = (String) param.get("title");
-//        mv.addObject("title", title);
+    @RequestMapping("/payment")
+    public String viewPayment() {
         return "payment";
     }
 
+
+//    @ResponseBody
 //    @RequestMapping(value = "/paymentInfo")
-//    public Map<String, Object> viewPaymentInfo(@RequestParam Map<String, Object> param) throws Exception {
-//        Map<String, Object> map = new HashMap<>();
-//
-//        String title = (String) param.get("title");
-//        map.put("title", title);
-//
-//        return map;
+//    public String ajaxTest(@RequestBody HashMap<String, String> map) throws Exception {
+////        HashMap<String, String> paymentInfo = new HashMap<>();
+////        paymentInfo.put("title", map.get("title"));
+//        map.put("title", map.get("title"));
+//        return null;
 //    }
+
 
 }
