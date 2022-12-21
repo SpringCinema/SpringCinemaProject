@@ -4,6 +4,7 @@ import com.esc.springcinema.dto.apiMovieDto.ActorDto;
 import com.esc.springcinema.dto.apiMovieDto.DirectorDto;
 import com.esc.springcinema.dto.apiMovieDto.MovieDto;
 import com.esc.springcinema.dto.apiMovieDto.PlotDto;
+import com.esc.springcinema.scheduler.MovieDataManager;
 import com.esc.springcinema.service.MovieService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -18,9 +19,12 @@ public class MoviesController {
 
     @Autowired
     private MovieService movieService;
+    
+    @Autowired
+    private MovieDataManager movieDataManager;
 
     // 메인화면 캐러셀에 현재상영작 불러오기
-    // 최종 수정 : 2022-12-15
+    // 최종 수정 : 2022-12-21
     // 마지막 작성자 : eblyncho
     @RequestMapping("/main")
     public ModelAndView viewNowplayingMoviesList() throws Exception {
@@ -28,6 +32,7 @@ public class MoviesController {
 
         List<MovieDto> nowplayingList = movieService.selectNowplayingMoviesList();
         mv.addObject("nowplayingList", nowplayingList);
+        mv.addObject("randomGenre", movieDataManager.getRandomGenre());
 
         return mv;
     }

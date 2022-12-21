@@ -84,4 +84,9 @@
         LIMIT 4
         ]]>
     </select>
+
+    <!-- 서버 최초 구동했거나 새로 목록이 갱신되었을때만 장르 목록을 가져온다. -->
+    <select id="selectGenre" resultType="String">
+        SELECT DISTINCT genre FROM movies;
+    </select>
 </mapper>

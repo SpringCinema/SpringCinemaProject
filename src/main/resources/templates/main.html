@@ -107,11 +107,11 @@
             margin-bottom: 10px;
             padding: 30px;
         }
-        #btn-i-detail {
+        .btn-c-detail {
             text-decoration: none;
             color: black;
         }
-        #btn-i-book {
+        .btn-c-book {
             text-decoration: none;
             color: white;
         }
@@ -122,14 +122,14 @@
         /*    width: 213px;*/
         /*}*/
 
-        li>#btn-i-detail {
+        li>.btn-c-detail {
             display: none;
             position: relative;
             width: 100%;
             text-align: center;
             background: darkgray;
         }
-        li>#btn-i-book {
+        li>.btn-c-book {
             display: none;
             position: relative;
             width: 100%;
@@ -284,8 +284,8 @@
                         <div class="overlay">
                             <img src="/img/defaultPoster.png" th:if="${list.posters != null}" th:src="${list.posters}" onerror="this.onerror=null; this.src='/img/defaultPoster.png';" class="rounded"/>
                         </div>
-                        <div class="button-detail"><a href="/movieDetail?docid=" th:attrappend="href=${list.docid}" id="btn-i-detail" class="rounded"> 상세보기 </a></div>
-                        <div class="button-book"><a href="/book?docid=" th:attrappend="href=${list.docid}" id="btn-i-book" class="rounded"> 예매하기 </a></div>
+                        <div class="button-detail"><a href="/movieDetail?docid=" th:attrappend="href=${list.docid}" class="rounded btn-c-detail"> 상세보기 </a></div>
+                        <div class="button-book"><a href="/book?docid=" th:attrappend="href=${list.docid}" class="rounded btn-c-book"> 예매하기 </a></div>
                     </div>
                     <div class="text-center mx-auto mt-2">
                         <span class="title" th:text="${list.title}"></span>
@@ -294,6 +294,30 @@
             </div>
         </div>
     </section>
+    
+    <div>
+        <h3 class="mx-5"><span th:text="${randomGenre}"></span> 추천목록</h3>
+        <hr class="mx-5" style="width: 90%">
+        
+        <section class="regular slider">
+            <div class="item" th:if="${#lists.size(nowplayingList) > 0}" th:each="list : ${nowplayingList}">
+                <div class="">
+                    <li class="box flex">
+                        <div class="container2">
+                            <div class="overlay">
+                                <img src="/img/defaultPoster.png" th:if="${list.posters != null}" th:src="${list.posters}" onerror="this.onerror=null; this.src='/img/defaultPoster.png';" class="rounded"/>
+                            </div>
+                            <div class="button-detail"><a href="/movieDetail?docid=" th:attrappend="href=${list.docid}" class="rounded btn-c-detail"> 상세보기 </a></div>
+                            <div class="button-book"><a href="/book?docid=" th:attrappend="href=${list.docid}" class="rounded btn-c-book"> 예매하기 </a></div>
+                        </div>
+                        <div class="text-center mx-auto mt-2">
+                            <span class="title" th:text="${list.title}"></span>
+                        </div>
+                    </li>
+                </div>
+            </div>
+        </section>
+    </div>
 
     <div class="container border mx-auto my-3" style="height: 200px; border-color: black;">
         <p>이벤트 및 광고</p>
