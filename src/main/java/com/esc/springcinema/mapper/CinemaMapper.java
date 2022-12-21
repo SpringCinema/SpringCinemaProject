@@ -95,4 +95,10 @@ public interface CinemaMapper {
     // 최종 수정 : 2022-12-19
     // 마지막 작성자 : yang
     int countBook(String title, String cinemaName, String screenHallName, String viewTime) throws Exception;
+
+    int checkIdEmail(String id, String email) throws Exception;
+
+    MemberDto checkId(String email) throws Exception;
+
+    void pwdUpdate(String pwd, String email) throws Exception;
 }

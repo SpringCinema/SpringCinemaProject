@@ -84,4 +84,16 @@
         LIMIT 4
         ]]>
     </select>
+
+    <select id="checkIdEmail" parameterType="String" resultType="int">
+        SELECT COUNT(*) FROM members WHERE id = #{id} AND email = #{email}
+    </select>
+
+    <select id="checkId" parameterType="String" resultType="com.esc.springcinema.dto.MemberDto">
+        SELECT * FROM members WHERE email = #{email}
+    </select>
+
+    <update id="pwdUpdate" parameterType="String">
+        UPDATE members SET pwd = #{pwd} WHERE id = #{id}
+    </update>
 </mapper>
