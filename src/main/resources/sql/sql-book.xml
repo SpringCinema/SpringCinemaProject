@@ -24,4 +24,9 @@
     WHERE movie_title = #{movieTitle} AND cinema_name = #{cinemaName}
     ORDER BY screen_hall_name;
     </select>
+
+    <!-- 결제 전 예매 정보 확인 페이지 포스터 조회 -->
+    <select id="selectMoviePoster" parameterType="String" resultType="String">
+        SELECT posters FROM movies WHERE docid = #{docid}
+    </select>
 </mapper>

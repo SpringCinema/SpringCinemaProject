@@ -17,6 +17,7 @@
     <script>
         $(document).ready(function () {
 
+            let selectMoviePoster = sessionStorage.getItem("poster");
             let selectedTitle = sessionStorage.getItem("title");
             let selectedCinema = sessionStorage.getItem("cinema");
             let selectedScreenHall = sessionStorage.getItem("screenHall");
@@ -27,6 +28,7 @@
 
             // console.log(selectedTitle);
 
+            $('#moviePoster').attr('src', selectMoviePoster);
             $('#movieTitle').val(selectedTitle);
             $('#cinemaName').val(selectedCinema);
             $('#screenHallName').val(selectedScreenHall);
@@ -249,7 +251,7 @@
             <div id="div-i-payment-body" class="col-xl-12">
                 <div class="d-flex wrap">
                     <div class="mt-5 ms-4" style="height: fit-content">
-                        <img src="http://file.koreafilm.or.kr/thm/02/00/01/46/tn_DPK004440.JPG" alt="영화포스터"  />
+                        <img src="#" alt="영화포스터" id="moviePoster" />
                     </div>
                     <div class="ms-5 mt-5">
                         <label for="movieTitle" class="m-2">영화</label>

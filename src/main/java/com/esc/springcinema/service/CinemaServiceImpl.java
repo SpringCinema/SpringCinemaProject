@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class CinemaServiceImpl implements CinemaService{
+public class CinemaServiceImpl implements CinemaService {
     @Autowired
     private CinemaMapper cinemaMapper;
 
@@ -58,6 +58,11 @@ public class CinemaServiceImpl implements CinemaService{
     @Override
     public int countBook(String title, String cinemaName, String screenHallName, String viewTime) throws Exception {
         return cinemaMapper.countBook(title, cinemaName, screenHallName, viewTime);
+    }
+
+    @Override
+    public MovieDto selectMoviePoster(String docid) throws Exception {
+        return cinemaMapper.selectMovieDetail(docid);
     }
 
 

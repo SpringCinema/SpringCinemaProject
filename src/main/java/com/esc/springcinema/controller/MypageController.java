@@ -2,6 +2,7 @@ package com.esc.springcinema.controller;
 
 import com.esc.springcinema.dto.MemberDto;
 import com.esc.springcinema.dto.ScreenHallDto;
+import com.esc.springcinema.dto.apiMovieDto.MovieDto;
 import com.esc.springcinema.service.CinemaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -126,13 +127,17 @@ public class MypageController {
         seatCode.add("I");
         seatCode.add("J");
 
-
         mv.addObject("alp", seatCode);
         mv.addObject("people", people);
         mv.addObject("viewTime", viewTime);
         mv.addObject("screenDate", screenDate);
         mv.addObject("screenData", selectScreenData);
         mv.addObject("docid", docid);
+
+        // 2022-12-21 조은비
+        MovieDto selectMoviePoster = cinemaService.selectMoviePoster(docid);
+        mv.addObject("selectMoviePoster", selectMoviePoster);
+
         return mv;
     }
 }

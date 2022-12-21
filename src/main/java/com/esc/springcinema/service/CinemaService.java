@@ -8,8 +8,8 @@ import com.esc.springcinema.dto.apiMovieDto.MovieDto;
 import java.util.List;
 
 public interface CinemaService {
-// 최종 수정 : 2022-12-15
-// 마지막 작성자 : yang
+// 최종 수정 : 2022-12-21
+// 마지막 작성자 : EblynCho
 // ----- 부터 ------
     public MemberDto selectMyInfo(String id) throws Exception;
 
@@ -29,4 +29,6 @@ public interface CinemaService {
     List<ScreenHallDto> selectCinemaName(String title) throws Exception;
 
     int countBook(String title, String cinemaName, String screenHallName, String viewTime) throws Exception;
+
+    MovieDto selectMoviePoster(String docid) throws Exception;
 }

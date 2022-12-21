@@ -114,6 +114,7 @@
             // 2022-12-21 조은비
             /*<![CDATA[*/
             $("#btn-i-payment").on("click", function () {
+                let selectMoviePoster = /*[[${selectMoviePoster.posters}]]*/;
                 let selectedTitle = /*[[${screenData.movieTitle}]]*/;
                 let selectedCinema = /*[[${screenData.cinemaName}]]*/;
                 let selectedScreenHall = /*[[${screenData.screenHallName}]]*/;
@@ -132,6 +133,7 @@
                     btnError.click();
                     return;
                 } else {
+                    sessionStorage.setItem("poster", selectMoviePoster);
                     sessionStorage.setItem("title", selectedTitle);
                     sessionStorage.setItem("cinema", selectedCinema);
                     sessionStorage.setItem("screenHall", selectedScreenHall);
@@ -196,6 +198,7 @@
 <main class="container">
     <div class="col-10 mx-auto mt-5 border" style="background-color: #f2f0e5">
         <div class="bg-dark text-light text-center m-0 mx-auto">
+            <input type="hidden" id="inpupt-i-docid" th:value="${selectMoviePoster.posters}" readonly>
             <p class="m-0">인원/좌석</p>
         </div>
         <div class="row mx-1">
