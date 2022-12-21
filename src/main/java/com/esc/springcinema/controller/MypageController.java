@@ -29,28 +29,36 @@ public class MypageController {
     
 //    DB 적용
 //    마이 페이지에 세션을 이용해서 접속하도록 변경(현재 사용하는 세션방식은 불완전함)
-//    2022-12-16 MoonNight285
+//    2022-12-21 MoonNight285
     @RequestMapping(value = "/mypage", method = RequestMethod.GET)
     public ModelAndView openMyPage(HttpServletRequest request) throws Exception {
         request.setCharacterEncoding("UTF-8");
         HttpSession session = request.getSession();
+        
+        if (session.getAttribute("loggedInUserInfo") == null) {
+            ModelAndView mv = new ModelAndView("/login");
+            return mv;
+        }
+        
+        session.setMaxInactiveInterval(1800);
         String loggedInUserId = ((MemberDto)session.getAttribute("loggedInUserInfo")).getId();
         ModelAndView mv = new ModelAndView("mypage/mypage");
         MemberDto myInfo = mypageService.selectMyInfo(loggedInUserId);
         mv.addObject("myInfo", myInfo);
-        
+    
         return mv;
     }
     
     // 마이페이지의 영화예매내역 중 예매중인 영화목록 표시
     // 페이징 처리 완료
-    // 최종 수정일 : 2022-12-20
+    // 최종 수정일 : 2022-12-21
     // 마지막 작성자 : MoonNight285
     @RequestMapping(value = "/mypage/book/normal", method = RequestMethod.GET)
     public ModelAndView getNormalBookList(HttpServletRequest request, @RequestParam(value = "pageNo", defaultValue = "1") int pageNo) throws Exception {
         request.setCharacterEncoding("UTF-8");
         HttpSession session = request.getSession();
         String loggedInUserId = ((MemberDto)session.getAttribute("loggedInUserInfo")).getId();
+        session.setMaxInactiveInterval(1800);
         PageInfo<BooksDto> bookList = new PageInfo<>(mypageService.selectBookList(loggedInUserId, "Y", pageNo), 10);
         ModelAndView view = new ModelAndView("mypage/mypage_book");
         view.addObject("bookList", bookList);
@@ -63,13 +71,14 @@ public class MypageController {
     
     // 마이페이지의 영화예매내역 중 예매 취소된 영화목록 표시
     // 페이징 처리 완료
-    // 최종 수정일 : 2022-12-20
+    // 최종 수정일 : 2022-12-21
     // 마지막 작성자 : MoonNight285
     @RequestMapping(value = "/mypage/book/cancellation", method = RequestMethod.GET)
     public ModelAndView getCancellationBookList(HttpServletRequest request, @RequestParam(value = "pageNo", defaultValue = "1") int pageNo) throws Exception {
         request.setCharacterEncoding("UTF-8");
         HttpSession session = request.getSession();
         String loggedInUserId = ((MemberDto)session.getAttribute("loggedInUserInfo")).getId();
+        session.setMaxInactiveInterval(1800);
         PageInfo<BooksDto> bookList = new PageInfo<>(mypageService.selectBookList(loggedInUserId, "N", pageNo), 10);
         ModelAndView view = new ModelAndView("mypage/mypage_book");
         view.addObject("bookList" , bookList);
@@ -80,12 +89,13 @@ public class MypageController {
     }
     
     // 마이페이지에서 로그인한 내 정보를 보여주는 기능
-    // 최종 수정일 : 2022-12-16
+    // 최종 수정일 : 2022-12-21
     // 마지막 작성자 : MoonNight285
     @RequestMapping(value = "/mypage/userInfo", method = RequestMethod.GET)
     public ModelAndView getUserInfo(HttpServletRequest request) throws Exception {
         request.setCharacterEncoding("UTF-8");
         HttpSession session = request.getSession();
+        session.setMaxInactiveInterval(1800);
         String loggedInUserId = ((MemberDto)session.getAttribute("loggedInUserInfo")).getId();
         MemberDto member = mypageService.selectMyInfo(loggedInUserId);
         ModelAndView view = new ModelAndView("mypage/mypage_profile");
@@ -97,13 +107,14 @@ public class MypageController {
 
     // 마이페이지에서 내가 결제한 내역을 보여주는 기능
     // 페이징 처리 완료
-    // 최종 수정일 : 2022-12-20
+    // 최종 수정일 : 2022-12-21
     // 마지막 작성자 : MoonNight285
     @RequestMapping(value = "/mypage/payment/normal", method = RequestMethod.GET)
     public ModelAndView getNormalPaymentList(HttpServletRequest request, @RequestParam(value = "pageNo", defaultValue = "1") int pageNo) throws Exception {
         request.setCharacterEncoding("UTF-8");
         HttpSession session = request.getSession();
         String loggedInUserId = ((MemberDto)session.getAttribute("loggedInUserInfo")).getId();
+        session.setMaxInactiveInterval(1800);
         PageInfo<PaymentsDto> paymentList = new PageInfo<>(mypageService.selectMyPayment(loggedInUserId, "결제완료", pageNo), 10);
         ModelAndView view = new ModelAndView("/mypage/mypage_payment");
         view.addObject("paymentList", paymentList);
@@ -115,13 +126,14 @@ public class MypageController {
 
     // 마이페이지에서 내가 결제취소한 내역을 보여주는 기능
     // 페이징 처리 완료
-    // 최종 수정일 : 2022-12-20
+    // 최종 수정일 : 2022-12-21
     // 마지막 작성자 : MoonNight285
     @RequestMapping(value = "/mypage/payment/cancellation", method = RequestMethod.GET)
     public ModelAndView getCancellationPaymentList(HttpServletRequest request, @RequestParam(value = "pageNo", defaultValue = "1") int pageNo) throws Exception {
         request.setCharacterEncoding("UTF-8");
         HttpSession session = request.getSession();
         String loggedInUserId = ((MemberDto)session.getAttribute("loggedInUserInfo")).getId();
+        session.setMaxInactiveInterval(1800);
         PageInfo<PaymentsDto> paymentList = new PageInfo<>(mypageService.selectMyPayment(loggedInUserId, "취소완료", pageNo), 10);
         ModelAndView view = new ModelAndView("/mypage/mypage_payment");
         view.addObject("paymentList", paymentList);
@@ -166,11 +178,12 @@ public class MypageController {
     // (DB 적용)
     // 내 정보 수정 (뷰)
     // 내 프로필에서 내 정보 수정을 눌렀을때 뷰를 내려준다.
-    // 최종 수정일 : 2022-12-17
+    // 최종 수정일 : 2022-12-21
     @RequestMapping(value = "/mypage/update", method = RequestMethod.GET)
     public ModelAndView updateProfile(HttpServletRequest request) throws Exception {
         request.setCharacterEncoding("UTF-8");
         HttpSession session = request.getSession();
+        session.setMaxInactiveInterval(1800);
         String loggedInUserId = ((MemberDto)session.getAttribute("loggedInUserInfo")).getId();
         ModelAndView mv = new ModelAndView("mypage/profile_update");
         MemberDto myInfo = mypageService.selectMyInfo(loggedInUserId);
@@ -181,22 +194,26 @@ public class MypageController {
     }
 
 
-//    (DB 적용)
-//    2022-12-15 양민호
-//    내 정보 수정 (수정 기능)
+    // (DB 적용)
+    // 2022-12-21 MoonNight285
+    // 수정완료되면 ajax로 알려준다.
+    // 내 정보 수정 (수정 기능)
+    @ResponseBody
     @RequestMapping(value = "/mypage/update", method = RequestMethod.POST)
     public String updateMyInfo(MemberDto update) throws Exception{
         mypageService.updateMyInfo(update);
-        return "redirect:/mypage/update";
+        return "done";
     }
 
     // (DB 적용)
     // 회원 탈퇴 (뷰)
     // 마이페이지 내 프로필에서 회원 탈퇴를 누르면 뷰를 만들어서 보여준다.
+    // 2022-12-21 MoonNight285
     @RequestMapping(value = "/mypage/delete", method = RequestMethod.GET)
     public ModelAndView deleteProfile(HttpServletRequest request) throws Exception {
         request.setCharacterEncoding("UTF-8");
         HttpSession session = request.getSession();
+        session.setMaxInactiveInterval(1800);
         String loggedInUserId = ((MemberDto)session.getAttribute("loggedInUserInfo")).getId();
         ModelAndView mv = new ModelAndView("mypage/profile_delete");
         MemberDto myInfo = mypageService.selectMyInfo(loggedInUserId);
@@ -231,12 +248,13 @@ public class MypageController {
 
 
     // 결제 취소
-    // 2022-12-20 MoonNight285
+    // 2022-12-21 MoonNight285
     // 결제 항목에서 취소누르면 완전 취소되기전에 한번 어떤영화를 선택했는지 보여주는 페이지
     @RequestMapping(value = "/mypage/paycancle", method = RequestMethod.GET)
     public ModelAndView cancelPay(HttpServletRequest request, @RequestParam("bookNum") String bookNum, @RequestParam("title") String title) throws Exception {
         request.setCharacterEncoding("UTF-8");
         HttpSession session = request.getSession();
+        session.setMaxInactiveInterval(1800);
         String loggedInUserId = ((MemberDto)session.getAttribute("loggedInUserInfo")).getId();
         
         Map<String, String> paymentCancleInfo = mypageService.selectCancelMovieInfo(bookNum, loggedInUserId);
@@ -257,7 +275,17 @@ public class MypageController {
         
         return mv;
     }
-
+    
+    // 결제 취소
+    // 2022-12-21 MoonNight285
+    // 결제를 취소하는 기능
+    @ResponseBody
+    @RequestMapping(value = "/mypage/paycancel/cancel", method = RequestMethod.POST)
+    public String cancelMovie(@RequestParam("paymentNum") String paymentNum, @RequestParam("bookNum") String bookNum) throws Exception {
+        mypageService.callCancelPayment(paymentNum, bookNum);
+        return "done";
+    }
+    
 //    (DB 적용)
 //    2022-12-15 양민호
 //    book 페이지에서 입력값을 받아오는 좌석 선택 페이지 뷰

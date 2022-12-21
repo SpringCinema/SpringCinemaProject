@@ -47,4 +47,9 @@ public interface MypageService {
     // 최종 수정 : 2022-12-20
     // 마지막 작성자 : MoonNight285
     String selectMovieFirstPoster(String title) throws Exception;
+    
+    // 결제한 영화를 취소하는 기능
+    // 최종 수정 : 2022-12-21
+    // 마지막 작성자 : MoonNight285
+    void callCancelPayment(String paymentNum, String bookNum) throws Exception;
 }

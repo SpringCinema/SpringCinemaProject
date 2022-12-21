@@ -18,14 +18,31 @@
 
     <script>
         $(document).ready(function() {
-            // 금액 세자리 마다 ',' 추가
-            let won = $('#input-i-cost').text();
-            won = won.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-            $('#input-i-cost').text(won + "원");
-
             $('#button-i-back').on('click', function() {
                 history.back();
             });
+            
+            // 결제를 취소하는 부분
+            // 아직은 결제목록으로 돌아가는 기능이 미구현 됨
+            // 마지막 작성일 : 2022-12-21
+            // 최종 작성자 : MoonNight285
+            const btnPayCancel = $("#button-i-cancel");
+            btnPayCancel.on("click", function () {
+                if (confirm("정말로 결제를 취소할까요?")) {
+                    $.ajax({
+                        url : "/mypage/paycancel/cancel",
+                        type : "post",
+                        data : {paymentNum : $("#span-i-payment-num").text(), bookNum : $("#span-i-book-num").text()},
+                        success : function (result) {
+                            if (result == "done") {
+                                window.parent.location.href = "/complete?msgType=payCancel";
+                            }
+                        }, error : function () {
+                            alert("서버 통신에 실패하였습니다.");
+                        }
+                    });
+                }
+            })
         });
     </script>
 
@@ -68,25 +85,25 @@
             </div>
         </div>
         <div class="row">
-            <form action="" method="post" class="row rounded-4" id="form-i-border">
+            <form action="/mypage" method="get" class="row rounded-4" id="form-i-border">
                 <div class="col-xl-8 d-flex" style="border: 2px #e3e3e3 solid; height: 245px">
                     <div id="div-i-img-wrapper">
                         <img th:src="@{${poster}}" src="#" alt="이미지를 불러오는데 실패했습니다." style="width: 150px; height: 200px; border: 1px solid">
                     </div>
                     <div id="div-i-movie-info-wrapper" class="mt-4">
                         <p style="word-wrap: break-word" class="mb-3">영화제목 : <span th:text="${title}"></span></p>
-                        <p class="mb-3">예약번호 : <span th:text="${bookNum}"></span></p>
+                        <p class="mb-3">예약번호 : <span id="span-i-book-num" th:text="${bookNum}"></span></p>
                         <p class="mb-3">영화관 : <span th:text="${cinemaName}"></span></p>
                         <p class="mb-3">상영관 : <span th:text="${screenHallName}"></span></p>
                         <p class="mb-3">상영시간 : <span th:text="${viewTime}"></span></p>
                     </div>
                     <div style="width: 50%">
-                        <p class="mt-4 mb-3">결제번호 : <span th:text="${paymentNum}"></span></p>
+                        <p class="mt-4 mb-3">결제번호 : <span id="span-i-payment-num" th:text="${paymentNum}"></span></p>
                         <p class="mb-3">결제날짜 : <span th:text="${payDate}"></span></p>
                         <p class="mb-3">결제수단 : <span th:text="${payType}"></span></p>
                         <p class="mb-3">금액 : <span th:text="${money}"></span>원</p>
                         <div style="width: 100%" class="d-flex justify-content-end mx-2 mb-2">
-                            <button type="submit" class="btn btn-danger mx-2" id="button-i-cancel">결제 취소</button>
+                            <button type="button" class="btn btn-danger mx-2" id="button-i-cancel">결제 취소</button>
                             <button type="reset" class="btn btn-secondary me-3" id="button-i-back">뒤로</button>
                         </div>
                     </div>

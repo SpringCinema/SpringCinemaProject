@@ -28,6 +28,12 @@ public class ProcessController {
             btnMsg = "메인으로";
             link = "/main";
             break;
+            case "payCancel" :
+                title = "스프링 시네마 - 결제취소 완료";
+                headMsg = "결제취소가 완료되었습니다.";
+                btnMsg = "마이페이지로";
+                link = "/mypage";
+            break;
         }
 
         modelAndView.addObject("title", title); // 제목

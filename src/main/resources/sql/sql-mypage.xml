@@ -50,4 +50,13 @@
     <select id="selectMovieFirstPoster" parameterType="String" resultType="String">
         SELECT posters FROM movies WHERE title = #{title}
     </select>
+
+    <!-- 결제한 영화를 취소하는 프로시저 -->
+    <select id="callCancelPayment" statementType="CALLABLE" parameterType="String">
+        { call cancel_payment
+            (
+                #{paymentNum, mode=IN, jdbcType=VARCHAR, javaType=String}, #{bookNum, mode=IN, jdbcType=VARCHAR, javaType=String}
+            )
+        }
+    </select>
 </mapper>

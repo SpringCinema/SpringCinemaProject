@@ -6,6 +6,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="/js/event.js"></script>
 
     <script>
         $(document).ready(function () {
@@ -18,10 +19,21 @@
             });
 
             $('#button-i-ok').on('click', function() {
-                const frm = $("#form-i-update")[0];
-                frm.action = "/mypage/update";
-                frm.method = "post";
-                frm.submit();
+                $.ajax({
+                    url : "/mypage/update",
+                    type : "post",
+                    data : {name : $("#input-i-name").val(), id : $("#input-i-id").val(), pwd : $("#input-i-pwd").val(),
+                        email : $("#input-i-email").val(), tel : $("#input-i-tel").val()},
+                    success : function (result) {
+                        if (result == "done") {
+                            runSuccessAnimate($("#small-i-edit-result"), "수정되었습니다.");
+                        } else {
+                            runUserCheckFailAnimate($("#small-i-edit-result"), "수정에 실패했습니다.");
+                        }
+                    }, error : function () {
+                        runUserCheckFailAnimate($("#small-i-edit-result"), "서버연결실패!");
+                    }
+                })
             });
         });
     </script>
@@ -94,7 +106,8 @@
                             </div>
                         </div>
                         <div class="d-flex justify-content-end pt-1" style="width: 100%">
-                            <button class="btn btn-outline-danger mb-2 mx-2" id="button-i-ok">수정하기</button>
+                            <small id="small-i-edit-result" class="mt-2"></small>
+                            <button type="button" class="btn btn-outline-danger mb-2 mx-2" id="button-i-ok">수정하기</button>
                             <button type="reset" class="btn btn-outline-dark mb-2" id="button-i-back">뒤로</button>
                         </div>
                     </div>
