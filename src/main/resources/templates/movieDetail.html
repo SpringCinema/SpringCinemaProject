@@ -126,7 +126,7 @@
                 <span>개봉일 : </span>
                 <span th:text="${movies.repRlsDate}">2022.12.01</span>
                 <div class="d-flex justify-content-end mt-4">
-                    <div class="button-book"><a href="#" id="btn-i-book" class="rounded"> 예매하기 </a></div>
+                    <div class="button-book"><a href="/book?docid=" th:attrappend="href=${docId}" id="btn-i-book" class="rounded"> 예매하기 </a></div>
                 </div>
             </div>
         </li>

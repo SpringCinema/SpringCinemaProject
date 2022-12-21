@@ -80,6 +80,8 @@ public class MoviesController {
         List<ActorDto> actorList = movieService.selectActor(docid);
         mv.addObject("actorList", actorList);
 
+        mv.addObject("docId",docid);
+
         return mv;
     }
 }
