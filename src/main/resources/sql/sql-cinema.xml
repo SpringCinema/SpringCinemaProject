@@ -36,17 +36,22 @@
         <![CDATA[
         SELECT docid, title, SUBSTRING_INDEX(posters, '|', 1) AS posters
         FROM movies
-        WHERE repRlsDate <= NOW() AND repRlsDate >= DATE_ADD(NOW(), INTERVAL #{day} DAY) AND genre LIKE #{genre}
+        WHERE genre LIKE #{genre}
+        ORDER BY repRlsDate DESC LIMIT 9
         ]]>
     </select>
 
     <!-- 관람등급을 기준으로 영화를 검색 -->
     <select id="selectBirthMovieList" parameterType="java.util.List" resultType="com.esc.springcinema.dto.apiMovieDto.MovieDto">
         SELECT docid, title, SUBSTRING_INDEX(posters, '|', 1) AS posters FROM movies WHERE rating IN (
-        <foreach collection="list" item="item" separator=",">
-            #{item}
-        </foreach>
+            <foreach collection="list" item="item" separator=",">
+                #{item}
+            </foreach>
         )
+        <![CDATA[
+            AND repRlsDate <= NOW()
+            ORDER BY repRlsDate DESC LIMIT 9
+        ]]>
     </select>
 
     <insert id="insertMovieDatas" parameterType="com.esc.springcinema.dto.apiMovieDto.MovieDto">

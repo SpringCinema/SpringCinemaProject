@@ -46,7 +46,7 @@ public class MoviesController {
         
         String randomGenre = movieDataManager.getRandomGenre();
         List<MovieDto> nowplayingList = movieService.selectNowplayingMoviesList();
-        List<MovieDto> recommendList = movieService.selectRecommendMoviesList("-60", randomGenre);
+        List<MovieDto> recommendList = movieService.selectRecommendMoviesList(randomGenre);
         
         mv.addObject("nowplayingList", nowplayingList);
         mv.addObject("recommendList", recommendList);

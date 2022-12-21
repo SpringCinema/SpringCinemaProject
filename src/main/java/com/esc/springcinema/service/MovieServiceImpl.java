@@ -149,13 +149,13 @@ public class MovieServiceImpl implements MovieService {
         return genreSet; // 최종적으로는 중복이 제거되고 남은 장르의 목록을 반환
     }
     
-    // 장르목록과 기준 날짜를 선택해서 조건에 일치하는 영화들을 가져온다.
+    // 장르목록를 선택해서 조건에 일치하는 영화들을 가져온다.
     // 최종 수정 : 2022-12-21
     // 마지막 작성자 : MoonNight285
     @Override
-    public List<MovieDto> selectRecommendMoviesList(String day, String genre) throws Exception {
+    public List<MovieDto> selectRecommendMoviesList(String genre) throws Exception {
         genre = "%" + genre + "%";
-        return cinemaMapper.selectRecommendMoviesList(day, genre);
+        return cinemaMapper.selectRecommendMoviesList(genre);
     }
     
     // 관람등급을 기준으로 영화를 검색해서 조건에 일치하는 영화들을 가져온다.
