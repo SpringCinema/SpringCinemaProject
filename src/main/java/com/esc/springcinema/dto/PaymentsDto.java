@@ -6,6 +6,7 @@ import lombok.Data;
 public class PaymentsDto {
     private int idx;
     private String paymentNum;
+    private String bookNum;
     private String id;
     private int money;
     private String payType;

@@ -1,6 +1,5 @@
 package com.esc.springcinema.mapper;
 
-import com.esc.springcinema.dto.BooksDto;
 import com.esc.springcinema.dto.MemberDto;
 
 import com.esc.springcinema.dto.apiMovieDto.ActorDto;
@@ -31,27 +30,7 @@ public interface CinemaMapper {
     // 최종 수정 : 2022-12-14
     // 마지막 작성자 : MoonNight285
     void createMember(MemberDto member) throws Exception;
-
-    // 마이페이지 정보 출력
-    // 최종 수정 : 2022-12-15
-    // 마지막 작성자 : yang
-    MemberDto selectMyInfo(String id) throws Exception;
-
-    // 내 정보 수정 
-    // 최종 수정 : 2022-12-15
-    // 마지막 작성자 : yang
-    void updateMyInfo(MemberDto update) throws Exception;
-
-    // 회원탈퇴 
-    // 최종 수정 : 2022-12-15
-    // 마지막 작성자 : yang
-    void deleteAccount(MemberDto delete) throws Exception;
-
-    // 회원탈퇴 시 아이디 패스워드 확인
-    // 최종 수정 : 2022-12-15
-    // 마지막 작성자 : yang
-    int checkPwd(String id, String pwd) throws Exception;
-
+    
     // 영화 검색
     // 최종 수정 : 2022-12-15
     // 마지막 작성자 : eblyncho

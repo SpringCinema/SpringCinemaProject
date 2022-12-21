@@ -1,32 +1,127 @@
+<!-- 수정일 : 2022-12-20일 -->
+<!-- 마지막으로 수정한 사람 : MoonNight285 -->
+<!-- 마지막으로 작업한 내용 : 페이징 처리 -->
+<!-- 마이페이지 예약 페이지 -->
+
 <!DOCTYPE html>
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link type="text/css" href="/mypage/mypage_common_design.css" rel="stylesheet">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            // 마이페이지에서 예약목록의 옵션을 선택하고 서버로 전송하는 기능
+            const btnBookList = $("#btn-i-bookList");
+            const btnCancelList = $("#btn-i-cancelList");
+            const bookTypeSender = $("#form-i-send-book-type");
+            
+            btnBookList.on("click", function () {
+                btnBookList.addClass("active");
+                bookTypeSender.attr("action", "/mypage/book/normal");
+            });
+            
+            btnCancelList.on("click", function () {
+                btnCancelList.addClass("active");
+                bookTypeSender.attr("action", "/mypage/book/cancellation");
+            });
+        });
+    </script>
+    <style>
+        /* 본문 컨테이너 영역 */
+        #div-i-iframe-main {
+            width:1500px;
+            max-width:none!important;
+            margin: 0px;
+        }
+
+        #p-i-iframe-title {
+            font-family: "KOHINanumOTFL";
+            font-weight: bold;
+        }
+
+        table {
+            table-layout: fixed;
+        }
+    </style>
 </head>
 <body>
-<div th:fragment="book">
-    <p id="p-i-title" class="mb-5 fs-5">예매내역</p>
-
-    <table class="table table-striped text-center">
-        <thead class="border-top border-bottom border-3">
-        <th>예매번호</th>
-        <th>영화제목</th>
-        <th>상영관</th>
-        <th>좌석번호</th>
-        <th>상영시간</th>
-        </thead>
-        <tbody>
-        <td class="border border-2 border-light">텍스트</td>
-        <td class="border border-2 border-light">텍스트</td>
-        <td class="border border-2 border-light">텍스트</td>
-        <td class="border border-2 border-light">텍스트</td>
-        <td class="border border-2 border-light">텍스트</td>
-        </tbody>
-    </table>
-</div>
+    <div id="div-i-iframe-main" class="container">
+        <div class="row">
+            <div class="col-xl-12">
+                <p id="p-i-iframe-title" class="mb-2 fs-5" th:text="${bookTitle}">목록이름</p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xl-12">
+                <div class="mb-2 d-flex justify-content-end">
+                    <form id="form-i-send-book-type" action="" method="get">
+                        <button id="btn-i-bookList" class="btn btn-outline-success mx-2"
+                                th:classappend="${bookType} == 'normal' ? 'active' : ''">예매내역</button>
+                        <button id="btn-i-cancelList" class="btn btn-outline-danger"
+                                th:classappend="${bookType} == 'cancellation' ? 'active' : ''">취소내역</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="row" style="height: 575px">
+            <div class="col-xl-12">
+                <table class="table table-striped text-center">
+                    <thead class="border-top border-bottom border-3">
+                        <tr>
+                            <th style="width: 140px;">예매번호</th>
+                            <th style="width: 225px;">예약날짜</th>
+                            <th style="width: 350px;">영화이름</th>
+                            <th style="width: 175px;">영화관이름</th>
+                            <th style="width: 65px;">상영관</th>
+                            <th style="width: 225px;">상영시간</th>
+                            <th style="width: 60px;">좌석</th>
+                            <th style="width: 110px;">성인/청소년</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="item : ${bookList.getList()}">
+                            <td class="border border-2 border-light" th:text="${item.bookNum}">2022120255555</td>
+                            <td class="border border-2 border-light" th:text="${item.reserveDate}">테스트 날짜</td>
+                            <td style="text-overflow: ellipsis; overflow: hidden; white-space: nowrap;" th:title="${item.title}" class="border border-2 border-light" th:text="${item.title}">아바타: 물의 길</td>
+                            <td class="border border-2 border-light" th:text="${item.cinemaName}">spring cinema 부산점	</td>
+                            <td class="border border-2 border-light" th:text="${item.screenHallName}">2관</td>
+                            <td class="border border-2 border-light" th:text="${item.viewTime}">2022년 12월 28일 15:30:00</td>
+                            <td class="border border-2 border-light" th:text="${item.seatCode}">C11</td>
+                            <td class="border border-2 border-light" th:if="${item.adultYn} == 'Y'">성인</td>
+                            <td class="border border-2 border-light" th:unless="${item.adultYn} == 'Y'">청소년</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xl-12">
+                <nav>
+                    <ul class="pagination justify-content-center">
+                        <!--타임리프 classappend를 사용해서 이전 페이지 정보가 없으면 class에 disabled를 추가-->
+                        <li class="page-item" th:classappend="${bookList.getPrePage() == 0} ? 'disabled'">
+                            <!--()를 사용하여 매개변수를 추가, pageNo 라는 이름으로 매개변수를 전달..-->
+                            <a class="page-link" th:if="${bookType} == 'normal'" th:href="@{/mypage/book/normal(pageNo=${bookList.getPrePage()})}">&laquo</a>
+                            <a class="page-link" th:if="${bookType} == 'cancellation'" th:href="@{/mypage/book/cancellation(pageNo=${bookList.getPrePage()})}">&laquo</a>
+                        </li>
+                        <!--타임리프의 숫자 객체인 numbers를 이용하면 숫자 배열을 만들어준다.-->
+                        <li class="page-item" th:each="page : ${#numbers.sequence(bookList.getNavigateFirstPage(), bookList.getNavigateLastPage())}"
+                            th:class="${page == bookList.getPageNum()} ? 'active'">
+                            <a class="page-link" th:if="${bookType} == 'normal'" th:text="${page}" th:href="@{/mypage/book/normal(pageNo=${page})}"></a>
+                            <a class="page-link" th:if="${bookType} == 'cancellation'" th:text="${page}" th:href="@{/mypage/book/cancellation(pageNo=${page})}"></a>
+                        </li>
+                        <li class="page-item" th:classappend="${bookList.getNextPage() == 0} ? 'disabled'">
+                            <a class="page-link" th:if="${bookType} == 'normal'" th:href="@{/mypage/book/normal(pageNo=${bookList.getNextPage()})}">&raquo</a>
+                            <a class="page-link" th:if="${bookType} == 'cancellation'" th:href="@{/mypage/book/cancellation(pageNo=${bookList.getNextPage()})}">&raquo</a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </div>
 </body>
 </html>

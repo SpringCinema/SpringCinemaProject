@@ -8,17 +8,6 @@ import com.esc.springcinema.dto.apiMovieDto.MovieDto;
 import java.util.List;
 
 public interface CinemaService {
-// 최종 수정 : 2022-12-21
-// 마지막 작성자 : EblynCho
-// ----- 부터 ------
-    public MemberDto selectMyInfo(String id) throws Exception;
-
-    void updateMyInfo(MemberDto update) throws Exception;
-
-    void deleteAccount(MemberDto delete) throws Exception;
-
-    int checkPwd(String id, String pwd) throws Exception;
-
     ScreenHallDto selectScreenData(String movieTitle, String cinemaName, String screenHallName) throws Exception;
 
     List<MovieDto> allScreenTitle() throws Exception;
