@@ -22,8 +22,6 @@ public class MovieDataManager {
     private Set<String> genres; // DB에 저장된 장르목록
     
     @Autowired
-    private CinemaService cinemaService;
-    @Autowired
     private MovieService movieService;
 
     // 새벽 4시에 한번씩 영화목록을 업데이트 해준다.
@@ -62,7 +60,7 @@ public class MovieDataManager {
     // 작성일 : 2022-12-21
     // 작성자 : MoonNight285
     private void UpdateGenreSet() throws Exception {
-        genres = cinemaService.selectGenre();
+        genres = movieService.selectGenre();
     }
     
     // 저장되어있는 장르목록을 가져온다.(외부에서 장르목록을 저장하는건 허용하지않음)

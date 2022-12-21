@@ -31,6 +31,15 @@
         ]]>
     </select>
 
+    <!-- 카테고리별 추천목록을 가져온다. -->
+    <select id="selectRecommendMoviesList" parameterType="String" resultType="com.esc.springcinema.dto.apiMovieDto.MovieDto">
+        <![CDATA[
+        SELECT docid, title, SUBSTRING_INDEX(posters, '|', 1) AS posters
+        FROM movies
+        WHERE repRlsDate <= NOW() AND repRlsDate >= DATE_ADD(NOW(), INTERVAL #{day} DAY) AND genre LIKE #{genre}
+        ]]>
+    </select>
+
     <insert id="insertMovieDatas" parameterType="com.esc.springcinema.dto.apiMovieDto.MovieDto">
         INSERT INTO movies(docid, title, titleEng, nation, company, runtime, rating, genre, repRlsDate, keywords, posters, stlls, awards1, plotText)
         VALUES(#{docid}, #{title}, #{titleEng}, #{nation}, #{company}, #{runtime}, #{rating}, #{genre}, #{repRlsDate}, #{keywords},

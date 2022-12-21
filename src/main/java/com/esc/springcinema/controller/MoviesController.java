@@ -29,10 +29,13 @@ public class MoviesController {
     @RequestMapping("/main")
     public ModelAndView viewNowplayingMoviesList() throws Exception {
         ModelAndView mv = new ModelAndView("main");
-
+        
+        String randomGenre = movieDataManager.getRandomGenre();
         List<MovieDto> nowplayingList = movieService.selectNowplayingMoviesList();
+        List<MovieDto> recommendList = movieService.selectRecommendMoviesList("-60", randomGenre);
         mv.addObject("nowplayingList", nowplayingList);
-        mv.addObject("randomGenre", movieDataManager.getRandomGenre());
+        mv.addObject("recommendList", recommendList);
+        mv.addObject("randomGenre", randomGenre);
 
         return mv;
     }

@@ -11,9 +11,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.GregorianCalendar;
-import java.util.List;
+import java.util.*;
 
 @Service
 public class MovieServiceImpl implements MovieService {
@@ -129,5 +127,34 @@ public class MovieServiceImpl implements MovieService {
     @Override
     public List<ActorDto> selectActor(String docid) throws Exception {
         return cinemaMapper.selectActor(docid);
+    }
+    
+    // 서버가 시작됬거나 갱신시간이 됬을때만 장르목록을 가져온다.
+    // DB에서 저장된 장르목록은 여러개 존재하기때문에
+    // 최종 수정 : 2022-12-21
+    // 마지막 작성자 : MoonNight285
+    @Override
+    public Set<String> selectGenre() throws Exception {
+        Set<String> genreSet = new HashSet<>();
+        List<String> genreList = cinemaMapper.selectGenre();
+        
+        for (String genres : genreList) {
+            String[] splitGenre = genres.split(","); // SF,드라마 이런식으로 붙어있기때문에 자르기 작업 수행
+            
+            for (String genre : splitGenre) {
+                genreSet.add(genre); // 잘라서 나온 장르를 추가한다.
+            }
+        }
+        
+        return genreSet; // 최종적으로는 중복이 제거되고 남은 장르의 목록을 반환
+    }
+    
+    // 장르목록과 기준 날짜를 선택해서 조건에 일치하는 영화들을 가져온다.
+    // 최종 수정 : 2022-12-21
+    // 마지막 작성자 : MoonNight285
+    @Override
+    public List<MovieDto> selectRecommendMoviesList(String day, String genre) throws Exception {
+        genre = "%" + genre + "%";
+        return cinemaMapper.selectRecommendMoviesList(day, genre);
     }
 }

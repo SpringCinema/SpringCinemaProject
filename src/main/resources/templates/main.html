@@ -296,11 +296,11 @@
     </section>
     
     <div>
-        <h3 class="mx-5"><span th:text="${randomGenre}"></span> 추천목록</h3>
+        <h3 class="mx-5"><span th:if="${#lists.size(recommendList) > 0}" th:text="${randomGenre}"></span> 추천목록</h3>
         <hr class="mx-5" style="width: 90%">
         
         <section class="regular slider">
-            <div class="item" th:if="${#lists.size(nowplayingList) > 0}" th:each="list : ${nowplayingList}">
+            <div class="item" th:if="${#lists.size(recommendList) > 0}" th:each="list : ${recommendList}">
                 <div class="">
                     <li class="box flex">
                         <div class="container2">

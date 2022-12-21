@@ -3,6 +3,7 @@ package com.esc.springcinema.service;
 import com.esc.springcinema.dto.apiMovieDto.*;
 
 import java.util.List;
+import java.util.Set;
 
 public interface MovieService {
     // 영화 검색
@@ -28,5 +29,14 @@ public interface MovieService {
     // 최종 수정 : 2022-12-15
     // 마지막 작성자 : MoonNight285
     public void init() throws Exception;
-
+    
+    // 서버가 시작됬거나 갱신시간이 됬을때만 장르목록을 가져온다.
+    // 최종 수정 : 2022-12-21
+    // 마지막 작성자 : MoonNight285
+    Set<String> selectGenre() throws Exception;
+    
+    // 장르목록과 기준 날짜를 선택해서 조건에 일치하는 영화들을 가져온다.
+    // 최종 수정 : 2022-12-21
+    // 마지막 작성자 : MoonNight285
+    List<MovieDto> selectRecommendMoviesList(String day, String genre) throws Exception;
 }

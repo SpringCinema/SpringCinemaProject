@@ -21,9 +21,4 @@ public interface CinemaService {
     int countBook(String title, String cinemaName, String screenHallName, String viewTime) throws Exception;
 
     MovieDto selectMoviePoster(String docid) throws Exception;
-    
-    // 서버가 시작됬거나 갱신시간이 됬을때만 장르목록을 가져온다.
-    // 최종 수정 : 2022-12-21
-    // 마지막 작성자 : MoonNight285
-    Set<String> selectGenre() throws Exception;
 }
