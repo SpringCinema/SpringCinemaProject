@@ -37,9 +37,9 @@
             // 2022-12-20 양민호
             // 메인페이지 / 영화상세페이지에서 예매버튼 클릭했을 경우 해당 영화 자동 선택 이벤트
             const getDoc = $('#div-i-getDoc').text();
-            const len = $('#div-i-movie-content').find('li').length;
+            const movieLen = $('#div-i-movie-content').find('li').length;
             if(getDoc != '') {
-                for(let i = 0; i < len; i++) {
+                for(let i = 0; i < movieLen; i++) {
                     const docId = $('.div-c-movieList').find('span:last-child').eq(i).text();
 
                     if(getDoc.includes(docId)) {
@@ -84,6 +84,18 @@
                     dateList.append(`<li>${dayNames[today.getDay()]} ${today.getDate()}</li>`);
                 }
                 today.setDate(today.getDate() + 1);
+            }
+
+            // 날짜 항목 리스트의 수가 15개 이하일 때 다음달 날짜 추가
+            let dateLen = $('#div-i-date-content').find('li').length;
+            while(dateLen < 15) {
+                if (today.getDay() == 0) {
+                    dateList.append(`<li class="li-c-sunday" style="color: red;">${dayNames[today.getDay()]} ${today.getDate()}</li>`);
+                } else {
+                    dateList.append(`<li>${dayNames[today.getDay()]} ${today.getDate()}</li>`);
+                }
+                today.setDate(today.getDate() + 1);
+                dateLen = dateLen + 1;
             }
 
             // 영화 목록을 클릭하면 색상 강조하고 값 저장
@@ -188,16 +200,13 @@
 
                 const cinemaView = $("#p-i-selected-cinema");
                 const cinemaSender = $("#input-i-send-cinema");
-                if(selectedCinemaName == '상영하는 극장이 없습니다.') {
-                    cinemaView.text("선택극장 : 없음");
-                }
-                else {
-                    cinemaView.text("선택극장 : " + selectedCinemaName);
-                    $(this).css("background-color", "#333333");
-                    $(this).css("color", "white");
-                    $('#div-i-date-content').children('ul').css('display', 'block');
-                    cinemaSender.val(selectedCinemaName);
-                }
+
+                cinemaView.text("선택극장 : " + selectedCinemaName);
+                $(this).css("background-color", "#333333");
+                $(this).css("color", "white");
+                $('#div-i-date-content').children('ul').css('display', 'block');
+                cinemaSender.val(selectedCinemaName);
+
 
                 let title = $('#input-i-send-movie').val();
                 let cinema = $('#input-i-send-cinema').val();
@@ -220,11 +229,7 @@
                                 totalTime = totalTime.replace(/null/g, '');
                                 let tag = '';
                                 // 시간정보를 다 더하여 null 문자열을 제거한 길이에 따라 시간 정보 출력
-                                if(totalTime.length == 0) {
-                                    tag = "<ul><h6><b>상영 정보가 없습니다.</b></h6>";
-                                    $('#div-i-time-content').children('div').append(tag);
-                                }
-                                else if(totalTime.length == 8) {
+                                if(totalTime.length == 8) {
                                     const time = totalTime.slice(0, -3);
                                     tag = "<ul><h6><b>" + getScreenHallName + "(총 120석)</b></h6>";
                                     tag += "<li><span class='span-c-time'><span class='span-c-hall'>" + getScreenHallName + "|</span>" +
@@ -370,7 +375,9 @@
                 const dtD = $("#input-i-send-date").val().slice(10, 12);
                 const todayYmd = year  + String(month) +  date;
                 const selectYmd = dtY + String(dtM) + dtD
-                const now = String(hours) + String(minute);
+                let now = String(hours) + String(minute);
+                now = parseInt(now);
+                time = parseInt(time);
 
 
                 if(seat != '0석'|| (selectYmd == todayYmd && time > now) || (selectYmd > todayYmd)) {
@@ -430,7 +437,10 @@
                 const dtD = $("#input-i-send-date").val().slice(10, 12);
                 const todayYmd = year  + String(month) +  date;
                 const selectYmd = dtY + String(dtM) + dtD
-                const now = String(hours) + String(minute);
+                let now = String(hours) + String(minute);
+                now = parseInt(now)
+                time = parseInt(time)
+
 
                 if(seat == '0석') {
                     $(this).css('cursor', 'default');

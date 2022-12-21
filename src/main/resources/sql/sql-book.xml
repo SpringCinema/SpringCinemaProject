@@ -10,7 +10,8 @@
 
     <!--    예매페이지에서 영화 정보 movies 에서 불러오는 쿼리-->
     <select id="allScreenTitle" resultType="com.esc.springcinema.dto.apiMovieDto.MovieDto">
-    select * FROM movies where repRlsDate between '2022-11-23' AND '2022-12-15' order by title;
+        select distinct title, rating, docid from movies m join screen_hall s on m.title = s.movie_title
+        where  repRlsDate between date_add(now(), interval -1 month) AND now() order by title
     </select>
 
 <!--    예매페이지에서 선택 영화의 극장을 불러오는 쿼리-->
