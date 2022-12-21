@@ -298,23 +298,24 @@
     <!-- 로그인 했을때 로그인한 유저의 나이에 맞춰서 영화 리스트 표시 -->
     <!-- 마지막 작성자 : MoonNight285 -->
     <!-- 마지막 작성일 : 2022-12-21 -->
-    <div th:if="${#lists.size(birthList) > 0}">
+    <div th:if="${#maps.size(birthList) > 0}">
         <h3 class="mx-5">회원님에게 어울리는 추천목록</h3>
         <hr class="mx-5" style="width: 90%">
         
         <section class="regular slider">
-            <div class="item" th:if="${#lists.size(birthList) > 0}" th:each="list : ${birthList}">
+            <div class="item" th:if="${#maps.size(birthList) > 0}" th:each="list : ${birthList}">
                 <div class="">
                     <li class="box flex">
                         <div class="container2">
                             <div class="overlay">
-                                <img src="/img/defaultPoster.png" th:if="${list.posters != null}" th:src="${list.posters}" onerror="this.onerror=null; this.src='/img/defaultPoster.png';" class="rounded"/>
+                                <img src="/img/defaultPoster.png" th:if="${list.value.posters != null}" th:src="${list.value.posters}" onerror="this.onerror=null; this.src='/img/defaultPoster.png';" class="rounded"/>
                             </div>
-                            <div class="button-detail"><a href="/movieDetail?docid=" th:attrappend="href=${list.docid}" class="rounded btn-c-detail"> 상세보기 </a></div>
-                            <div class="button-book"><a href="/book?docid=" th:attrappend="href=${list.docid}" class="rounded btn-c-book"> 예매하기 </a></div>
+                            <div class="button-detail"><a href="/movieDetail?docid=" th:attrappend="href=${list.value.docid}" class="rounded btn-c-detail"> 상세보기 </a></div>
+                            <div class="button-book"><a href="/book?docid=" th:if="${list.key} == ${list.value.title} + '_Contain'" th:attrappend="href=${list.value.docid}" class="rounded btn-c-book"> 예매하기 </a></div>
+                            <div class="button-book"><a style="cursor: default; background: gray;" href="#" th:unless="${list.key} == ${list.value.title} + '_Contain'" class="rounded btn-c-book"> 미상영중 </a></div>
                         </div>
                         <div class="text-center mx-auto mt-2">
-                            <span class="title" th:text="${list.title}"></span>
+                            <span class="title" th:text="${list.value.title}"></span>
                         </div>
                     </li>
                 </div>
@@ -325,23 +326,24 @@
     <!-- 로그인 안했을때 카테고리 랜덤으로 선택해서 표시 -->
     <!-- 마지막 작성자 : MoonNight285 -->
     <!-- 마지막 작성일 : 2022-12-21 -->
-    <div th:unless="${#lists.size(birthList) > 0}">
+    <div th:unless="${#maps.size(birthList) > 0}">
         <h3 class="mx-5"><span th:text="${randomGenre}"></span> 추천목록</h3>
         <hr class="mx-5" style="width: 90%">
         
         <section class="regular slider">
-            <div class="item" th:if="${#lists.size(recommendList) > 0}" th:each="list : ${recommendList}">
+            <div class="item" th:if="${#maps.size(recommendList) > 0}" th:each="list : ${recommendList}">
                 <div class="">
                     <li class="box flex">
                         <div class="container2">
                             <div class="overlay">
-                                <img src="/img/defaultPoster.png" th:if="${list.posters != null}" th:src="${list.posters}" onerror="this.onerror=null; this.src='/img/defaultPoster.png';" class="rounded"/>
+                                <img src="/img/defaultPoster.png" th:if="${list.value.posters != null}" th:src="${list.value.posters}" onerror="this.onerror=null; this.src='/img/defaultPoster.png';" class="rounded"/>
                             </div>
-                            <div class="button-detail"><a href="/movieDetail?docid=" th:attrappend="href=${list.docid}" class="rounded btn-c-detail"> 상세보기 </a></div>
-                            <div class="button-book"><a href="/book?docid=" th:attrappend="href=${list.docid}" class="rounded btn-c-book"> 예매하기 </a></div>
+                            <div class="button-detail"><a href="/movieDetail?docid=" th:attrappend="href=${list.value.docid}" class="rounded btn-c-detail"> 상세보기 </a></div>
+                            <div class="button-book"><a href="/book?docid=" th:if="${list.key} == ${list.value.title} + '_Contain'" th:attrappend="href=${list.value.docid}" class="rounded btn-c-book"> 예매하기 </a></div>
+                            <div class="button-book"><a style="cursor: default; background: gray;" href="#" th:unless="${list.key} == ${list.value.title} + '_Contain'" class="rounded btn-c-book"> 미상영중 </a></div>
                         </div>
                         <div class="text-center mx-auto mt-2">
-                            <span class="title" th:text="${list.title}"></span>
+                            <span class="title" th:text="${list.value.title}"></span>
                         </div>
                     </li>
                 </div>

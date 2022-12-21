@@ -16,6 +16,7 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 @Controller
@@ -34,8 +35,8 @@ public class MoviesController {
     public ModelAndView viewNowplayingMoviesList(HttpServletRequest request) throws Exception {
         request.setCharacterEncoding("UTF-8");
         HttpSession session = request.getSession();
-        
-        List<MovieDto> birthList = new ArrayList<>(); // 값이 없는경우 사이즈는 0
+
+        HashMap<String, MovieDto> birthList = new HashMap<>(); // 값이 없는경우 사이즈는 0
         if (session.getAttribute("loggedInUserInfo") != null) {
             session.setMaxInactiveInterval(1800);
             String loggedInUserId = ((MemberDto)session.getAttribute("loggedInUserInfo")).getId();
@@ -46,7 +47,7 @@ public class MoviesController {
         
         String randomGenre = movieDataManager.getRandomGenre();
         List<MovieDto> nowplayingList = movieService.selectNowplayingMoviesList();
-        List<MovieDto> recommendList = movieService.selectRecommendMoviesList(randomGenre);
+        HashMap<String, MovieDto> recommendList = movieService.selectRecommendMoviesList(randomGenre);
         
         mv.addObject("nowplayingList", nowplayingList);
         mv.addObject("recommendList", recommendList);

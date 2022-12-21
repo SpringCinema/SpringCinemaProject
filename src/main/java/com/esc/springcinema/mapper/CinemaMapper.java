@@ -115,4 +115,9 @@ public interface CinemaMapper {
     // 최종 수정 : 2022-12-21
     // 마지막 작성자 : MoonNight285
     int selectUserBirth(String id) throws Exception;
+
+    // 선택한 영화가 현재 상영중인지를 확인한다.
+    // 최종 수정 : 2022-12-21
+    // 마지막 작성자 : MoonNight285
+    List<String> selectViewAbleMovie(List<String> movies) throws Exception;
 }

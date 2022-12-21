@@ -137,32 +137,72 @@ public class MovieServiceImpl implements MovieService {
     public Set<String> selectGenre() throws Exception {
         Set<String> genreSet = new HashSet<>();
         List<String> genreList = cinemaMapper.selectGenre();
+        HashMap<String, Integer> genreCount = new HashMap<>(); // 해당 장르를 보유하고있는 영화의 개수를 세기위함
         
         for (String genres : genreList) {
             String[] splitGenre = genres.split(","); // SF,드라마 이런식으로 붙어있기때문에 자르기 작업 수행
             
             for (String genre : splitGenre) {
-                genreSet.add(genre); // 잘라서 나온 장르를 추가한다.
+                if (genreCount.get(genre) == null) {
+                    genreCount.put(genre, 1);
+                } else {
+                    int count = genreCount.get(genre);
+                    genreCount.put(genre, count + 1);
+                }
             }
         }
-        
+
+        Iterator<Map.Entry<String, Integer>> iterator = genreCount.entrySet().iterator();
+        while(iterator.hasNext()) {
+            Map.Entry<String, Integer> entry = iterator.next();
+            if (entry.getValue() >= 3) {
+                genreSet.add(entry.getKey());
+            }
+        }
+
         return genreSet; // 최종적으로는 중복이 제거되고 남은 장르의 목록을 반환
     }
     
-    // 장르목록를 선택해서 조건에 일치하는 영화들을 가져온다.
+    // 장르목록를 선택해서 9개의 영화만 고르는데 9개에서 현재 상영중인 영화를
+    // 분류해서 반환한다.
     // 최종 수정 : 2022-12-21
     // 마지막 작성자 : MoonNight285
     @Override
-    public List<MovieDto> selectRecommendMoviesList(String genre) throws Exception {
-        genre = "%" + genre + "%";
-        return cinemaMapper.selectRecommendMoviesList(genre);
+    public HashMap<String, MovieDto> selectRecommendMoviesList(String genre) throws Exception {
+        genre = "%" + genre + "%"; // DB LIKE 로 조회를 위해서 장르옆에 % 붙이기
+        List<MovieDto> movies = cinemaMapper.selectRecommendMoviesList(genre);
+        return sortViewAbleMovie(movies);
+    }
+
+    // 선택된 영화를 기준으로 현재 상영중인지를 분류한다.
+    // 최종 수정 : 2022-12-21
+    // 마지막 작성자 : MoonNight285
+    private HashMap<String, MovieDto> sortViewAbleMovie(List<MovieDto> movies) throws Exception {
+        List<String> titles = new ArrayList<>();
+        HashMap<String, MovieDto> movieInfos = new HashMap<>();
+
+        for (MovieDto movie : movies) { // 날짜가 가장 최근인 영화 9개를 가져온다.
+            titles.add(movie.getTitle());
+        }
+
+        titles = cinemaMapper.selectViewAbleMovie(titles); // 현재 상영중인 영화 목록을 추려낸다.
+
+        for (MovieDto movie : movies) { // 현재 상영중인 목록과 아닌 목록으로 분류한다.
+            if (titles.contains(movie.getTitle())) {
+                movieInfos.put(movie.getTitle() + "_Contain", movie);
+            } else {
+                movieInfos.put(movie.getTitle() + "_Noting", movie);
+            }
+        }
+
+        return movieInfos;
     }
     
     // 관람등급을 기준으로 영화를 검색해서 조건에 일치하는 영화들을 가져온다.
     // 최종 수정 : 2022-12-21
     // 마지막 작성자 : MoonNight285
     @Override
-    public List<MovieDto> selectBirthMovieList(String id) throws Exception {
+    public HashMap<String, MovieDto> selectBirthMovieList(String id) throws Exception {
         int birth = cinemaMapper.selectUserBirth(id);
         Calendar today = Calendar.getInstance();
         int year = today.get(Calendar.YEAR);
@@ -185,6 +225,7 @@ public class MovieServiceImpl implements MovieService {
             movieRanks.add("18세관람가(청소년관람불가)");
         }
         
-        return cinemaMapper.selectBirthMovieList(movieRanks);
+        List<MovieDto> movies = cinemaMapper.selectBirthMovieList(movieRanks);
+        return sortViewAbleMovie(movies);
     }
 }

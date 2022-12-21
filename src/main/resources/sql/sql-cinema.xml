@@ -117,4 +117,14 @@
     <select id="selectUserBirth" resultType="int" parameterType="String">
         SELECT birth FROM members WHERE id = #{id}
     </select>
+
+    <!-- 선택한 영화들이 현재 상영중인지를 확인한다. -->
+    <select id="selectViewAbleMovie" resultType="String" parameterType="java.util.List">
+        SELECT DISTINCT movie_title FROM screen_hall
+        WHERE movie_title IN (
+        <foreach collection="list" item="item" separator=",">
+            #{item}
+        </foreach>
+        )
+    </select>
 </mapper>
