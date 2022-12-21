@@ -14,7 +14,7 @@
 
     <th:block th:replace="fragments/config :: configFragment"></th:block>
 
-    <script>
+    <script th:inline="javascript">
         $(document).ready(function () {
 
             let selectMoviePoster = sessionStorage.getItem("poster");
@@ -25,6 +25,9 @@
             let people = sessionStorage.getItem("people");
             let seatCode = sessionStorage.getItem("seatCode");
             let totalPrice = sessionStorage.getItem("totalPrice");
+
+            let adtVal = sessionStorage.getItem("adtVal");
+            let teenVal = sessionStorage.getItem("teenVal");
 
             // console.log(selectedTitle);
 
@@ -42,6 +45,7 @@
             });
 
             // 결제 버튼 클릭
+            /*<![CDATA[*/
             $('#btn-i-payment').click(function(){
                 const pathName = location.pathname;
                 const href = location.href;
@@ -54,27 +58,26 @@
                     merchant_uid: "orderNum",
                     name: selectedTitle,
                     amount: totalPrice,
-                    buyer_email : "aaa@aa.com",
-                    buyer_name : "홍길동",
-                    buyer_tel : "1234-56687"
+                    buyer_email : /*[[${myInfo.email}]]*/,
+                    buyer_name : /*[[${myInfo.id}]]*/,
+                    buyer_tel : /*[[${myInfo.tel}]]*/
                 }, function (rsp) {
                     if (rsp.success) {
                         // alert("[완료] imp_uid : "+rsp.imp_uid+" / merchant_uid : " +rsp.merchant_uid);
 
-                            // let json = {"title": selectTitle};
-                            // $.ajax({
-                            //     url: "/paymentInfo",
-                            //     type: "POST",
-                            //     async: false,
-                            //     data: JSON.stringify(json),
-                            //     contentType: "application/json",
-                            //     success: function (data) {
-                            //         alert("통신 성공!");
-                            //     },
-                            //     error: function () {
-                            //         alert("통신 실패");
-                            //     }
-                            // })
+                            let param = {"movieTitle": selectTitle, "cinemaName": selectedCinema, "screenHallName": selectedScreenHall, "selectedDate": selectedDate, "seatCode": seatCode, "adultYn": people};
+                            $.ajax({
+                                url: "/paymentInfo",
+                                type: "POST",
+                                async: false,
+                                data: JSON.stringify(param),
+                                success: function (data) {
+                                    alert("통신 성공!");
+                                },
+                                error: function () {
+                                    alert("통신 실패");
+                                }
+                            })
 
                         sessionStorage.clear();
 
@@ -85,6 +88,7 @@
                     }
                 });
             });
+            /*]]>*/
         });
 
     </script>
