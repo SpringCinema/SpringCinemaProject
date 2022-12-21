@@ -65,23 +65,23 @@ public class BookController {
         return reservedSeat;
     }
 
-    // 임시 결제 페이지를 보여줍니다.
-    // 최종 수정 : 2022-12-12
-    // 마지막 작성자 : MoonNight285
+    // 결제 전 예매정보 확인 페이지를 보여줍니다.
+    // 최종 수정 : 2022-12-21
+    // 마지막 작성자 : EblynCho
     @RequestMapping("/payment")
     public String viewPayment() {
         return "payment";
     }
 
 
-//    @ResponseBody
-//    @RequestMapping(value = "/paymentInfo")
-//    public String ajaxTest(@RequestBody HashMap<String, String> map) throws Exception {
-////        HashMap<String, String> paymentInfo = new HashMap<>();
-////        paymentInfo.put("title", map.get("title"));
-//        map.put("title", map.get("title"));
-//        return null;
-//    }
+    @ResponseBody
+    @RequestMapping(value = "/paymentInfo")
+    public String ajaxTest(@RequestBody HashMap<String, String> map) throws Exception {
+//        HashMap<String, String> paymentInfo = new HashMap<>();
+//        paymentInfo.put("title", map.get("title"));
+        map.put("title", map.get("title"));
+        return null;
+    }
 
 
 }

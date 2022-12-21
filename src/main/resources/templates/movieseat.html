@@ -110,34 +110,8 @@
                 }
             });
 
-            // // 결제 버튼 클릭
-            // /*<![CDATA[*/
-            // $("#btn-i-payment").click(function(){
-            //     const pathName = location.pathname;
-            //     const href = location.href;
-            //     const m_redirect = href.replaceAll(pathName, "");
-            //
-            //     IMP.init("imp56680440");
-            //     IMP.request_pay({// param
-            //         pg: "html5_inicis",
-            //         pay_method: "card",
-            //         merchant_uid: "orderNum",
-            //         name: /*[[${screenData.movieTitle}]]*/,
-            //         amount: totalPrice, //금액
-            //         buyer_email : "",
-            //         buyer_name : "",
-            //         buyer_tel : ""
-            //     }, function (rsp) {
-            //         if (rsp.success) {
-            //             alert("[완료] imp_uid : "+rsp.imp_uid+" / merchant_uid : " +rsp.merchant_uid);
-            //         } else {
-            //             alert("[실패] 코드("+rsp.error_code+") / 메세지(" + rsp.error_msg + ")");
-            //         }
-            //     });
-            // });
-            // /*]]>*/
-            
-
+            // 예매 정보 넘기기
+            // 2022-12-21 조은비
             /*<![CDATA[*/
             $("#btn-i-payment").on("click", function () {
                 let selectedTitle = /*[[${screenData.movieTitle}]]*/;
@@ -315,23 +289,7 @@
                 </div>
             </div>
         </div>
-        <!-- 이 폼은 눈에 보이지않습니다. 오로지 서버에 전달하기위한 용도입니다. -->
-        <!--            2022-12-17 조은비 -->
-        <!--            -------------------부터-------------------- -->
-        <!--            임시 name값 추가-->
-<!--        <form action="/payment" method="post" id="form-i-payment">-->
-<!--            <input id="input-i-send-movie" type="hidden" name="movieTitle">-->
-<!--            <input id="input-i-send-cinema" type="hidden" name="cinemaName">-->
-<!--            <input id="input-i-send-date" type="hidden" name="date">-->
-<!--            <input id="input-i-send-hall" type="hidden" name="screenHallName">-->
-<!--            <input id="input-i-send-time" type="hidden" name="time">-->
-<!--            <input id="input-i-send-seatCode" type="hidden" name="seatCode">-->
-<!--            <input id="input-i-send-adtPrice" type="hidden" name="adtPrice">-->
-<!--            <input id="input-i-send-teenPrice" type="hidden" name="teenPrice">-->
-<!--            <input id="input-i-send-totalPrice" type="hidden" name="totalPrice">-->
-<!--            <button id="btn-i-hidden-next" type="submit"></button>-->
-<!--        </form>-->
-        <!--            -------------------까지-------------------- -->
+
 <!--        좌석 선택 부분-->
         <div class="border-top">
             <div class="bg-secondary text-light mx-auto mt-5 col-7">

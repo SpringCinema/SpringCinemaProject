@@ -33,7 +33,7 @@
             $('#selectScreenData').val(selectedDate);
             $('#people').val(people);
             $('#seatCode').val(seatCode);
-            $('#p-i-money-value').val(totalPrice);
+            $('#p-i-money-value').val(totalPrice + ' 원');
 
             $('#btn-i-back').on('click', function () {
                 history.back();
@@ -50,14 +50,32 @@
                     pg: "html5_inicis",
                     pay_method: "card",
                     merchant_uid: "orderNum",
-                    name: "영화",
-                    amount: 100, //금액
+                    name: selectedTitle,
+                    amount: totalPrice,
                     buyer_email : "aaa@aa.com",
                     buyer_name : "홍길동",
                     buyer_tel : "1234-56687"
                 }, function (rsp) {
                     if (rsp.success) {
-                        alert("[완료] imp_uid : "+rsp.imp_uid+" / merchant_uid : " +rsp.merchant_uid);
+                        // alert("[완료] imp_uid : "+rsp.imp_uid+" / merchant_uid : " +rsp.merchant_uid);
+
+                            // let json = {"title": selectTitle};
+                            // $.ajax({
+                            //     url: "/paymentInfo",
+                            //     type: "POST",
+                            //     async: false,
+                            //     data: JSON.stringify(json),
+                            //     contentType: "application/json",
+                            //     success: function (data) {
+                            //         alert("통신 성공!");
+                            //     },
+                            //     error: function () {
+                            //         alert("통신 실패");
+                            //     }
+                            // })
+
+                        sessionStorage.clear();
+
                         location.replace = "/paymentComplete";
                     } else {
                         // alert("[실패] 코드("+rsp.error_code+") / 메세지(" + rsp.error_msg + ")");
@@ -66,37 +84,6 @@
                 });
             });
         });
-
-
-        // /*<![CDATA[*/
-        // $("#btn-i-payment").on("click", function () {
-        //     let selectTitle = /*[[${screenData.movieTitle}]]*/;
-        //
-        //     if ($('#input-i-seatCode').val() == "") {
-        //         const btnError = $("#btn-i-hidden-error");
-        //         btnError.click();
-        //         return;
-        //     } else {
-        //         // location.href="/payment";
-        //         let json = {"title": selectTitle};
-        //         $.ajax({
-        //             url: "/paymentInfo",
-        //             type: "POST",
-        //             async : false,
-        //             data: JSON.stringify(json),
-        //             contentType: "application/json",
-        //             success: function (data) {
-        //                 alert("통신 성공!");
-        //                 console.log(selectTitle);
-        //                 location.href="/payment";
-        //             },
-        //             error: function () {
-        //                 alert("통신 실패");
-        //             }
-        //         });
-        //     }
-        // });
-        // /*]]>*/
 
     </script>
 
@@ -169,8 +156,20 @@
         }
         /* 결제정보 결제하실 금액 부분 디자인, 선택한 좌석정보 헤더부분 디자인 */
         /* 폰트 & 테두리 색상 & 패딩,마진 */
-        #p-i-money-header, #p-i-seat-header, #p-i-movie-header {
+        #p-i-money-header {
             margin-top: 25px;
+            padding-top: 10px;
+            padding-bottom: 5px;
+            margin-bottom: 0px;
+            background-color: white;
+            text-align: center;
+            font-size: 18px;
+            width: 235px;
+            height: 50px;
+        }
+
+        #p-i-money-value {
+            /*margin-top: 25px;*/
             padding-top: 10px;
             padding-bottom: 5px;
             margin-bottom: 0px;
@@ -221,10 +220,11 @@
             margin-bottom: 50px;
         }
 
-        input {
+        div#div-i-payment-body input {
             border: 0;
             background: none;
         }
+
         label {
             width: 50px;
         }
@@ -272,9 +272,9 @@
             </div>
             <div id="div-i-sidebar" class="col-xl-12">
                 <div class="d-flex align-content-between justify-content-center flex-wrap" style="height: 470px;">
-                    <div class="div-c-sidebar-item">
+                    <div class="div-c-sidebar-item mt-5 pt-5">
                         <p id="p-i-money-header">결제하실 금액</p>
-                        <input id="p-i-money-value"></input>
+                        <input type="text" id="p-i-money-value" readonly>
                     </div>
                     <div class="text-center">
                         <button id="btn-i-payment" type="button" class="btn btn-dark"><p>결제하기</p></button>
