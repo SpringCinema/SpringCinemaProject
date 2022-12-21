@@ -130,7 +130,6 @@ public class MovieServiceImpl implements MovieService {
     }
     
     // 서버가 시작됬거나 갱신시간이 됬을때만 장르목록을 가져온다.
-    // DB에서 저장된 장르목록은 여러개 존재하기때문에
     // 최종 수정 : 2022-12-21
     // 마지막 작성자 : MoonNight285
     @Override
@@ -142,7 +141,7 @@ public class MovieServiceImpl implements MovieService {
         for (String genres : genreList) {
             String[] splitGenre = genres.split(","); // SF,드라마 이런식으로 붙어있기때문에 자르기 작업 수행
             
-            for (String genre : splitGenre) {
+            for (String genre : splitGenre) { // 선택한 장르가 저장소에 없다면 신규로 생성, 있다면 개수를 추가
                 if (genreCount.get(genre) == null) {
                     genreCount.put(genre, 1);
                 } else {
@@ -153,7 +152,7 @@ public class MovieServiceImpl implements MovieService {
         }
 
         Iterator<Map.Entry<String, Integer>> iterator = genreCount.entrySet().iterator();
-        while(iterator.hasNext()) {
+        while(iterator.hasNext()) { // 저장소에 장르의 개수가 3개 이상일경우에만 추출한다.
             Map.Entry<String, Integer> entry = iterator.next();
             if (entry.getValue() >= 3) {
                 genreSet.add(entry.getKey());
