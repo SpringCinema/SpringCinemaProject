@@ -1,3 +1,8 @@
+<!-- 수정일 : 2022-12-20일 -->
+<!-- 마지막으로 수정한 사람 : MoonNight285 -->
+<!-- 마지막으로 작업한 내용 : 공사중 페이지 추가 -->
+<!-- 마이페이지 -->
+
 <!DOCTYPE html>
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
@@ -12,30 +17,37 @@
             // 페이지 좌측 메뉴 클릭 시 우측 페이지 변경
             $('#ul-i-ul li').click(function () {
                 $('#ul-i-ul li').removeClass();
-                $(this).addClass("li-c-on")
-                $(this).addClass("text-light")
-                let num1 = $(this).attr('id').slice(-1);
-                for (let i = 1; i <= 5; i ++) {
-                    let num2 = $(`#div-i-${i}`).attr('id').slice(-1);
-                    if(num1 == num2) {
-                        $(`#div-i-${i}`).css('display', 'block');
-                    }
-                    else {
-                        $(`#div-i-${i}`).css('display', 'none');
-                    }
+                $(this).addClass("li-c-on");
+                $(this).addClass("text-light");
+
+                // 메뉴 클릭시 페이지 이동
+                // 최종 수정일 : 2022-12-16
+                // 작성자 : MoonNigth285
+                const pageName = $(this).text();
+                const iFrame = $("#iframe-i-move-page");
+                let targetSrc = "";
+                
+                switch (pageName) {
+                    case "내 프로필":
+                        targetSrc = "/mypage/userInfo";
+                        break;
+                    case "예매내역" :
+                        targetSrc = "/mypage/book/normal";
+                        break;
+                    case "결제내역":
+                        targetSrc = "/mypage/payment/normal";
+                        break;
+                    case "댓글내역":
+                        // targetSrc = "/mypage/comment"; 기능 완성되면 주석 해제
+                        targetSrc = "/construction"; // 공사중 표시 페이지
+                        break;
+                    case "문의내역":
+                        // targetSrc = "/mypage/question"; 기능 완성되면 주석 해제
+                        targetSrc = "/construction"; // 공사중 표시 페이지
+                        break;
                 }
-            });
-
-            $('#button-i-delP').on('click', function() {
-                const frm = $("#form-i-profile")[0];
-                frm.action = "/mypage/delete";
-                frm.submit();
-            });
-
-            $('#button-i-update').on('click', function() {
-                const frm = $("#form-i-profile")[0];
-                frm.action = "/mypage/update";
-                frm.submit();
+                
+                iFrame.attr("src", targetSrc);
             });
 
             $('#button-i-delC').on('click', function() {
@@ -69,9 +81,8 @@
         }
 
         main.container {
-            width: 1300px;
-            margin-top: 30px;
-            margin-bottom: 310px;
+            width: 1500px;
+            margin: 30px 0px;
             max-width: none !important;
         }
 
@@ -83,9 +94,9 @@
         .li-c-on, #button-i-update {
             background-color: #FF4500;
         }
-
-        #p-i-title {
-            font-family: KOHIBaeumOTF;
+        
+        #ul-i-ul {
+            padding-left: 0px;
         }
     </style>
 
@@ -103,18 +114,13 @@
                 <li class="li-c-on text-light " id="li-i-1"><p>내 프로필</p></li>
                 <li id="li-i-2"><p>예매내역</p></li>
                 <li id="li-i-3"><p>결제내역</p></li>
-                <li id="li-i-4"><p>댓글</p></li>
+                <li id="li-i-4"><p>댓글내역</p></li>
                 <li id="li-i-5"><p>문의내역</p></li>
             </ul>
         </div>
 
-        <!--    메인 우측 선택된 메뉴 출력 페이지 (메뉴 선택 시 display 속성값 none/block 변환)-->
         <div class="w-75 ms-5 mt-4">
-            <div th:insert="mypage/mypage_profile :: profile" id="div-i-1"></div>
-            <div th:insert="mypage/mypage_book :: book" id="div-i-2" style="display: none"></div>
-            <div th:insert="mypage/mypage_payment :: payment" id="div-i-3" style="display: none"></div>
-            <div th:insert="mypage/mypage_comment :: comment" id="div-i-4" style="display: none"></div>
-            <div th:insert="mypage/mypage_question :: question" id="div-i-5" style="display: none"></div>
+            <iframe id="iframe-i-move-page" src="/mypage/userInfo" width="1500px" height="700px" scrolling="no"></iframe>
         </div>
     </div>
 </main>

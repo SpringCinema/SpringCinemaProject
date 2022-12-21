@@ -1,3 +1,8 @@
+<!-- 수정일 : 2022-12-20일 -->
+<!-- 마지막으로 수정한 사람 : MoonNight285 -->
+<!-- 마지막으로 작업한 내용 : 결제취소할때 타이틀값을 서버로 넘기기 -->
+<!-- 마이페이지 결제내역 페이지 -->
+
 <!DOCTYPE html>
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
@@ -6,30 +11,126 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            const btnPaymentList = $("#btn-i-paymentList");
+            const btnCancelList = $("#btn-i-cancelList");
+            const paymentTypeSender = $("#form-i-send-payment-type");
+
+            btnPaymentList.on("click", function () {
+                btnPaymentList.addClass("active");
+                paymentTypeSender.attr("action", "/mypage/payment/normal");
+            });
+
+            btnCancelList.on("click", function () {
+                btnCancelList.addClass("active");
+                paymentTypeSender.attr("action", "/mypage/payment/cancellation");
+            })
+        })
+    </script>
+    <style>
+        /* 본문 컨테이너 영역 */
+        #div-i-iframe-main {
+            width:1500px;
+            max-width:none!important;
+            margin: 0px;
+        }
+
+        #p-i-iframe-title {
+            font-family: "KOHINanumOTFL";
+            font-weight: bold;
+        }
+
+        .a-c-payment-cancel {
+            color: white;
+            text-decoration: none;
+            background-color: red;
+            padding: 5px;
+            border-radius: 5px;
+        }
+
+        .a-c-payment-cancel:hover {
+            color: #ffe200;
+        }
+
+        table {
+            table-layout: fixed;
+        }
+    </style>
 </head>
 <body>
-<div th:fragment="payment">
-    <p id="p-i-title" class="mb-5 fs-5">결제내역</p>
-
-    <table class="table table-striped text-center">
-        <thead class="border-top border-bottom border-3">
-        <th>결제번호</th>
-        <th>결제금액</th>
-        <th>결제수단</th>
-        <th>결제내역</th>
-        <th>결제날짜</th>
-        <th>결제취소</th>
-        </thead>
-        <tbody>
-        <td class="border border-2 border-light">텍스트</td>
-        <td class="border border-2 border-light">텍스트</td>
-        <td class="border border-2 border-light">텍스트</td>
-        <td class="border border-2 border-light">텍스트</td>
-        <td class="border border-2 border-light">텍스트</td>
-<!--        href 뒤에 결제번호 입력-->
-        <td class="border border-2 border-light"><a href="/mypage/paycancle" class="btn text-danger p-0">취소</a></td>
-        </tbody>
-    </table>
-</div>
+    <div id="div-i-iframe-main" class="container">
+        <div class="row">
+            <div class="col-xl-12">
+                <p id="p-i-iframe-title" class="mb-2 fs-5" th:text="${paymentTitle}">결제내역</p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xl-12">
+                <div class="mb-2 d-flex justify-content-end">
+                    <form id="form-i-send-payment-type" action="" method="get">
+                        <button id="btn-i-paymentList" class="btn btn-outline-success mx-2"
+                                th:classappend="${paymentType} == 'normal' ? 'active' : ''">결제내역</button>
+                        <button id="btn-i-cancelList" class="btn btn-outline-danger"
+                                th:classappend="${paymentType} == 'cancellation' ? 'active' : ''">취소내역</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="row" style="height: 575px">
+            <div class="col-xl-12">
+                <table class="table table-striped text-center">
+                    <thead class="border-top border-bottom border-3">
+                        <tr>
+                            <th style="width: 75px;">결제번호</th>
+                            <th style="width: 50px;">결제금액</th>
+                            <th style="width: 350px;">결제내역</th>
+                            <th style="width: 100px;">결제날짜</th>
+                            <th style="width: 100px;">결제수단</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <form>
+                            <tr th:each="item : ${paymentList.getList()}">
+                                <td class="border border-2 border-light" th:text="${item.getPaymentNum()}">2022120255555</td>
+                                <td class="border border-2 border-light"><span th:text="${item.getMoney()}"></span>원</td>
+                                <td style="text-overflow: ellipsis; overflow: hidden; white-space: nowrap;" th:title="${item.getTitle()}" class="border border-2 border-light" th:text="${item.getTitle()}">텍스트</td>
+                                <td class="border border-2 border-light" th:text="${item.getPayDate()}">2022년 12월 28일 15:30:00</td>
+                                <td class="border border-2 border-light">
+                                    <span th:text="${item.getPayType()}">신용카드</span>&nbsp;
+                                    <a th:if="${paymentType} == 'normal'" class="a-c-payment-cancel" th:href="@{/mypage/paycancle(bookNum=${item.getBookNum()},
+                                        title=${item.getTitle()})}">결제취소</a>
+                                </td>
+                            </tr>
+                        </form>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xl-12">
+                <nav>
+                    <ul class="pagination justify-content-center">
+                        <!--타임리프 classappend를 사용해서 이전 페이지 정보가 없으면 class에 disabled를 추가-->
+                        <li class="page-item" th:classappend="${paymentList.getPrePage() == 0} ? 'disabled'">
+                            <!--()를 사용하여 매개변수를 추가, pageNo 라는 이름으로 매개변수를 전달..-->
+                            <a class="page-link" th:if="${paymentType} == 'normal'" th:href="@{/mypage/payment/normal(pageNo=${paymentList.getPrePage()})}">&laquo</a>
+                            <a class="page-link" th:if="${paymentType} == 'cancellation'" th:href="@{/mypage/payment/cancellation(pageNo=${paymentList.getPrePage()})}">&laquo</a>
+                        </li>
+                        <!--타임리프의 숫자 객체인 numbers를 이용하면 숫자 배열을 만들어준다.-->
+                        <li class="page-item" th:each="page : ${#numbers.sequence(paymentList.getNavigateFirstPage(), paymentList.getNavigateLastPage())}"
+                            th:class="${page == paymentList.getPageNum()} ? 'active'">
+                            <a class="page-link" th:if="${paymentType} == 'normal'" th:text="${page}" th:href="@{/mypage/payment/normal(pageNo=${page})}"></a>
+                            <a class="page-link" th:if="${paymentType} == 'cancellation'" th:text="${page}" th:href="@{/mypage/payment/cancellation(pageNo=${page})}"></a>
+                        </li>
+                        <li class="page-item" th:classappend="${paymentList.getNextPage() == 0} ? 'disabled'">
+                            <a class="page-link" th:if="${paymentType} == 'normal'" th:href="@{/mypage/payment/normal(pageNo=${paymentList.getNextPage()})}">&raquo</a>
+                            <a class="page-link" th:if="${paymentType} == 'cancellation'" th:href="@{/mypage/payment/cancellation(pageNo=${paymentList.getNextPage()})}">&raquo</a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </div>
 </body>
 </html>

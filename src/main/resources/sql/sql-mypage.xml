@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.esc.springcinema.mapper.MypageMapper">
+    <!-- 마이페이지 영화 예약목록을 가져오기(예약중, 취소된거 선택가능) -->
+    <select id="selectBookList" parameterType="String" resultType="com.esc.springcinema.dto.BooksDto">
+        SELECT book_num, DATE_FORMAT(reserve_date, '%Y년 %m월 %d일 %T') AS reserve_date, title, seat_code, cinema_name,
+        screen_hall_name, DATE_FORMAT(view_time, '%Y년 %m월 %d일 %T') AS view_time, adult_yn FROM books WHERE id = #{id} AND state_yn = #{state}
+    </select>
+
+    <!-- 내 정보 불러오는 쿼리 -->
+    <select id="selectMyInfo" parameterType="String" resultType="com.esc.springcinema.dto.MemberDto">
+        SELECT * FROM members WHERE id = #{id}
+    </select>
+
+    <!-- 내 결제내역 불러오는 쿼리 -->
+    <select id="selectMyPayment" parameterType="String" resultType="com.esc.springcinema.dto.PaymentsDto">
+        SELECT payment_num, book_num, money, title, DATE_FORMAT(pay_date, '%Y년 %m월 %d일 %T') AS pay_date,
+        pay_type FROM payments WHERE id = #{id} AND state = #{state}
+    </select>
+
+    <!-- 내 정보 수정 쿼리 -->
+    <update id="updateMyInfo" parameterType="com.esc.springcinema.dto.MemberDto">
+        UPDATE members SET pwd = #{pwd}, name = #{name}, email = #{email}, tel = #{tel}
+        WHERE id = #{id}
+    </update>
+
+    <!-- 비밀번호 중복 확인 쿼리 -->
+    <select id="checkPwd" parameterType="String" resultType="int">
+        SELECT COUNT(*) FROM members
+        WHERE id = #{id} AND pwd = #{pwd}
+    </select>
+
+    <!-- 회원 탈퇴 쿼리 -->
+    <update id="deleteAccount" parameterType="com.esc.springcinema.dto.MemberDto">
+        UPDATE members SET out_date = NOW()
+        WHERE id = #{id} AND pwd = #{pwd}
+    </update>
+
+    <!-- 마이페이지에서 결제취소 눌렀을때 표시되야하는 데이터 조회 -->
+    <select id="selectCancelMovieInfo" parameterType="String" resultType="map">
+        SELECT DISTINCT b.title, b.book_num, b.cinema_name, b.screen_hall_name,
+        DATE_FORMAT(b.view_time, '%Y년 %m월 %d일 %T') AS view_time, p.payment_num,
+        DATE_FORMAT(p.pay_date, '%Y년 %m월 %d일 %T') AS pay_date, p.pay_type, p.money
+        FROM books AS b INNER JOIN payments AS p ON b.book_num = p.book_num
+        WHERE p.book_num = #{bookNum} AND p.id = #{id}
+    </select>
+
+    <!-- 영화이름을 기준으로 포스터 조회 -->
+    <select id="selectMovieFirstPoster" parameterType="String" resultType="String">
+        SELECT posters FROM movies WHERE title = #{title}
+    </select>
+
+    <!-- 결제한 영화를 취소하는 프로시저 -->
+    <select id="callCancelPayment" statementType="CALLABLE" parameterType="String">
+        { call cancel_payment
+            (
+                #{paymentNum, mode=IN, jdbcType=VARCHAR, javaType=String}, #{bookNum, mode=IN, jdbcType=VARCHAR, javaType=String}
+            )
+        }
+    </select>
+</mapper>

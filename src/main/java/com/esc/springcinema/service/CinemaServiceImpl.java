@@ -16,26 +16,6 @@ public class CinemaServiceImpl implements CinemaService {
     private CinemaMapper cinemaMapper;
 
     @Override
-    public MemberDto selectMyInfo(String id) throws Exception {
-        return cinemaMapper.selectMyInfo(id);
-    }
-
-    @Override
-    public void updateMyInfo(MemberDto update) throws Exception {
-        cinemaMapper.updateMyInfo(update);
-    }
-
-    @Override
-    public void deleteAccount(MemberDto delete) throws Exception {
-        cinemaMapper.deleteAccount(delete);
-    }
-
-    @Override
-    public int checkPwd(String id, String pwd) throws Exception {
-        return cinemaMapper.checkPwd(id, pwd);
-    }
-
-    @Override
     public ScreenHallDto selectScreenData(String movieTitle, String cinemaName, String screenHallName) throws Exception{
         return cinemaMapper.selectScreenData(movieTitle, cinemaName, screenHallName);
     }
@@ -64,6 +44,4 @@ public class CinemaServiceImpl implements CinemaService {
     public MovieDto selectMoviePoster(String docid) throws Exception {
         return cinemaMapper.selectMovieDetail(docid);
     }
-
-
 }
