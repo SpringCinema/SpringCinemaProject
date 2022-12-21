@@ -4,14 +4,12 @@ import com.esc.springcinema.dto.MemberDto;
 import com.esc.springcinema.service.MemberService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.util.List;
 
 @Controller
 public class UserController {
@@ -74,5 +72,43 @@ public class UserController {
         view.addObject("link", "/main");
         view.addObject("btnMsg", "메인으로");
         return view;
+    }
+
+    // 비밀번호 찾기 페이지
+    // 최종 수정 : 2022-12-21
+    // 마지막 작성자 : yang
+    @RequestMapping(value = "/findPwd")
+    public ModelAndView findPWd() throws Exception {
+        ModelAndView mv = new ModelAndView("pwdFind");
+        return mv;
+    }
+
+    // 비밀번호 찾기 페이지 회원가입 정보 확인
+    // 최종 수정 : 2022-12-21
+    // 마지막 작성자 : yang
+    @ResponseBody
+    @RequestMapping(value = "/chkJoinInfo", method = RequestMethod.POST)
+    public Object ajaxChkInfo(@RequestParam("id") String id, @RequestParam("email") String email) throws Exception{
+        int joinInfo = memberService.checkIdEmail(id, email);
+        return joinInfo;
+    }
+
+    @RequestMapping(value = "/pwdUpdate/{email}", method = RequestMethod.GET)
+    public ModelAndView updatePwdPage(@PathVariable String email) throws Exception {
+        ModelAndView mv = new ModelAndView("pwdUpdate");
+        MemberDto info = memberService.checkId(email);
+        mv.addObject("info", info);
+        return mv;
+    }
+
+    @RequestMapping(value = "/pwdUpdateOk", method = RequestMethod.GET)
+    public ModelAndView updatePwd(@RequestParam("pwd") String pwd, @RequestParam("id") String id) throws Exception {
+        memberService.pwdUpdate(pwd, id);
+        ModelAndView resultView = new ModelAndView("common/process_complete");
+        resultView.addObject("title", "비밀번호 설정 성공");
+        resultView.addObject("headMsg", "비밀번호를 변경하였습니다.");
+        resultView.addObject("link", "/main");
+        resultView.addObject("btnMsg", "메인으로");
+        return resultView;
     }
 }
