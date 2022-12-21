@@ -46,10 +46,10 @@ public class PaymentsController {
     @RequestMapping(value = "/paymentCancel", method = RequestMethod.GET)
     public ModelAndView paymentCancel(HttpServletRequest request) throws Exception {
         ModelAndView resultView = new ModelAndView("common/process_complete");
-            resultView.addObject("title", "스프링 시네마 - 예매 실패");
-            resultView.addObject("headMsg", "예매 결제가 완료되지 않았습니다.");
-            resultView.addObject("link", "/main");
-            resultView.addObject("btnMsg", "메인으로");
+        resultView.addObject("title", "스프링 시네마 - 예매 실패");
+        resultView.addObject("headMsg", "예매 결제가 완료되지 않았습니다.");
+        resultView.addObject("link", "/main");
+        resultView.addObject("btnMsg", "메인으로");
         return resultView;
     }
 

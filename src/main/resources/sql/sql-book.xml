@@ -14,20 +14,26 @@
         where  repRlsDate between date_add(now(), interval -1 month) AND now() order by title
     </select>
 
-<!--    예매페이지에서 선택 영화의 극장을 불러오는 쿼리-->
+    <!--    예매페이지에서 선택 영화의 극장을 불러오는 쿼리-->
     <select id="selectCinemaName" resultType="com.esc.springcinema.dto.ScreenHallDto">
-    SELECT DISTINCT cinema_name FROM screen_hall WHERE movie_title = #{movieTitle}
+        SELECT DISTINCT cinema_name FROM screen_hall WHERE movie_title = #{movieTitle}
     </select>
 
     <!--    예매페이지 선택 영화의 상영시간을 불러오는 쿼리-->
     <select id="selectMovieTime" resultType="com.esc.springcinema.dto.ScreenHallDto">
-    SELECT * FROM screen_hall
-    WHERE movie_title = #{movieTitle} AND cinema_name = #{cinemaName}
-    ORDER BY screen_hall_name;
+        SELECT * FROM screen_hall
+        WHERE movie_title = #{movieTitle} AND cinema_name = #{cinemaName}
+        ORDER BY screen_hall_name;
     </select>
 
     <!-- 결제 전 예매 정보 확인 페이지 포스터 조회 -->
     <select id="selectMoviePoster" parameterType="String" resultType="String">
-        SELECT posters FROM movies WHERE docid = #{docid}
+        SELECT SUBSTRING_INDEX(posters, '|', 1) AS posters FROM movies WHERE docid = #{docid}
     </select>
+
+    <!-- 예매 정보 DB 저장 -->
+    <insert id="booking" parameterType="com.esc.springcinema.dto.BooksDto">
+        INSERT INTO books(id, reserve_date, title, cinema_name, screen_hall_name, view_time, seat_code, adult_yn, state_yn)
+        VALUES(#{id}, now(), #{movieTitle}, #{cinemaName}, #{screenHallName}, #{selectedDate}, #{seatCode}, #{adultYn})
+    </insert>
 </mapper>

@@ -60,7 +60,7 @@ public class BookController {
     @ResponseBody
     @RequestMapping(value = "/book/remainSeats", method = RequestMethod.POST)
     public Object ajaxBookSeat(@RequestParam("title") String title, @RequestParam("cinema") String cinemaName,
-                                @RequestParam("hall") String screenHallName, @RequestParam("viewTime") String viewTime) throws Exception{
+                               @RequestParam("hall") String screenHallName, @RequestParam("viewTime") String viewTime) throws Exception{
         int reservedSeat = cinemaService.countBook(title, cinemaName, screenHallName, viewTime);
 
         return reservedSeat;
@@ -75,14 +75,14 @@ public class BookController {
     }
 
 
-    @ResponseBody
-    @RequestMapping(value = "/paymentInfo")
-    public String ajaxTest(@RequestBody HashMap<String, String> map) throws Exception {
-//        HashMap<String, String> paymentInfo = new HashMap<>();
-//        paymentInfo.put("title", map.get("title"));
-        map.put("title", map.get("title"));
-        return null;
-    }
+//    @ResponseBody
+//    @RequestMapping(value = "/paymentInfo")
+//    public String ajaxTest(@RequestBody HashMap<String, String> map) throws Exception {
+////        HashMap<String, String> paymentInfo = new HashMap<>();
+////        paymentInfo.put("title", map.get("title"));
+//        map.put("title", map.get("title"));
+//        return null;
+//    }
 
 
 }
