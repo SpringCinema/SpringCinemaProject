@@ -39,4 +39,9 @@ public interface MovieService {
     // 최종 수정 : 2022-12-21
     // 마지막 작성자 : MoonNight285
     List<MovieDto> selectRecommendMoviesList(String day, String genre) throws Exception;
+    
+    // 관람등급을 기준으로 영화를 검색해서 조건에 일치하는 영화들을 가져온다.
+    // 최종 수정 : 2022-12-21
+    // 마지막 작성자 : MoonNight285
+    List<MovieDto> selectBirthMovieList(String id) throws Exception;
 }

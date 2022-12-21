@@ -1,5 +1,6 @@
 package com.esc.springcinema.controller;
 
+import com.esc.springcinema.dto.MemberDto;
 import com.esc.springcinema.dto.apiMovieDto.ActorDto;
 import com.esc.springcinema.dto.apiMovieDto.DirectorDto;
 import com.esc.springcinema.dto.apiMovieDto.MovieDto;
@@ -12,6 +13,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -23,19 +27,31 @@ public class MoviesController {
     @Autowired
     private MovieDataManager movieDataManager;
 
-    // 메인화면 캐러셀에 현재상영작 불러오기
+    // 메인화면 캐러셀에 현재상영작, 추천목록 불러오기
     // 최종 수정 : 2022-12-21
-    // 마지막 작성자 : eblyncho
+    // 마지막 작성자 : MoonNight285
     @RequestMapping("/main")
-    public ModelAndView viewNowplayingMoviesList() throws Exception {
+    public ModelAndView viewNowplayingMoviesList(HttpServletRequest request) throws Exception {
+        request.setCharacterEncoding("UTF-8");
+        HttpSession session = request.getSession();
+        
+        List<MovieDto> birthList = new ArrayList<>(); // 값이 없는경우 사이즈는 0
+        if (session.getAttribute("loggedInUserInfo") != null) {
+            session.setMaxInactiveInterval(1800);
+            String loggedInUserId = ((MemberDto)session.getAttribute("loggedInUserInfo")).getId();
+            birthList = movieService.selectBirthMovieList(loggedInUserId);
+        }
+        
         ModelAndView mv = new ModelAndView("main");
         
         String randomGenre = movieDataManager.getRandomGenre();
         List<MovieDto> nowplayingList = movieService.selectNowplayingMoviesList();
         List<MovieDto> recommendList = movieService.selectRecommendMoviesList("-60", randomGenre);
+        
         mv.addObject("nowplayingList", nowplayingList);
         mv.addObject("recommendList", recommendList);
         mv.addObject("randomGenre", randomGenre);
+        mv.addObject("birthList", birthList);
 
         return mv;
     }

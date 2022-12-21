@@ -157,4 +157,34 @@ public class MovieServiceImpl implements MovieService {
         genre = "%" + genre + "%";
         return cinemaMapper.selectRecommendMoviesList(day, genre);
     }
+    
+    // 관람등급을 기준으로 영화를 검색해서 조건에 일치하는 영화들을 가져온다.
+    // 최종 수정 : 2022-12-21
+    // 마지막 작성자 : MoonNight285
+    @Override
+    public List<MovieDto> selectBirthMovieList(String id) throws Exception {
+        int birth = cinemaMapper.selectUserBirth(id);
+        Calendar today = Calendar.getInstance();
+        int year = today.get(Calendar.YEAR);
+        int age = year - birth;
+        List<String> movieRanks = new ArrayList<>();
+        
+        if (age < 12) {
+            movieRanks.add("전체관람가");
+        } else if (age < 15) {
+            movieRanks.add("전체관람가");
+            movieRanks.add("12세관람가");
+        } else if (age < 18) {
+            movieRanks.add("전체관람가");
+            movieRanks.add("12세관람가");
+            movieRanks.add("15세관람가");
+        } else {
+            movieRanks.add("전체관람가");
+            movieRanks.add("12세관람가");
+            movieRanks.add("15세관람가");
+            movieRanks.add("18세관람가(청소년관람불가)");
+        }
+        
+        return cinemaMapper.selectBirthMovieList(movieRanks);
+    }
 }

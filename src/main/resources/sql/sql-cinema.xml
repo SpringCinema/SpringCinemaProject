@@ -40,6 +40,15 @@
         ]]>
     </select>
 
+    <!-- 관람등급을 기준으로 영화를 검색 -->
+    <select id="selectBirthMovieList" parameterType="java.util.List" resultType="com.esc.springcinema.dto.apiMovieDto.MovieDto">
+        SELECT docid, title, SUBSTRING_INDEX(posters, '|', 1) AS posters FROM movies WHERE rating IN (
+        <foreach collection="list" item="item" separator=",">
+            #{item}
+        </foreach>
+        )
+    </select>
+
     <insert id="insertMovieDatas" parameterType="com.esc.springcinema.dto.apiMovieDto.MovieDto">
         INSERT INTO movies(docid, title, titleEng, nation, company, runtime, rating, genre, repRlsDate, keywords, posters, stlls, awards1, plotText)
         VALUES(#{docid}, #{title}, #{titleEng}, #{nation}, #{company}, #{runtime}, #{rating}, #{genre}, #{repRlsDate}, #{keywords},
@@ -97,5 +106,10 @@
     <!-- 서버 최초 구동했거나 새로 목록이 갱신되었을때만 장르 목록을 가져온다. -->
     <select id="selectGenre" resultType="String">
         SELECT DISTINCT genre FROM movies;
+    </select>
+
+    <!-- 선택한 유저의 생년을 가져온다. -->
+    <select id="selectUserBirth" resultType="int" parameterType="String">
+        SELECT birth FROM members WHERE id = #{id}
     </select>
 </mapper>
