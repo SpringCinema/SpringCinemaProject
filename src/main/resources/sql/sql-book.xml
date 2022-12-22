@@ -31,4 +31,9 @@
         SELECT SUBSTRING_INDEX(posters, '|', 1) AS posters FROM movies WHERE docid = #{docid}
     </select>
 
+<!--    남은 좌석 체크-->
+    <select id="selectSeatCode" parameterType="String" resultType="com.esc.springcinema.dto.BooksDto">
+        SELECT seat_code FROM books WHERE title = #{movieTitle} AND view_time = #{vTime} AND cinema_name = #{cinemaName} AND screen_hall_name = #{screenHallName}
+    </select>
+
 </mapper>

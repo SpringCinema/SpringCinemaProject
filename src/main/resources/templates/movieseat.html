@@ -12,6 +12,9 @@
         let totalPrice;
 
         $(document).ready(function() {
+            $(`input[type='checkbox']`).prop('checked', false);
+            $(`input[name='inputAdt']:radio[value='0']`).prop('checked', true);
+            $(`input[name='inputTeen']:radio[value='0']`).prop('checked', true);
             // 인원 수 선택 이벤트
             // 인원 수 선택 시 금액 출력
             $(`input[name='inputAdt']`).on('click', function () {
@@ -149,6 +152,27 @@
                 }
             });
         /*]]>*/
+
+            // 예매된 좌석 자동 disabled 추가
+            let title = $('#input-i-title').val();
+            let screenName = $('#input-i-cinema').val();
+            let screenTime = $('#input-i-time').val();
+            $.ajax({
+                url: "/getBookSeat",
+                type: "post",
+                data: {title: title, screenName: screenName, screenTime: screenTime},
+                success:function (data){
+                    if(data != 0) {
+                        for(let i = 0; i < data.length; i++) {
+                            let s = data[i].seatCode;
+                            $(`#input-i-${s}`).attr('disabled', true)
+                        }
+                    }
+                },
+                error:function (){
+                    alert('통신 오류!')
+                }
+            })
         });
 
     </script>
@@ -318,7 +342,7 @@
                         </div>
 
                         <div class="col-5 p-0 div-c-seat">
-                            <input type="checkbox" class="btn-check" th:id="'input-i-' + ${item} + '4'" th:value="${item} + '4'" disabled>
+                            <input type="checkbox" class="btn-check" th:id="'input-i-' + ${item} + '4'" th:value="${item} + '4'">
                             <label class="btn btn-success" th:for="'input-i-' + ${item} + '4'">4</label>
                             <input type="checkbox" class="btn-check" th:id="'input-i-' + ${item} + '5'" th:value="${item} + '5'">
                             <label class="btn btn-success" th:for="'input-i-' + ${item} + '5'">5</label>

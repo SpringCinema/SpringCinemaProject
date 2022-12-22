@@ -121,4 +121,26 @@ public class BookController {
         return null;
     }
 
+    @ResponseBody
+    @RequestMapping(value = "/getBookSeat", method = RequestMethod.POST)
+    public Object getBookSeat(@RequestParam("title") String title, @RequestParam("screenName") String screen, @RequestParam("screenTime") String time) throws Exception {
+        int yIdx = time.indexOf("년");
+        int mIdx = time.indexOf("월");
+        int dIdx = time.indexOf("일");
+        int viewIdx = time.indexOf("요일");
+        String year = time.substring(0, yIdx);
+        String month = time.substring(yIdx+2, mIdx);
+        String dt = time.substring(mIdx+2, dIdx);
+        String viewTime = time.substring(viewIdx+2);
+        String vTime = year + "-" + month + "-" + dt + " " + viewTime;
+
+        int screenIdx = screen.indexOf("점");
+        String cinema = screen.substring(0, screenIdx+1);
+        String screenHall = screen.substring(screenIdx+2);
+
+        List<BooksDto> bookSeat = cinemaService.selectSeatCode(title, cinema, screenHall, vTime);
+        System.out.println(bookSeat);
+
+        return bookSeat;
+    }
 }

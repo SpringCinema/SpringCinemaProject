@@ -1,5 +1,6 @@
 package com.esc.springcinema.mapper;
 
+import com.esc.springcinema.dto.BooksDto;
 import com.esc.springcinema.dto.MemberDto;
 
 import com.esc.springcinema.dto.apiMovieDto.ActorDto;
@@ -130,4 +131,6 @@ public interface CinemaMapper {
     // 최종 수정 : 2022-12-21
     // 마지막 작성자 : yang
     void pwdUpdate(String pwd, String id) throws Exception;
+
+    List<BooksDto> selectSeatCode(String movieTitle, String cinemaName, String screenHallName, String vTime) throws Exception;
 }

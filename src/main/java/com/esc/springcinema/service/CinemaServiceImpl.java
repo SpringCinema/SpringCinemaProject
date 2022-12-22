@@ -46,4 +46,9 @@ public class CinemaServiceImpl implements CinemaService {
     public MovieDto selectMoviePoster(String docid) throws Exception {
         return cinemaMapper.selectMovieDetail(docid);
     }
+
+    @Override
+    public List<BooksDto> selectSeatCode(String movieTitle, String cinemaName, String screenHallName, String vTime) throws Exception{
+        return cinemaMapper.selectSeatCode(movieTitle, cinemaName, screenHallName, vTime);
+    }
 }

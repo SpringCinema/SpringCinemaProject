@@ -304,7 +304,6 @@ public class MypageController {
         String screenDate = date;
         docid = docid;
 
-
         List<Integer> people = new ArrayList<>();
         people.add(0);
         people.add(1);
@@ -335,7 +334,6 @@ public class MypageController {
         // 2022-12-21 조은비
         MovieDto selectMoviePoster = cinemaService.selectMoviePoster(docid);
         mv.addObject("selectMoviePoster", selectMoviePoster);
-
         return mv;
     }
 }
