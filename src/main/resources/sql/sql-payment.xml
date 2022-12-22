@@ -10,4 +10,12 @@
             VALUES(#{id}, #{bookNum}, now(), #{title}, #{cinemaName}, #{screenHallName}, #{viewTime}, #{seatCode}, #{adultYn}, 'Y')
         ]]>
     </insert>
+
+    <!-- 결제 정보 DB 저장 -->
+    <insert id="bill" parameterType="com.esc.springcinema.dto.PaymentsDto">
+        <![CDATA[
+            INSERT INTO payments(id, payment_num, book_num, money, pay_type, pay_date, title, state)
+            VALUES(#{id}, #{paymentNum}, #{bookNum}, #{money}, '신용카드', now(), #{title}, '결제완료')
+        ]]>
+    </insert>
 </mapper>

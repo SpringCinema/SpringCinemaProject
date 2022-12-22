@@ -141,8 +141,23 @@
                             }
                         }
 
-                        sessionStorage.clear();
-                        location.href = "/paymentComplete";
+                        $.ajax({
+                            url: "/billInfo",
+                            type: "POST",
+                            // async:false,
+                            contentType: 'application/json',
+                            data: JSON.stringify({ "id": /*[[${myInfo.id}]]*/, "paymentNum": paymentNum, "bookNum": bookNum,
+                                "money": totalPrice, "title": selectedTitle }),
+                            success: function (data) {
+                                // alert("통신 성공!");
+                                sessionStorage.clear();
+                                location.href = "/paymentComplete";
+                            },
+                            error:function(request,status,error){
+                                alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+                            }
+                        })
+
 
                     } else {
                         // alert("[실패] 코드("+rsp.error_code+") / 메세지(" + rsp.error_msg + ")");

@@ -21,4 +21,9 @@ public class PaymentServiceImpl implements PaymentService {
     public void booking(BooksDto book) throws Exception {
         paymentMapper.booking(book);
     }
+
+    @Override
+    public void bill(PaymentsDto payment) throws Exception {
+        paymentMapper.bill(payment);
+    }
 }

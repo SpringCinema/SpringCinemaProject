@@ -2,6 +2,7 @@ package com.esc.springcinema.controller;
 
 import com.esc.springcinema.dto.BooksDto;
 import com.esc.springcinema.dto.MemberDto;
+import com.esc.springcinema.dto.PaymentsDto;
 import com.esc.springcinema.dto.ScreenHallDto;
 import com.esc.springcinema.dto.apiMovieDto.MovieDto;
 import com.esc.springcinema.service.CinemaService;
@@ -99,11 +100,18 @@ public class BookController {
 
         return mv;
     }
-    
+
     @ResponseBody
     @RequestMapping(value = "/paymentInfo", method = RequestMethod.POST)
     public String booking(@RequestBody BooksDto book) throws Exception {
         paymentService.booking(book);
+        return null;
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/billInfo", method = RequestMethod.POST)
+    public String bill(@RequestBody PaymentsDto payment) throws Exception {
+        paymentService.bill(payment);
         return null;
     }
 

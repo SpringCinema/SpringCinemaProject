@@ -8,4 +8,6 @@ public interface PaymentService {
     public boolean paymentComplete(PaymentsDto payment) throws Exception;
 
     void booking(BooksDto book) throws Exception;
+
+    void bill(PaymentsDto payment) throws Exception;
 }
