@@ -50,9 +50,7 @@ public class UserController {
     // 최종 수정 : 2022-12-14
     // 마지막 작성자 : MoonNight285
     @RequestMapping(value = "/user/login", method = RequestMethod.POST)
-    public String login(@RequestParam("targetId") String targetId, @RequestParam("pwd") String pwd,
-        @RequestParam(value = "idSave") String idSave, HttpServletRequest request) throws Exception {
-
+    public String login(@RequestParam("targetId") String targetId, @RequestParam("pwd") String pwd, HttpServletRequest request) throws Exception {
         MemberDto member = memberService.login(targetId, pwd);
         HttpSession session = request.getSession();
         session.setAttribute("loggedInUserInfo", member);
