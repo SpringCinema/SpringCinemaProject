@@ -127,4 +127,18 @@
         </foreach>
         )
     </select>
+
+<!--    비밀번호 찾기 아이디 이메일 확인-->
+<!--    최종 수정 : 2022-12-21-->
+<!--    마지막 작성자 : yang-->
+    <select id="checkIdEmail" parameterType="String" resultType="int">
+        SELECT COUNT(*) FROM members WHERE id = #{id} AND email = #{email}
+    </select>
+
+    <!--    비밀번호 변경-->
+    <!--    최종 수정 : 2022-12-21-->
+    <!--    마지막 작성자 : yang-->
+    <update id="pwdUpdate" parameterType="String">
+        UPDATE members SET pwd = #{pwd} WHERE id = #{id}
+    </update>
 </mapper>

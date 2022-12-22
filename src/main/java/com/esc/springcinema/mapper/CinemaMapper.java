@@ -95,7 +95,7 @@ public interface CinemaMapper {
     // 최종 수정 : 2022-12-19
     // 마지막 작성자 : yang
     int countBook(String title, String cinemaName, String screenHallName, String viewTime) throws Exception;
-    
+
     // 서버가 시작됬거나 갱신시간이 됬을때만 장르목록을 가져온다.
     // 최종 수정 : 2022-12-21
     // 마지막 작성자 : MoonNight285
@@ -120,4 +120,14 @@ public interface CinemaMapper {
     // 최종 수정 : 2022-12-21
     // 마지막 작성자 : MoonNight285
     List<String> selectViewAbleMovie(List<String> movies) throws Exception;
+
+    // 비밀번호 찾기 아이디 이메일 확인
+    // 최종 수정 : 2022-12-21
+    // 마지막 작성자 : yang
+    int checkIdEmail(String id, String email) throws Exception;
+
+    // 비밀번호 변경
+    // 최종 수정 : 2022-12-21
+    // 마지막 작성자 : yang
+    void pwdUpdate(String pwd, String id) throws Exception;
 }

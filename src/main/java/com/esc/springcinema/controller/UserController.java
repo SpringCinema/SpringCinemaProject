@@ -4,10 +4,7 @@ import com.esc.springcinema.dto.MemberDto;
 import com.esc.springcinema.service.MemberService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
@@ -74,5 +71,48 @@ public class UserController {
         view.addObject("link", "/main");
         view.addObject("btnMsg", "메인으로");
         return view;
+    }
+
+    // 비밀번호 찾기 페이지
+    // 최종 수정 : 2022-12-21
+    // 마지막 작성자 : yang
+    @RequestMapping(value = "/findPwd")
+    public ModelAndView findPWd() throws Exception {
+        ModelAndView mv = new ModelAndView("pwdFind");
+        return mv;
+    }
+
+    // 비밀번호 찾기 페이지 회원가입 정보 확인
+    // 최종 수정 : 2022-12-21
+    // 마지막 작성자 : yang
+    @ResponseBody
+    @RequestMapping(value = "/chkJoinInfo", method = RequestMethod.POST)
+    public Object ajaxChkInfo(@RequestParam("id") String id, @RequestParam("email") String email) throws Exception{
+        int joinInfo = memberService.checkIdEmail(id, email);
+        return joinInfo;
+    }
+
+    // 비밀번호 변경 페이지
+    // 최종 수정 : 2022-12-22
+    // 마지막 작성자 : yang
+    @RequestMapping(value = "/pwdUpdate/{userId}", method = RequestMethod.GET)
+    public ModelAndView updatePwdPage(@PathVariable String userId) throws Exception {
+        ModelAndView mv = new ModelAndView("pwdUpdate");
+        mv.addObject(userId);
+        return mv;
+    }
+
+    // 비밀번호 변경 완료 페이지
+    // 최종 수정 : 2022-12-21
+    // 마지막 작성자 : yang
+    @RequestMapping(value = "/pwdUpdateOk", method = RequestMethod.POST)
+    public ModelAndView updatePwd(@RequestParam("pwd") String pwd, @RequestParam("id") String id) throws Exception {
+        memberService.pwdUpdate(pwd, id);
+        ModelAndView mv = new ModelAndView("common/process_complete");
+        mv.addObject("title", "비밀번호 설정 성공");
+        mv.addObject("headMsg", "비밀번호를 성공적으로 변경하였습니다.");
+        mv.addObject("link", "/main");
+        mv.addObject("btnMsg", "메인으로");
+        return mv;
     }
 }

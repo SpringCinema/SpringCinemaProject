@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>비밀번호 찾기</title>
+
+    <th:block th:replace="/fragments/config :: configFragment"></th:block>
+
+    <script>
+        $(document).ready(function() {
+            $('#button-i-back').on('click', function() {
+                history.back();
+            });
+
+            $('#button-i-pwdFind').on('click', function() {
+                const id = $('#input-i-id').val();
+                const email = $('#input-i-email').val();
+                $.ajax({
+                    url: "/chkJoinInfo",
+                    type: "post",
+                    data: {id: id, email: email},
+                    success: function (data){
+                        if(data == 1) {
+                            $('#form-i-frm')[0].action = "/sendSuccess";
+                            $('#form-i-frm')[0].method = "POST";
+                            $('#form-i-frm')[0].submit();
+                        }
+                        else{
+                            $("#button-i-modal").click();
+                            return;
+                        }
+                    },
+                    error: function (){
+                        alert("ajax 통신이 오류가 발생했습니다.");
+                    }
+                });
+            });
+        });
+    </script>
+
+    <style>
+        main.container {
+            width: 1300px;
+            margin-top: 140px;
+            margin-bottom: 172px;
+            max-width: none !important;
+        }
+
+        #form-i-frm {
+            border: #FF4500 3px solid;
+        }
+
+        #button-i-modal {
+            display: none;
+        }
+    </style>
+
+</head>
+<body>
+<header th:replace="fragments/header :: headerFragment"></header>
+
+<main class="container">
+    <div class="row py-5">
+        <form id="form-i-frm" class="col-sm-9 mx-auto rounded-4">
+            <h3 class="text-center my-3 fs-4">아이디와 회원가입 시 입력한 이메일을 입력하세요</h3>
+            <div class="row mt-3 text-center">
+                <label for="input-i-id" class="col-3 text-end pt-2 pe-2">아이디</label>
+                <div class="col-7">
+                    <input type="text" class="form-control" id="input-i-id" name="id" placeholder="아이디를 입력하세요">
+                </div>
+            </div>
+            <div class="row mt-3">
+                <label for="input-i-email" class="col-3 text-end pt-2 pe-2">이메일</label>
+                <div class="col-7">
+                    <input type="text" class="form-control" id="input-i-email" name="email" placeholder="이메일을 입력하세요">
+                </div>
+            </div>
+            <div class="text-end col-10">
+                <button type="button" class="my-3 btn btn-outline-primary" id="button-i-pwdFind">찾기</button>
+                <button type="reset" class="my-3 btn btn-outline-dark" id="button-i-back">뒤로</button>
+            </div>
+            <!--        전송 방식 변경을 위한 숨겨진 input 태그-->
+            <input type="hidden" id="input-i-method" name="_method">
+            <button type="button" id="button-i-modal" data-bs-toggle="modal" data-bs-target="#div-i-error"></button>
+        </form>
+    </div>
+</main>
+
+<footer th:replace="fragments/footer :: footerFragment"></footer>
+<div th:replace="fragments/modal_error :: modalError('가입시 입력한 아이디와 이메일이 일치하지 않습니다.')"></div>
+</body>
+</html>

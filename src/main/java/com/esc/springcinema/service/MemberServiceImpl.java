@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 @Service
 public class MemberServiceImpl implements MemberService {
@@ -43,4 +44,21 @@ public class MemberServiceImpl implements MemberService {
         
         return true; // 임시로 무조건 true
     }
+
+    // 비밀번호 찾기 아이디 이메일 확인
+    // 최종 수정 : 2022-12-21
+    // 마지막 작성자 : yang
+    @Override
+    public int checkIdEmail(String id, String email) throws Exception {
+        return cinemaMapper.checkIdEmail(id, email);
+    }
+
+    // 비밀번호 변경
+    // 최종 수정 : 2022-12-21
+    // 마지막 작성자 : yang
+    @Override
+    public void pwdUpdate(String pwd, String id) throws Exception {
+        cinemaMapper.pwdUpdate(pwd, id);
+    }
+
 }
