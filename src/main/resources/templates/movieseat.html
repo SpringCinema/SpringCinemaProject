@@ -12,6 +12,9 @@
         let totalPrice;
 
         $(document).ready(function() {
+            $(`input[type='checkbox']`).prop('checked', false);
+            $(`input[name='inputAdt']:radio[value='0']`).prop('checked', true);
+            $(`input[name='inputTeen']:radio[value='0']`).prop('checked', true);
             // 인원 수 선택 이벤트
             // 인원 수 선택 시 금액 출력
             $(`input[name='inputAdt']`).on('click', function () {
