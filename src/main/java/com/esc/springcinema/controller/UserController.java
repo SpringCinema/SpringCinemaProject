@@ -1,19 +1,23 @@
 package com.esc.springcinema.controller;
 
 import com.esc.springcinema.dto.MemberDto;
+import com.esc.springcinema.service.MailService;
 import com.esc.springcinema.service.MemberService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.util.Random;
 
 @Controller
 public class UserController {
     @Autowired
     private MemberService memberService;
+
+    @Autowired
+    private MailService mailService;
 
     // 로그인 페이지를 보여줍니다.
     // 최종 수정 : 2022-12-14
@@ -75,42 +79,81 @@ public class UserController {
     // 최종 수정 : 2022-12-21
     // 마지막 작성자 : yang
     @RequestMapping(value = "/findPwd")
-    public ModelAndView findPWd() throws Exception {
+    public ModelAndView findPWd(HttpServletRequest request) throws Exception {
         ModelAndView mv = new ModelAndView("pwdFind");
         return mv;
     }
 
-    // 비밀번호 찾기 페이지 회원가입 정보 확인
-    // 최종 수정 : 2022-12-21
+    // 비밀번호 찾기 페이지 회원가입 정보 확인 / 인증번호 전송
+    // 최종 수정 : 2022-12-22
     // 마지막 작성자 : yang
     @ResponseBody
     @RequestMapping(value = "/chkJoinInfo", method = RequestMethod.POST)
-    public Object ajaxChkInfo(@RequestParam("id") String id, @RequestParam("email") String email) throws Exception{
-        int joinInfo = memberService.checkIdEmail(id, email);
-        return joinInfo;
-    }
+    public Object ajaxChkInfo(@RequestParam("id") String id, @RequestParam("email") String email, HttpServletRequest request) throws Exception{
+//        인증번호 생성
+        Random random = new Random();
+        String resultNum = "";
+        for(int i = 0; i < 10; i++) {
+            int randomNum = random.nextInt(9);
+            String randomVal = Integer.toString(randomNum);
+            resultNum += randomVal;
+        }
+//        인증번호 세션 저장.
+        HttpSession session = request.getSession();
+        session.setAttribute("findPwdUser" + id, id);
+        session.setAttribute("findPwdSecure" + id, resultNum);
+        session.setMaxInactiveInterval(180);
 
-    // 비밀번호 변경 페이지
-    // 최종 수정 : 2022-12-22
-    // 마지막 작성자 : yang
-    @RequestMapping(value = "/pwdUpdate/{userId}", method = RequestMethod.GET)
-    public ModelAndView updatePwdPage(@PathVariable String userId) throws Exception {
-        ModelAndView mv = new ModelAndView("pwdUpdate");
-        mv.addObject(userId);
-        return mv;
+//        아이디 이메일 정보 확인
+        int joinInfo = memberService.checkIdEmail(id, email);
+
+//        인증번호 발송
+        String title = id + "님! spring cinema 비밀번호 인증 번호입니다.";
+        String url = "인증번호 입력칸에 [" + resultNum + "]를 입력해 주세요";
+        mailService.mailSend(email, title, url);
+        return joinInfo;
     }
 
     // 비밀번호 변경 완료 페이지
     // 최종 수정 : 2022-12-21
     // 마지막 작성자 : yang
     @RequestMapping(value = "/pwdUpdateOk", method = RequestMethod.POST)
-    public ModelAndView updatePwd(@RequestParam("pwd") String pwd, @RequestParam("id") String id) throws Exception {
-        memberService.pwdUpdate(pwd, id);
-        ModelAndView mv = new ModelAndView("common/process_complete");
-        mv.addObject("title", "비밀번호 설정 성공");
-        mv.addObject("headMsg", "비밀번호를 성공적으로 변경하였습니다.");
-        mv.addObject("link", "/main");
-        mv.addObject("btnMsg", "메인으로");
-        return mv;
+    public ModelAndView updatePwd(@RequestParam("pwd") String pwd, @RequestParam("id") String id,@RequestParam("secureNum") String secureNum,
+                                    HttpServletRequest request) throws Exception {
+        HttpSession session = request.getSession();
+        String sessionId = (String) session.getAttribute("findPwdSecure" + id);
+        try {
+            if(sessionId.equals(secureNum) && sessionId != null) {
+                memberService.pwdUpdate(pwd, id);
+                ModelAndView mv = new ModelAndView("common/process_complete");
+                mv.addObject("title", "비밀번호 설정 성공");
+                mv.addObject("headMsg", "비밀번호를 성공적으로 변경하였습니다.");
+                mv.addObject("link", "/user/login");
+                mv.addObject("btnMsg", "로그인");
+                session.removeAttribute("findPwdUser" + id);
+                session.removeAttribute("findPwdSecure" + id);
+                return mv;
+            }
+            else {
+                ModelAndView mv = new ModelAndView("common/process_complete");
+                mv.addObject("title", "비밀번호 설정 실패");
+                mv.addObject("headMsg", "비밀번호변경에 실패했습니다.");
+                mv.addObject("link", "/findPwd");
+                mv.addObject("btnMsg", "돌아가기");
+                session.removeAttribute("findPwdUser" + id);
+                session.removeAttribute("findPwdSecure" + id);
+                return mv;
+            }
+        }
+        catch (NullPointerException e) {
+            ModelAndView mv = new ModelAndView("common/process_complete");
+            mv.addObject("title", "비밀번호 설정 실패");
+            mv.addObject("headMsg", "인증번호가 만료되었습니다.");
+            mv.addObject("link", "/findPwd");
+            mv.addObject("btnMsg", "돌아가기");
+            session.removeAttribute("findPwdUser" + id);
+            session.removeAttribute("findPwdSecure" + id);
+            return mv;
+        }
     }
 }
