@@ -308,7 +308,7 @@
     </div>
     
     <div class="div-c-movie-list-wrapper">
-        <h3 class="mx-5 mt-3">현재상영작</h3>
+        <h3 class="mx-5 mt-4">현재상영작</h3>
         
         <section class="regular slider">
             <div class="item" th:if="${#lists.size(nowplayingList) > 0}" th:each="list : ${nowplayingList}">
@@ -334,7 +334,7 @@
     <!-- 마지막 작성자 : MoonNight285 -->
     <!-- 마지막 작성일 : 2022-12-22 -->
     <div class="div-c-movie-list-wrapper" th:if="${#maps.size(birthList) > 0}">
-        <h3 class="mx-5 mt-3">회원님에게 어울리는 추천목록</h3>
+        <h3 class="mx-5 mt-4">회원님에게 어울리는 추천목록</h3>
         
         <section class="regular slider">
             <div class="item" th:if="${#maps.size(birthList) > 0}" th:each="list : ${birthList}">
@@ -361,7 +361,7 @@
     <!-- 마지막 작성자 : MoonNight285 -->
     <!-- 마지막 작성일 : 2022-12-22 -->
     <div class="div-c-movie-list-wrapper" th:unless="${#maps.size(birthList) > 0}">
-        <h3 class="mx-5 mt-3"><span style="color: #ff4300" th:text="${randomGenre}"></span> 추천목록</h3>
+        <h3 class="mx-5 mt-4"><span style="color: #ff4300" th:text="${randomGenre}"></span> 추천목록</h3>
         
         <section class="regular slider">
             <div class="item" th:if="${#maps.size(recommendList) > 0}" th:each="list : ${recommendList}">
