@@ -20,10 +20,17 @@ public class UserController {
     private MailService mailService;
 
     // 로그인 페이지를 보여줍니다.
-    // 최종 수정 : 2022-12-14
+    // 최종 수정 : 2022-12-22
     // 마지막 작성자 : MoonNight285
     @RequestMapping(value = "/user/login", method = RequestMethod.GET)
-    public String viewLogin() {
+    public String viewLogin(HttpServletRequest request) throws Exception {
+        request.setCharacterEncoding("UTF-8");
+        HttpSession session = request.getSession();
+        
+        if (session.getAttribute("loggedInUserInfo") != null) {
+            return "redirect:/main";
+        }
+        
         return "login";
     }
     

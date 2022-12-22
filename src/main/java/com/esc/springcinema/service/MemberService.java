@@ -31,4 +31,9 @@ public interface MemberService {
     // 최종 수정 : 2022-12-21
     // 마지막 작성자 : yang
     void pwdUpdate(String pwd, String id) throws Exception;
+    
+    // 현재 사용자가 로그인 되어있다면 로그인한 아이디를 반환한다.
+    // 최종 수정 : 2022-12-22
+    // 마지막 작성자 : MoonNight285
+    public String getLoggedInUserId(HttpServletRequest request) throws Exception;
 }

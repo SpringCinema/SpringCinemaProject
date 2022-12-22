@@ -10,7 +10,7 @@ public class CinemaController {
 
     @RequestMapping("/")
     public String index() throws Exception {
-        return "index";
+        return "redirect:/main";
     }
 
 //    메인페이지 접속

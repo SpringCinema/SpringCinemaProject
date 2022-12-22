@@ -17,7 +17,8 @@
             <div class="justify-content-end">
                 <ul>
                     <li class="mx-3">
-                        <a href="/user/login" class="a-c-main"><img src="/img/login2.png" alt="로그인" style="display:block;" class="mx-auto my-1"><span>로그인</span></a>
+                        <a th:if="${isLogin} == 'false'" href="/user/login" class="a-c-main"><img src="/img/login2.png" alt="로그인" style="display:block;" class="mx-auto my-1"><span>로그인</span></a>
+                        <a th:unless="${isLogin} == 'false'" href="/user/login" class="a-c-main"><img src="/img/login2.png" alt="로그인" style="display:block;" class="mx-auto my-1"><span>로그아웃</span></a>
                     </li>
                     <li class="mx-2">
                         <a href="/clause" class="a-c-main"><img src="/img/join2.png" alt="회원가입" style="display:block;" class="mx-auto my-1"><span>회원가입</span></a>
