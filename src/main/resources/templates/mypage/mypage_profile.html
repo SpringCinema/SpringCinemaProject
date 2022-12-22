@@ -60,7 +60,7 @@
                         <div class="mx-3">
                             <p th:text="'이름 : '+ ${myInfo.name}"></p>
                             <p th:text="'아이디 : '+ ${myInfo.id}"></p>
-                            <p th:text="'이메일 : '+ ${myInfo.email}" ></p>
+                            <p style="width: 290px; text-overflow: ellipsis; overflow: hidden; white-space: nowrap;" th:text="'이메일 : '+ ${myInfo.email}" th:title="${myInfo.email}" ></p>
                         </div>
                     </div>
                     <input type="hidden" id="input-i-id" name="id" th:value="${myInfo.id}">

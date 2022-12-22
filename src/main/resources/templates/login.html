@@ -25,7 +25,39 @@
 
             return false;
         }
-
+        
+        // 쿠키 생성, 삭제, 조회
+        // 마지막 작성일 : 2022-12-22
+        // 마지막 작성자 : MoonNight285
+        function setCookie(cookieName, value, expireDay) {
+            let exdate = new Date();
+            exdate.setDate(exdate.getDate() + expireDay);
+            let cookieValue = encodeURIComponent(value) + ((expireDay == null) ? "" : "; expires=" + exdate.toString());
+            document.cookie = cookieName + "=" + cookieValue;
+        }
+        
+        function deleteCookie(cookieName) {
+            let expireDate = new Date();
+            expireDate.setDate(expireDate.getDate() - 1);
+            document.cookie = cookieName + "= " + "; expires= " + expireDate.toString();
+        }
+        
+        function getCookie(cookieName) {
+            cookieName = cookieName + "=";
+            let cookieData = document.cookie;
+            let start = cookieData.indexOf(cookieName);
+            let cookieValue = "";
+            if (start != -1) {
+                start += cookieName.length;
+                let end = cookieData.indexOf(";", start);
+                if (end == -1) {
+                    end = cookieData.length;
+                }
+                cookieValue = cookieData.substring(start, end);
+            }
+            return decodeURIComponent(cookieValue);
+        }
+        
         $(document).ready(function () {
             const userCheckResult = $("#small-i-user-check-result");
             const btnLogin = $("#btn-i-login");
@@ -33,13 +65,18 @@
             const inputId = $("#input-i-id");
             const inputPwd = $("#input-i-pwd");
             const inputIdSave = $("#input-i-id-save");
-            const inputHiddenIdSave = $("#input-i-hidden-id-save");
-
+    
+            let userKey = getCookie("SpringUID");
+            if (userKey != "") {
+                inputId.val(userKey);
+                inputIdSave.attr("checked", true);
+            }
+    
             inputIdSave.on("click", function () {
                 if (inputIdSave.is(":checked")) {
-                    inputHiddenIdSave.val("on");
+                    setCookie("SpringUID", inputId.val(), 3);
                 } else {
-                    inputHiddenIdSave.val("off");
+                    deleteCookie("SpringUID");
                 }
             });
 
@@ -51,6 +88,9 @@
                         data : {targetId : inputId.val(), pwd : inputPwd.val()},
                         success : function (data) {
                             if (data == "true") {
+                                if (inputIdSave.is(":checked")) {
+                                    setCookie("SpringUID", inputId.val(), 3);
+                                }
                                 btnHiddenLogin.click();
                             } else {
                                 runUserCheckFailAnimate(userCheckResult, "아이디 또는 비밀번호가 틀렸습니다.");
@@ -143,7 +183,6 @@
                             <button id="btn-i-hidden-login" type="submit"></button>
                         </div>
                     </div>
-                    <input id="input-i-hidden-id-save" type="hidden" name="idSave" value="off">
                 </form>
             </div>
         </div>
