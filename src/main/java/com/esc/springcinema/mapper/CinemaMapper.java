@@ -40,7 +40,6 @@ public interface CinemaMapper {
     // 메인화면 캐러셀에 현재상영작 불러오기
     // 최종 수정 : 2022-12-15
     // 마지막 작성자 : eblyncho
-
     List<MovieDto> selectNowplayingMoviesList() throws Exception;
 
     // 영화 상세페이지_영화 정보 리턴
@@ -132,5 +131,11 @@ public interface CinemaMapper {
     // 마지막 작성자 : yang
     void pwdUpdate(String pwd, String id) throws Exception;
 
+
     List<BooksDto> selectSeatCode(String movieTitle, String cinemaName, String screenHallName, String vTime) throws Exception;
+
+    // 상영예정작 불러오기
+    // 최종 수정 : 2022-12-22
+    // 마지막 작성자 : EblynCho
+    List<MovieDto> selectUpcomingMoviesList() throws Exception;
 }

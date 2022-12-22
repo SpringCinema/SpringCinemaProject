@@ -87,8 +87,13 @@ public class MoviesController {
     // 최종 수정 : 2022-12-15
     // 마지막 작성자 : eblyncho
     @RequestMapping("/upcoming")
-    public String viewUpcoming() throws Exception {
-        return "upcoming";
+    public ModelAndView viewUpcoming() throws Exception {
+        ModelAndView mv = new ModelAndView("upcoming");
+
+        List<MovieDto> upcomingList = movieService.selectUpcomingMoviesList();
+        mv.addObject("upcomingList", upcomingList);
+
+        return mv;
     }
 
     // 영화_상세 페이지

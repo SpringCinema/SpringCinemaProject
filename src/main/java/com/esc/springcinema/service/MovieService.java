@@ -45,4 +45,9 @@ public interface MovieService {
     // 최종 수정 : 2022-12-21
     // 마지막 작성자 : MoonNight285
     HashMap<String, MovieDto> selectBirthMovieList(String id) throws Exception;
+
+    // 상영예정작 목록
+    // 최종 수정 : 2022-12-22
+    // 마지막 작성자 : EblynCho
+    List<MovieDto> selectUpcomingMoviesList() throws Exception;
 }

@@ -23,11 +23,21 @@
                NOW())
     </insert>
 
+    <!-- 현재상영작 목록 -->
     <select id="selectNowplayingMoviesList" resultType="com.esc.springcinema.dto.apiMovieDto.MovieDto">
         <![CDATA[
-        SELECT DISTINCT docid, title, SUBSTRING_INDEX(posters, '|', 1) AS posters
+        SELECT DISTINCT docid, title, SUBSTRING_INDEX(posters, '|', 1) AS posters, repRlsDate
         FROM movies m join screen_hall s on m.title = s.movie_title
         WHERE repRlsDate BETWEEN DATE_ADD(NOW(), INTERVAL -1 month) AND now()
+        ]]>
+    </select>
+
+    <!-- 상영예정작 목록 -->
+    <select id="selectUpcomingMoviesList" resultType="com.esc.springcinema.dto.apiMovieDto.MovieDto">
+        <![CDATA[
+        SELECT DISTINCT docid, title, SUBSTRING_INDEX(posters, '|', 1) AS posters, repRlsDate
+        FROM movies
+        WHERE repRlsDate > now()
         ]]>
     </select>
 

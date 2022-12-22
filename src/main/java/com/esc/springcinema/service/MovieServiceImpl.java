@@ -227,4 +227,12 @@ public class MovieServiceImpl implements MovieService {
         List<MovieDto> movies = cinemaMapper.selectBirthMovieList(movieRanks);
         return sortViewAbleMovie(movies);
     }
+
+    // 상영예정작 불러오기
+    // 최종 수정 : 2022-12-22
+    // 마지막 작성자 : EblynCho
+    @Override
+    public List<MovieDto> selectUpcomingMoviesList() throws Exception {
+        return cinemaMapper.selectUpcomingMoviesList();
+    }
 }
