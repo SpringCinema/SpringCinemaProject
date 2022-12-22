@@ -21,4 +21,6 @@ public interface CinemaService {
     int countBook(String title, String cinemaName, String screenHallName, String viewTime) throws Exception;
 
     MovieDto selectMoviePoster(String docid) throws Exception;
+
+    List<BooksDto> selectSeatCode(String movieTitle, String cinemaName, String screenHallName, String vTime) throws Exception;
 }
