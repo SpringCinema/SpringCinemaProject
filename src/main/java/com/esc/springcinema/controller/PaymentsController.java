@@ -1,6 +1,5 @@
 package com.esc.springcinema.controller;
 
-import com.esc.springcinema.dto.PaymentsDto;
 import com.esc.springcinema.service.PaymentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -17,20 +16,10 @@ public class PaymentsController {
     private PaymentService paymentService;
 
     // 결제 완료 후 DB 저장 & 페이지 이동
-    // 최종 수정 : 2022-12-19
+    // 최종 수정 : 2022-12-22
     // 마지막 작성자 : EblynCho
     @RequestMapping(value = "/paymentComplete", method = RequestMethod.GET)
     public ModelAndView addPayment(HttpServletRequest request) throws Exception {
-        PaymentsDto payments = new PaymentsDto();
-
-        request.setCharacterEncoding("UTF-8");
-        payments.setId(request.getParameter("id"));
-        payments.setPaymentNum(request.getParameter("pwd"));
-        payments.setMoney(Integer.parseInt(request.getParameter("money")));
-        payments.setPayType(request.getParameter("payType"));
-        payments.setTitle(request.getParameter("title"));
-        payments.setPayDate(request.getParameter("payDate"));
-
         ModelAndView resultView = new ModelAndView("common/process_complete");
         resultView.addObject("title", "스프링 시네마 - 예매 완료");
         resultView.addObject("headMsg", "예매가 완료되었습니다.");
