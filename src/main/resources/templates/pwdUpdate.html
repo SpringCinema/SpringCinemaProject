@@ -40,7 +40,7 @@
                 console.log(password.val())
                 if(password.val() == passwordCheck.val()) {
                     $('#form-i-frm')[0].action = "/pwdUpdateOk";
-                    $('#form-i-frm')[0].method = "PUT";
+                    $('#form-i-frm')[0].method = "POST";
                     $('#form-i-frm')[0].submit();
                 }
             });
@@ -81,7 +81,7 @@
             </div>
             <div class="mb-3 text-center">
                 <input type="hidden" id="input-i-method" name="_method">
-                <input type="hidden" id="input-i-id" name="id" th:value="${info.id}">
+                <input type="hidden" id="input-i-id" name="id" th:value="${userId}">
                 <button class="btn btn-outline-primary" type="button" id="button-i-updatePwd">비밀번호 변경</button>
             </div>
         </form>

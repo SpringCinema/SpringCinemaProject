@@ -27,7 +27,8 @@ public interface MemberService {
     // 마지막 작성자 : yang
     int checkIdEmail(String id, String email) throws Exception;
 
-    MemberDto checkId(String email) throws Exception;
-
-    void pwdUpdate(String pwd, String email) throws Exception;
+    // 비밀번호 변경
+    // 최종 수정 : 2022-12-21
+    // 마지막 작성자 : yang
+    void pwdUpdate(String pwd, String id) throws Exception;
 }

@@ -53,14 +53,12 @@ public class MemberServiceImpl implements MemberService {
         return cinemaMapper.checkIdEmail(id, email);
     }
 
+    // 비밀번호 변경
+    // 최종 수정 : 2022-12-21
+    // 마지막 작성자 : yang
     @Override
-    public MemberDto checkId(String email) throws Exception{
-        return cinemaMapper.checkId(email);
-    }
-
-    @Override
-    public void pwdUpdate(String pwd, String email) throws Exception {
-        cinemaMapper.pwdUpdate(pwd, email);
+    public void pwdUpdate(String pwd, String id) throws Exception {
+        cinemaMapper.pwdUpdate(pwd, id);
     }
 
 }

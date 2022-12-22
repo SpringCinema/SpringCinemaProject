@@ -96,9 +96,13 @@ public interface CinemaMapper {
     // 마지막 작성자 : yang
     int countBook(String title, String cinemaName, String screenHallName, String viewTime) throws Exception;
 
+    // 비밀번호 찾기 아이디 이메일 확인
+    // 최종 수정 : 2022-12-21
+    // 마지막 작성자 : yang
     int checkIdEmail(String id, String email) throws Exception;
 
-    MemberDto checkId(String email) throws Exception;
-
-    void pwdUpdate(String pwd, String email) throws Exception;
+    // 비밀번호 변경
+    // 최종 수정 : 2022-12-21
+    // 마지막 작성자 : yang
+    void pwdUpdate(String pwd, String id) throws Exception;
 }

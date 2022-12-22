@@ -9,7 +9,6 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import java.util.List;
 
 @Controller
 public class UserController {
@@ -93,22 +92,27 @@ public class UserController {
         return joinInfo;
     }
 
-    @RequestMapping(value = "/pwdUpdate/{email}", method = RequestMethod.GET)
-    public ModelAndView updatePwdPage(@PathVariable String email) throws Exception {
+    // 비밀번호 변경 페이지
+    // 최종 수정 : 2022-12-22
+    // 마지막 작성자 : yang
+    @RequestMapping(value = "/pwdUpdate/{userId}", method = RequestMethod.GET)
+    public ModelAndView updatePwdPage(@PathVariable String userId) throws Exception {
         ModelAndView mv = new ModelAndView("pwdUpdate");
-        MemberDto info = memberService.checkId(email);
-        mv.addObject("info", info);
+        mv.addObject(userId);
         return mv;
     }
 
-    @RequestMapping(value = "/pwdUpdateOk", method = RequestMethod.GET)
+    // 비밀번호 변경 완료 페이지
+    // 최종 수정 : 2022-12-21
+    // 마지막 작성자 : yang
+    @RequestMapping(value = "/pwdUpdateOk", method = RequestMethod.POST)
     public ModelAndView updatePwd(@RequestParam("pwd") String pwd, @RequestParam("id") String id) throws Exception {
         memberService.pwdUpdate(pwd, id);
-        ModelAndView resultView = new ModelAndView("common/process_complete");
-        resultView.addObject("title", "비밀번호 설정 성공");
-        resultView.addObject("headMsg", "비밀번호를 변경하였습니다.");
-        resultView.addObject("link", "/main");
-        resultView.addObject("btnMsg", "메인으로");
-        return resultView;
+        ModelAndView mv = new ModelAndView("common/process_complete");
+        mv.addObject("title", "비밀번호 설정 성공");
+        mv.addObject("headMsg", "비밀번호를 성공적으로 변경하였습니다.");
+        mv.addObject("link", "/main");
+        mv.addObject("btnMsg", "메인으로");
+        return mv;
     }
 }
