@@ -23,15 +23,16 @@ public class UserController {
     // 최종 수정 : 2022-12-22
     // 마지막 작성자 : MoonNight285
     @RequestMapping(value = "/user/login", method = RequestMethod.GET)
-    public String viewLogin(HttpServletRequest request) throws Exception {
-        request.setCharacterEncoding("UTF-8");
-        HttpSession session = request.getSession();
-        
-        if (session.getAttribute("loggedInUserInfo") != null) {
+    public Object viewLogin(HttpServletRequest request) throws Exception {
+        String userId = memberService.getLoggedInUserId(request);
+
+        if (userId.equals("") == false) {
             return "redirect:/main";
         }
-        
-        return "login";
+
+        ModelAndView view = new ModelAndView("/login");
+        view.addObject("isLogin", "false");
+        return view;
     }
     
     // 로그인전에 실패했을경우 페이지 이동하지않고 처리하기위해 테스트 로그인진행
@@ -66,7 +67,7 @@ public class UserController {
     }
     
     // 로그아웃
-    // 최종 수정 : 2022-12-14
+    // 최종 수정 : 2022-12-22
     // 마지막 작성자 : MoonNight285
     @RequestMapping(value = "/user/logout", method = RequestMethod.POST)
     public ModelAndView logout(HttpServletRequest request) throws Exception {
@@ -79,6 +80,7 @@ public class UserController {
         view.addObject("headMsg", "로그아웃이 완료되었습니다.");
         view.addObject("link", "/main");
         view.addObject("btnMsg", "메인으로");
+        view.addObject("isLogin", "false");
         return view;
     }
 

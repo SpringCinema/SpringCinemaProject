@@ -6,6 +6,7 @@ import com.esc.springcinema.dto.PaymentsDto;
 import com.esc.springcinema.dto.ScreenHallDto;
 import com.esc.springcinema.dto.apiMovieDto.MovieDto;
 import com.esc.springcinema.service.CinemaService;
+import com.esc.springcinema.service.MemberService;
 import com.esc.springcinema.service.MypageService;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,28 +25,26 @@ public class MypageController {
 
     @Autowired
     private CinemaService cinemaService;
-    
     @Autowired
     private MypageService mypageService;
+    @Autowired
+    private MemberService memberService;
     
 //    DB 적용
 //    마이 페이지에 세션을 이용해서 접속하도록 변경(현재 사용하는 세션방식은 불완전함)
-//    2022-12-21 MoonNight285
+//    2022-12-22 MoonNight285
     @RequestMapping(value = "/mypage", method = RequestMethod.GET)
-    public ModelAndView openMyPage(HttpServletRequest request) throws Exception {
-        request.setCharacterEncoding("UTF-8");
-        HttpSession session = request.getSession();
+    public Object openMyPage(HttpServletRequest request) throws Exception {
+        String userId = memberService.getLoggedInUserId(request);
         
-        if (session.getAttribute("loggedInUserInfo") == null) {
-            ModelAndView mv = new ModelAndView("/login");
-            return mv;
+        if (userId.equals("")) {
+            return "redirect:/user/login";
         }
-        
-        session.setMaxInactiveInterval(1800);
-        String loggedInUserId = ((MemberDto)session.getAttribute("loggedInUserInfo")).getId();
+
         ModelAndView mv = new ModelAndView("mypage/mypage");
-        MemberDto myInfo = mypageService.selectMyInfo(loggedInUserId);
+        MemberDto myInfo = mypageService.selectMyInfo(userId);
         mv.addObject("myInfo", myInfo);
+        mv.addObject("isLogin", "true");
     
         return mv;
     }

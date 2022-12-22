@@ -17,18 +17,32 @@ public class JoinController {
     private MemberService memberService;
     
     // 약관 동의 페이지를 보여줍니다.
-    // 최종 수정 : 2022-12-12
+    // 최종 수정 : 2022-12-22
     // 마지막 작성자 : MoonNight285
     @RequestMapping("/clause")
-    public String viewClause() {
-        return "clause";
+    public Object viewClause(HttpServletRequest request) throws Exception {
+        String userId = memberService.getLoggedInUserId(request);
+
+        if (userId.equals("") == false) {
+            return "redirect:/main";
+        }
+
+        ModelAndView view = new ModelAndView("/clause");
+        view.addObject("isLogin", "false");
+        return view;
     }
 
     // 회원가입 페이지를 보여줍니다.
-    // 최종 수정 : 2022-12-12
+    // 최종 수정 : 2022-12-22
     // 마지막 작성자 : MoonNight285
     @RequestMapping(value = "/join" , method = RequestMethod.GET)
-    public String viewJoin() {
+    public String viewJoin(HttpServletRequest request) throws Exception {
+        String userId = memberService.getLoggedInUserId(request);
+
+        if (userId.equals("") == false) {
+            return "redirect:/main";
+        }
+
         return "join";
     }
     
@@ -65,11 +79,13 @@ public class JoinController {
             resultView.addObject("headMsg", "회원가입이 완료되었습니다.");
             resultView.addObject("link", "/main");
             resultView.addObject("btnMsg", "메인으로");
+            resultView.addObject("isLogin", "false");
         } else {
             resultView.addObject("title", "스프링 시네마 - 회원가입 실패");
             resultView.addObject("headMsg", "회원가입도중 문제가 발생했습니다.");
             resultView.addObject("link", "/main");
             resultView.addObject("btnMsg", "메인으로");
+            resultView.addObject("isLogin", "false");
         }
 
         return resultView;

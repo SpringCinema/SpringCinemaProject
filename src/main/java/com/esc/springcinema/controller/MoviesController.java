@@ -38,10 +38,12 @@ public class MoviesController {
     @RequestMapping("/main")
     public ModelAndView viewNowplayingMoviesList(HttpServletRequest request) throws Exception {
         String userId = memberService.getLoggedInUserId(request);
+        String isLogin = "false";
 
         HashMap<String, MovieDto> birthList = new HashMap<>(); // 값이 없는경우 사이즈는 0
         if (userId.equals("") == false) {
             birthList = movieService.selectBirthMovieList(userId);
+            isLogin = "true";
         }
         
         ModelAndView mv = new ModelAndView("main");
@@ -54,9 +56,7 @@ public class MoviesController {
         mv.addObject("recommendList", recommendList);
         mv.addObject("randomGenre", randomGenre);
         mv.addObject("birthList", birthList);
-        
-        //if ()
-        mv.addObject("isLogin", "true");
+        mv.addObject("isLogin", isLogin);
 
         return mv;
     }
@@ -75,31 +75,56 @@ public class MoviesController {
     }
 
     // 영화_현재상영작 페이지
-    // 최종 수정 : 2022-12-21
-    // 마지막 작성자 : EblynCho
+    // 최종 수정 : 2022-12-22
+    // 마지막 작성자 : MoonNight285
     @RequestMapping("/nowplaying")
-    public ModelAndView viewNowPlaying() throws Exception {
+    public ModelAndView viewNowPlaying(HttpServletRequest request) throws Exception {
+        String userId = memberService.getLoggedInUserId(request);
+        String isLogin = "false";
+
+        if (userId.equals("") == false) {
+            isLogin = "true";
+        }
+
         ModelAndView mv = new ModelAndView("nowplaying");
 
         List<MovieDto> nowplayingList = movieService.selectNowplayingMoviesList();
         mv.addObject("nowplayingList", nowplayingList);
+        mv.addObject("isLogin", isLogin);
 
         return mv;
     }
 
     // 영화_상영예정작 페이지
-    // 최종 수정 : 2022-12-15
-    // 마지막 작성자 : eblyncho
+    // 최종 수정 : 2022-12-22
+    // 마지막 작성자 : MoonNight285
     @RequestMapping("/upcoming")
-    public String viewUpcoming() throws Exception {
-        return "upcoming";
+    public ModelAndView viewUpcoming(HttpServletRequest request) throws Exception {
+        String userId = memberService.getLoggedInUserId(request);
+        String isLogin = "false";
+
+        if (userId.equals("") == false) {
+            isLogin = "true";
+        }
+
+        ModelAndView view = new ModelAndView("/upcoming");
+        view.addObject("isLogin", isLogin);
+
+        return view;
     }
 
     // 영화_상세 페이지
-    // 최종 수정 : 2022-12-15
-    // 마지막 작성자 : eblyncho
+    // 최종 수정 : 2022-12-22
+    // 마지막 작성자 : MoonNight285
     @RequestMapping("/movieDetail")
-    public ModelAndView openMovieDetail(@RequestParam String docid) throws Exception {
+    public ModelAndView openMovieDetail(@RequestParam String docid, HttpServletRequest request) throws Exception {
+        String userId = memberService.getLoggedInUserId(request);
+        String isLogin = "false";
+
+        if (userId.equals("") == false) {
+            isLogin = "true";
+        }
+
         ModelAndView mv = new ModelAndView("movieDetail");
 
         MovieDto movies = movieService.selectMovieDetail(docid);
@@ -115,6 +140,8 @@ public class MoviesController {
         mv.addObject("actorList", actorList);
 
         mv.addObject("docId",docid);
+
+        mv.addObject("isLogin", isLogin);
 
         return mv;
     }
