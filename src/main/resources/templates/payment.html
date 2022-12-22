@@ -1,6 +1,6 @@
-<!-- 수정일 : 2022-12-17일 -->
+<!-- 수정일 : 2022-12-22일 -->
 <!-- 마지막으로 수정한 사람 : EblynCho -->
-<!-- 마지막으로 작업한 내용 : 결제 모듈 테스트 -->
+<!-- 마지막으로 작업한 내용 : 예매, 결제 테이블 DB 저장 -->
 <!-- 결제 전 예매정보 확인 페이지 -->
 
 <!DOCTYPE html>
@@ -70,10 +70,10 @@
                     pay_method: "card",
                     merchant_uid: paymentNum,
                     name: selectedTitle,
-                    amount: 100,
-                    buyer_email : /*[[${myInfo.email}]]*/,
-                    buyer_name : /*[[${myInfo.id}]]*/,
-                    buyer_tel : /*[[${myInfo.tel}]]*/
+                    amount: totalPrice,
+                    buyer_email : [[${myInfo.email}]],
+                    buyer_name : [[${myInfo.id}]],
+                    buyer_tel : [[${myInfo.tel}]]
                 }, function (rsp) {
                     if (rsp.success) {
                         // alert("[완료] imp_uid : "+rsp.imp_uid+" / merchant_uid : " +rsp.merchant_uid);
@@ -90,7 +90,7 @@
                                 type: "POST",
                                 // async:false,
                                 contentType: 'application/json',
-                                data: JSON.stringify({"id": /*[[${myInfo.id}]]*/, "bookNum": bookNum, "title": selectedTitle,
+                                data: JSON.stringify({"id": [[${myInfo.id}]], "bookNum": bookNum, "title": selectedTitle,
                                     "cinemaName": selectedCinema, "screenHallName": selectedScreenHall,
                                     "viewTime": selectedDate, "seatCode": seatCode, "adultYn": adultYn}),
                                 success: function (data) {
@@ -110,7 +110,7 @@
                                         type: "POST",
                                         async:false,
                                         contentType: 'application/json',
-                                        data: JSON.stringify({"id": /*[[${myInfo.id}]]*/, "bookNum": bookNum, "title": selectedTitle,
+                                        data: JSON.stringify({"id": [[${myInfo.id}]], "bookNum": bookNum, "title": selectedTitle,
                                             "cinemaName": selectedCinema, "screenHallName": selectedScreenHall,
                                             "viewTime": selectedDate, "seatCode": arrSeatCode[i], "adultYn": 'Y'}),
                                         success: function (data) {
@@ -127,7 +127,7 @@
                                         type: "POST",
                                         async:false,
                                         contentType: 'application/json',
-                                        data: JSON.stringify({"id": /*[[${myInfo.id}]]*/, "bookNum": bookNum, "title": selectedTitle,
+                                        data: JSON.stringify({"id": [[${myInfo.id}]], "bookNum": bookNum, "title": selectedTitle,
                                             "cinemaName": selectedCinema, "screenHallName": selectedScreenHall,
                                             "viewTime": selectedDate, "seatCode": arrSeatCode[i], "adultYn": 'N'}),
                                         success: function (data) {
@@ -146,7 +146,7 @@
                             type: "POST",
                             // async:false,
                             contentType: 'application/json',
-                            data: JSON.stringify({ "id": /*[[${myInfo.id}]]*/, "paymentNum": paymentNum, "bookNum": bookNum,
+                            data: JSON.stringify({ "id": [[${myInfo.id}]], "paymentNum": paymentNum, "bookNum": bookNum,
                                 "money": totalPrice, "title": selectedTitle }),
                             success: function (data) {
                                 // alert("통신 성공!");

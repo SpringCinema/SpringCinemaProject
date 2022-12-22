@@ -1,8 +1,8 @@
-<!-- 수정일 : 2022-12-12일 -->
-<!-- 마지막으로 수정한 사람 : eblyncho -->
-<!-- 메인 페이지 -->
+<!-- 수정일 : 2022-12-22일 -->
+<!-- 마지막으로 수정한 사람 : EblynCho -->
+<!-- 상영예정작 페이지 -->
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>스프링시네마 - 상영예정작</title>
@@ -10,11 +10,17 @@
     <th:block th:replace="fragments/config :: configFragment"></th:block>
 
     <style>
+        footer {
+            clear: both;
+        }
         .box {
             display: flex;
             justify-content: space-between;
             flex-wrap: wrap;
             width: 213px;
+            height: 450px;
+            float: left;
+            padding-bottom: 20px;
         }
         .item {
             width: 25%;
@@ -77,34 +83,14 @@
             left: 0;
         }
 
-
-        .button-book {
-            top: 170px;
-            left: 27px;
-            position: absolute;
-            background-color: #FF4500;
-            text-align: center;
-            opacity: 0;
-            transition: opacity .35s ease;
-        }
-
         .button-detail {
-            top: 110px;
+            top: 140px;
             left: 27px;
             position: absolute;
             background-color: white;
             text-align: center;
             opacity: 0;
             transition: opacity .35s ease;
-        }
-
-        .button-book a {
-            padding: 12px 48px;
-            text-align: center;
-            background-color: #FF4500;
-            color: white;
-            z-index: 1;
-            text-decoration: none;
         }
 
         .button-detail a {
@@ -135,7 +121,7 @@
             font-weight: bolder;
         }
 
-        .div-c-nowplaying {
+        .div-c-upcoming {
             margin-top: 40px;
             margin-bottom: 40px;
             margin-left: 400px;
@@ -146,24 +132,24 @@
 <header th:replace="fragments/header :: headerFragment"></header>
 <body>
 
-<div class="div-c-nowplaying">
+<div class="div-c-upcoming">
     <p class="category px-5 pb-3"><B>상영 예정작</B></p>
 
 
-    <div class="container px-5">
-        <li class="box flex">
+    <div class="px-5">
+        <li class="box flex mx-3" th:if="${#lists.size(upcomingList) > 0}" th:each="list : ${upcomingList}">
             <div class="container2">
                 <div class="overlay">
-                    <img src="http://file.koreafilm.or.kr/thm/02/00/01/46/tn_DPK004440.JPG" alt="" />
+                    <img src="/img/defaultPoster.png" th:if="${list.posters != null}" th:src="${list.posters}" onerror="this.onerror=null; this.src='/img/defaultPoster.png';" class="rounded"/>
                 </div>
-                <div class="button-detail"><a href="#" id="btn-i-detail"> 상세보기 </a></div>
+                <div class="button-detail"><a href="/movieDetail?docid=" th:attrappend="href=${list.docid}" class="rounded btn-c-detail"> 상세보기 </a></div>
             </div>
-            <div class="text-center mx-auto">
-                <span class="title">영화 제목</span>
+            <div class="text-center mx-auto my-1">
+                <span class="title" th:text="${list.title}">영화 제목</span>
             </div>
             <div>
                 <span>개봉예정일 </span>
-                <span>2022.12.01</span>
+                <span th:text="${list.repRlsDate}">2022.12.01</span>
             </div>
         </li>
     </div>
