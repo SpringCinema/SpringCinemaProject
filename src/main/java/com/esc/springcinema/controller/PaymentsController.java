@@ -19,7 +19,7 @@ public class PaymentsController {
     // 결제 완료 후 DB 저장 & 페이지 이동
     // 최종 수정 : 2022-12-19
     // 마지막 작성자 : EblynCho
-    @RequestMapping(value = "/paymentComplete", method = RequestMethod.POST)
+    @RequestMapping(value = "/paymentComplete", method = RequestMethod.GET)
     public ModelAndView addPayment(HttpServletRequest request) throws Exception {
         PaymentsDto payments = new PaymentsDto();
 

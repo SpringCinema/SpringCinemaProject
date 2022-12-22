@@ -101,6 +101,9 @@ public class BookController {
         return mv;
     }
 
+    // 결제 후 예매 테이블에 정보 저장
+    // 최종 수정 : 2022-12-22
+    // 마지막 작성자 : EblynCho
     @ResponseBody
     @RequestMapping(value = "/paymentInfo", method = RequestMethod.POST)
     public String booking(@RequestBody BooksDto book) throws Exception {
@@ -108,6 +111,9 @@ public class BookController {
         return null;
     }
 
+    // 결제 후 결제 테이블에 정보 저장
+    // 최종 수정 : 2022-12-22
+    // 마지막 작성자 : EblynCho
     @ResponseBody
     @RequestMapping(value = "/billInfo", method = RequestMethod.POST)
     public String bill(@RequestBody PaymentsDto payment) throws Exception {
