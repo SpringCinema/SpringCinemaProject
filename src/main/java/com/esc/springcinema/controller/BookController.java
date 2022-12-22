@@ -99,7 +99,8 @@ public class BookController {
 
         return mv;
     }
-
+    
+    @ResponseBody
     @RequestMapping(value = "/paymentInfo", method = RequestMethod.POST)
     public String booking(@RequestBody BooksDto book) throws Exception {
         paymentService.booking(book);

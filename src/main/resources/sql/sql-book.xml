@@ -31,9 +31,4 @@
         SELECT SUBSTRING_INDEX(posters, '|', 1) AS posters FROM movies WHERE docid = #{docid}
     </select>
 
-    <!-- 예매 정보 DB 저장 -->
-    <insert id="booking" parameterType="com.esc.springcinema.dto.BooksDto">
-        INSERT INTO books(id, reserve_date, title, cinema_name, screen_hall_name, view_time, seat_code, adult_yn, state_yn)
-        VALUES(#{id}, now(), #{movieTitle}, #{cinemaName}, #{screenHallName}, #{selectedDate}, #{seatCode}, #{adultYn})
-    </insert>
 </mapper>

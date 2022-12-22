@@ -29,6 +29,8 @@
             let adtVal = sessionStorage.getItem("adtVal");
             let teenVal = sessionStorage.getItem("teenVal");
 
+            let [a, b, c, d, e] = selectedDate.split(' ');
+
             // console.log(selectedTitle);
 
             $('#moviePoster').attr('src', selectMoviePoster);
@@ -51,37 +53,97 @@
                 const href = location.href;
                 const m_redirect = href.replaceAll(pathName, "");
 
+
+                a = a.substring(0,4);
+                b = b.substring(0,2);
+                c = c.substring(0,2);
+                selectedDate = a + '-' + b + '-' + c + '-' + e + ":00";
+
+                let now = new Date();
+                let today = new Date().toISOString().substring(0,10).replace(/-/g,'');
+
+                let paymentNum = today + generateRandomCode(6);
+
                 IMP.init("imp56680440");
                 IMP.request_pay({ // param
                     pg: "html5_inicis",
                     pay_method: "card",
-                    merchant_uid: "orderNum",
+                    merchant_uid: paymentNum,
                     name: selectedTitle,
-                    amount: totalPrice,
+                    amount: 100,
                     buyer_email : /*[[${myInfo.email}]]*/,
                     buyer_name : /*[[${myInfo.id}]]*/,
                     buyer_tel : /*[[${myInfo.tel}]]*/
                 }, function (rsp) {
                     if (rsp.success) {
                         // alert("[완료] imp_uid : "+rsp.imp_uid+" / merchant_uid : " +rsp.merchant_uid);
+                        let adultYn = 'Y';
+                        let bookNum = today + generateRandomCode(6);
 
-                            let param = {"movieTitle": selectTitle, "cinemaName": selectedCinema, "screenHallName": selectedScreenHall, "selectedDate": selectedDate, "seatCode": seatCode, "adultYn": people};
+
+                        if ((adtVal + teenVal) == 1) {
+                            if ((adtVal == 0) && (teenVal == 1)) {
+                                adultYn = 'N';
+                            }
                             $.ajax({
                                 url: "/paymentInfo",
                                 type: "POST",
-                                async: false,
-                                data: JSON.stringify(param),
+                                // async:false,
+                                contentType: 'application/json',
+                                data: JSON.stringify({"id": /*[[${myInfo.id}]]*/, "bookNum": bookNum, "title": selectedTitle,
+                                    "cinemaName": selectedCinema, "screenHallName": selectedScreenHall,
+                                    "viewTime": selectedDate, "seatCode": seatCode, "adultYn": adultYn}),
                                 success: function (data) {
-                                    alert("통신 성공!");
+                                    // alert("통신 성공!");
                                 },
-                                error: function () {
-                                    alert("통신 실패");
+                                error:function(request,status,error){
+                                    alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
                                 }
                             })
+                        }
+                        else if ((adtVal + teenVal) > 1) {
+                            let arrSeatCode = seatCode.split('|');
+                            for (let i = 0; i < arrSeatCode.length; i++) {
+                                if (i < (arrSeatCode.length-teenVal)) {
+                                    $.ajax({
+                                        url: "/paymentInfo",
+                                        type: "POST",
+                                        async:false,
+                                        contentType: 'application/json',
+                                        data: JSON.stringify({"id": /*[[${myInfo.id}]]*/, "bookNum": bookNum, "title": selectedTitle,
+                                            "cinemaName": selectedCinema, "screenHallName": selectedScreenHall,
+                                            "viewTime": selectedDate, "seatCode": arrSeatCode[i], "adultYn": 'Y'}),
+                                        success: function (data) {
+                                            // alert("통신 성공!");
+                                        },
+                                        error:function(request,status,error){
+                                            alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+                                        }
+                                    })
+                                }
+                                else {
+                                    $.ajax({
+                                        url: "/paymentInfo",
+                                        type: "POST",
+                                        async:false,
+                                        contentType: 'application/json',
+                                        data: JSON.stringify({"id": /*[[${myInfo.id}]]*/, "bookNum": bookNum, "title": selectedTitle,
+                                            "cinemaName": selectedCinema, "screenHallName": selectedScreenHall,
+                                            "viewTime": selectedDate, "seatCode": arrSeatCode[i], "adultYn": 'N'}),
+                                        success: function (data) {
+                                            // alert("통신 성공!");
+                                        },
+                                        error:function(request,status,error){
+                                            alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+                                        }
+                                    })
+                                }
+                            }
+                        }
 
                         sessionStorage.clear();
+                        location.href = "/paymentComplete";
 
-                        location.replace = "/paymentComplete";
                     } else {
                         // alert("[실패] 코드("+rsp.error_code+") / 메세지(" + rsp.error_msg + ")");
                         location.href = "/paymentCancel";
@@ -91,6 +153,15 @@
             /*]]>*/
         });
 
+    </script>
+    <script>
+        function generateRandomCode(n) {
+            let str = ''
+            for (let i = 0; i < n; i++) {
+                str += Math.floor(Math.random() * 10)
+            }
+            return str
+        }
     </script>
 
     <style>
@@ -283,7 +354,7 @@
                         <input type="text" id="p-i-money-value" readonly>
                     </div>
                     <div class="text-center">
-                        <button id="btn-i-payment" type="button" class="btn btn-dark"><p>결제하기</p></button>
+                        <button id="btn-i-payment" type="submit" class="btn btn-dark"><p>결제하기</p></button>
                     </div>
                 </div>
 
