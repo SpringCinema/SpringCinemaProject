@@ -1,13 +1,20 @@
 package com.esc.springcinema.controller;
 
+import com.esc.springcinema.dto.BooksDto;
+import com.esc.springcinema.dto.MemberDto;
+import com.esc.springcinema.dto.PaymentsDto;
 import com.esc.springcinema.dto.ScreenHallDto;
 import com.esc.springcinema.dto.apiMovieDto.MovieDto;
 import com.esc.springcinema.service.CinemaService;
+import com.esc.springcinema.service.MypageService;
+import com.esc.springcinema.service.PaymentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -19,6 +26,12 @@ public class BookController {
 
     @Autowired
     private CinemaService cinemaService;
+
+    @Autowired
+    private PaymentService paymentService;
+
+    @Autowired
+    private MypageService mypageService;
 
     // 예약 페이지를 보여줍니다.
     // 최종 수정 : 2022-12-16
@@ -60,29 +73,46 @@ public class BookController {
     @ResponseBody
     @RequestMapping(value = "/book/remainSeats", method = RequestMethod.POST)
     public Object ajaxBookSeat(@RequestParam("title") String title, @RequestParam("cinema") String cinemaName,
-                                @RequestParam("hall") String screenHallName, @RequestParam("viewTime") String viewTime) throws Exception{
+                               @RequestParam("hall") String screenHallName, @RequestParam("viewTime") String viewTime) throws Exception{
         int reservedSeat = cinemaService.countBook(title, cinemaName, screenHallName, viewTime);
 
         return reservedSeat;
     }
 
     // 결제 전 예매정보 확인 페이지를 보여줍니다.
-    // 최종 수정 : 2022-12-21
+    // 최종 수정 : 2022-12-22
     // 마지막 작성자 : EblynCho
-    @RequestMapping("/payment")
-    public String viewPayment() {
-        return "payment";
+    @RequestMapping(value = "/payment", method = RequestMethod.GET)
+    public ModelAndView viewPayment(HttpServletRequest request) throws Exception {
+        request.setCharacterEncoding("UTF-8");
+        HttpSession session = request.getSession();
+
+        if (session.getAttribute("loggedInUserInfo") == null) {
+            ModelAndView mv = new ModelAndView("/login");
+            return mv;
+        }
+
+        session.setMaxInactiveInterval(1800);
+        String loggedInUserId = ((MemberDto)session.getAttribute("loggedInUserInfo")).getId();
+        ModelAndView mv = new ModelAndView("/payment");
+        MemberDto myInfo = mypageService.selectMyInfo(loggedInUserId);
+        mv.addObject("myInfo", myInfo);
+
+        return mv;
     }
 
-
     @ResponseBody
-    @RequestMapping(value = "/paymentInfo")
-    public String ajaxTest(@RequestBody HashMap<String, String> map) throws Exception {
-//        HashMap<String, String> paymentInfo = new HashMap<>();
-//        paymentInfo.put("title", map.get("title"));
-        map.put("title", map.get("title"));
+    @RequestMapping(value = "/paymentInfo", method = RequestMethod.POST)
+    public String booking(@RequestBody BooksDto book) throws Exception {
+        paymentService.booking(book);
         return null;
     }
 
+    @ResponseBody
+    @RequestMapping(value = "/billInfo", method = RequestMethod.POST)
+    public String bill(@RequestBody PaymentsDto payment) throws Exception {
+        paymentService.bill(payment);
+        return null;
+    }
 
 }

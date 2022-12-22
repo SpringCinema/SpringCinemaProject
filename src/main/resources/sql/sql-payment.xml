@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.esc.springcinema.mapper.PaymentMapper">
+
+    <!-- 예매 정보 DB 저장 -->
+    <insert id="booking" parameterType="com.esc.springcinema.dto.BooksDto">
+        <![CDATA[
+            INSERT INTO books(id, book_num, reserve_date, title, cinema_name, screen_hall_name, view_time, seat_code, adult_yn, state_yn)
+            VALUES(#{id}, #{bookNum}, now(), #{title}, #{cinemaName}, #{screenHallName}, #{viewTime}, #{seatCode}, #{adultYn}, 'Y')
+        ]]>
+    </insert>
+
+    <!-- 결제 정보 DB 저장 -->
+    <insert id="bill" parameterType="com.esc.springcinema.dto.PaymentsDto">
+        <![CDATA[
+            INSERT INTO payments(id, payment_num, book_num, money, pay_type, pay_date, title, state)
+            VALUES(#{id}, #{paymentNum}, #{bookNum}, #{money}, '신용카드', now(), #{title}, '결제완료')
+        ]]>
+    </insert>
+</mapper>

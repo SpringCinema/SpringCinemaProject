@@ -71,11 +71,16 @@ public class MoviesController {
     }
 
     // 영화_현재상영작 페이지
-    // 최종 수정 : 2022-12-15
-    // 마지막 작성자 : eblyncho
+    // 최종 수정 : 2022-12-21
+    // 마지막 작성자 : EblynCho
     @RequestMapping("/nowplaying")
-    public String viewNowPlaying() throws Exception {
-        return "nowplaying";
+    public ModelAndView viewNowPlaying() throws Exception {
+        ModelAndView mv = new ModelAndView("nowplaying");
+
+        List<MovieDto> nowplayingList = movieService.selectNowplayingMoviesList();
+        mv.addObject("nowplayingList", nowplayingList);
+
+        return mv;
     }
 
     // 영화_상영예정작 페이지

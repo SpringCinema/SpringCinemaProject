@@ -14,7 +14,7 @@
 
     <th:block th:replace="fragments/config :: configFragment"></th:block>
 
-    <script>
+    <script th:inline="javascript">
         $(document).ready(function () {
 
             let selectMoviePoster = sessionStorage.getItem("poster");
@@ -25,6 +25,11 @@
             let people = sessionStorage.getItem("people");
             let seatCode = sessionStorage.getItem("seatCode");
             let totalPrice = sessionStorage.getItem("totalPrice");
+
+            let adtVal = sessionStorage.getItem("adtVal");
+            let teenVal = sessionStorage.getItem("teenVal");
+
+            let [a, b, c, d, e] = selectedDate.split(' ');
 
             // console.log(selectedTitle);
 
@@ -42,51 +47,136 @@
             });
 
             // 결제 버튼 클릭
+            /*<![CDATA[*/
             $('#btn-i-payment').click(function(){
                 const pathName = location.pathname;
                 const href = location.href;
                 const m_redirect = href.replaceAll(pathName, "");
 
+
+                a = a.substring(0,4);
+                b = b.substring(0,2);
+                c = c.substring(0,2);
+                selectedDate = a + '-' + b + '-' + c + '-' + e + ":00";
+
+                let now = new Date();
+                let today = new Date().toISOString().substring(0,10).replace(/-/g,'');
+
+                let paymentNum = today + generateRandomCode(6);
+
                 IMP.init("imp56680440");
                 IMP.request_pay({ // param
                     pg: "html5_inicis",
                     pay_method: "card",
-                    merchant_uid: "orderNum",
+                    merchant_uid: paymentNum,
                     name: selectedTitle,
-                    amount: totalPrice,
-                    buyer_email : "aaa@aa.com",
-                    buyer_name : "홍길동",
-                    buyer_tel : "1234-56687"
+                    amount: 100,
+                    buyer_email : /*[[${myInfo.email}]]*/,
+                    buyer_name : /*[[${myInfo.id}]]*/,
+                    buyer_tel : /*[[${myInfo.tel}]]*/
                 }, function (rsp) {
                     if (rsp.success) {
                         // alert("[완료] imp_uid : "+rsp.imp_uid+" / merchant_uid : " +rsp.merchant_uid);
+                        let adultYn = 'Y';
+                        let bookNum = today + generateRandomCode(6);
 
-                            // let json = {"title": selectTitle};
-                            // $.ajax({
-                            //     url: "/paymentInfo",
-                            //     type: "POST",
-                            //     async: false,
-                            //     data: JSON.stringify(json),
-                            //     contentType: "application/json",
-                            //     success: function (data) {
-                            //         alert("통신 성공!");
-                            //     },
-                            //     error: function () {
-                            //         alert("통신 실패");
-                            //     }
-                            // })
 
-                        sessionStorage.clear();
+                        if ((adtVal + teenVal) == 1) {
+                            if ((adtVal == 0) && (teenVal == 1)) {
+                                adultYn = 'N';
+                            }
+                            $.ajax({
+                                url: "/paymentInfo",
+                                type: "POST",
+                                // async:false,
+                                contentType: 'application/json',
+                                data: JSON.stringify({"id": /*[[${myInfo.id}]]*/, "bookNum": bookNum, "title": selectedTitle,
+                                    "cinemaName": selectedCinema, "screenHallName": selectedScreenHall,
+                                    "viewTime": selectedDate, "seatCode": seatCode, "adultYn": adultYn}),
+                                success: function (data) {
+                                    // alert("통신 성공!");
+                                },
+                                error:function(request,status,error){
+                                    alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+                                }
+                            })
+                        }
+                        else if ((adtVal + teenVal) > 1) {
+                            let arrSeatCode = seatCode.split('|');
+                            for (let i = 0; i < arrSeatCode.length; i++) {
+                                if (i < (arrSeatCode.length-teenVal)) {
+                                    $.ajax({
+                                        url: "/paymentInfo",
+                                        type: "POST",
+                                        async:false,
+                                        contentType: 'application/json',
+                                        data: JSON.stringify({"id": /*[[${myInfo.id}]]*/, "bookNum": bookNum, "title": selectedTitle,
+                                            "cinemaName": selectedCinema, "screenHallName": selectedScreenHall,
+                                            "viewTime": selectedDate, "seatCode": arrSeatCode[i], "adultYn": 'Y'}),
+                                        success: function (data) {
+                                            // alert("통신 성공!");
+                                        },
+                                        error:function(request,status,error){
+                                            alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+                                        }
+                                    })
+                                }
+                                else {
+                                    $.ajax({
+                                        url: "/paymentInfo",
+                                        type: "POST",
+                                        async:false,
+                                        contentType: 'application/json',
+                                        data: JSON.stringify({"id": /*[[${myInfo.id}]]*/, "bookNum": bookNum, "title": selectedTitle,
+                                            "cinemaName": selectedCinema, "screenHallName": selectedScreenHall,
+                                            "viewTime": selectedDate, "seatCode": arrSeatCode[i], "adultYn": 'N'}),
+                                        success: function (data) {
+                                            // alert("통신 성공!");
+                                        },
+                                        error:function(request,status,error){
+                                            alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+                                        }
+                                    })
+                                }
+                            }
+                        }
 
-                        location.replace = "/paymentComplete";
+                        $.ajax({
+                            url: "/billInfo",
+                            type: "POST",
+                            // async:false,
+                            contentType: 'application/json',
+                            data: JSON.stringify({ "id": /*[[${myInfo.id}]]*/, "paymentNum": paymentNum, "bookNum": bookNum,
+                                "money": totalPrice, "title": selectedTitle }),
+                            success: function (data) {
+                                // alert("통신 성공!");
+                                sessionStorage.clear();
+                                location.href = "/paymentComplete";
+                            },
+                            error:function(request,status,error){
+                                alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+                            }
+                        })
+
+
                     } else {
                         // alert("[실패] 코드("+rsp.error_code+") / 메세지(" + rsp.error_msg + ")");
                         location.href = "/paymentCancel";
                     }
                 });
             });
+            /*]]>*/
         });
 
+    </script>
+    <script>
+        function generateRandomCode(n) {
+            let str = ''
+            for (let i = 0; i < n; i++) {
+                str += Math.floor(Math.random() * 10)
+            }
+            return str
+        }
     </script>
 
     <style>
@@ -279,7 +369,7 @@
                         <input type="text" id="p-i-money-value" readonly>
                     </div>
                     <div class="text-center">
-                        <button id="btn-i-payment" type="button" class="btn btn-dark"><p>결제하기</p></button>
+                        <button id="btn-i-payment" type="submit" class="btn btn-dark"><p>결제하기</p></button>
                     </div>
                 </div>
 

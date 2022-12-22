@@ -2,11 +2,11 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.esc.springcinema.mapper.CinemaMapper">
-<!--    예약테이블 특정 날짜 상영 영화 예약 수 확인 쿼리 -->
+    <!--    예약테이블 특정 날짜 상영 영화 예약 수 확인 쿼리 -->
     <select id="countBook" parameterType="String" resultType="int">
         SELECT COUNT(*) FROM books
         WHERE title = #{title} AND cinema_name = #{cinemaName} AND screen_hall_name = #{screenHallName} AND view_time = #{viewTime}
-        AND state_yn = 'Y'
+          AND state_yn = 'Y'
     </select>
 
     <select id="isUserId" parameterType="String" resultType="int">
@@ -25,9 +25,9 @@
 
     <select id="selectNowplayingMoviesList" resultType="com.esc.springcinema.dto.apiMovieDto.MovieDto">
         <![CDATA[
-            SELECT docid, title, SUBSTRING_INDEX(posters, '|', 1) AS posters
-            FROM movies
-            WHERE repRlsDate <= NOW() AND repRlsDate >= DATE_ADD(NOW(), INTERVAL -10 DAY)
+        SELECT DISTINCT docid, title, SUBSTRING_INDEX(posters, '|', 1) AS posters
+        FROM movies m join screen_hall s on m.title = s.movie_title
+        WHERE repRlsDate BETWEEN DATE_ADD(NOW(), INTERVAL -1 month) AND now()
         ]]>
     </select>
 

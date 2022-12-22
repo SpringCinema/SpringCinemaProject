@@ -1,12 +1,11 @@
-package com.esc.springcinema.service;
+package com.esc.springcinema.mapper;
 
 import com.esc.springcinema.dto.BooksDto;
 import com.esc.springcinema.dto.PaymentsDto;
+import org.apache.ibatis.annotations.Mapper;
 
-public interface PaymentService {
-
-    public boolean paymentComplete(PaymentsDto payment) throws Exception;
-
+@Mapper
+public interface PaymentMapper {
     void booking(BooksDto book) throws Exception;
 
     void bill(PaymentsDto payment) throws Exception;
