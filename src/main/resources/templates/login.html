@@ -13,6 +13,16 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"></script>
     <script src="/js/event.js"></script>
     <script>
+        //구글 인증 서버로 인증코드 발급 요청
+        function requestGoogleAuth() {
+            window.location.replace("https://accounts.google.com/o/oauth2/v2/auth?" +
+            "client_id=30584692673-ma982bgblkbt7hq02j9gmoa95dabggb5.apps.googleusercontent.com" +
+            "&redirect_uri=http://localhost:8080/google/auth" +
+            "&response_type=code" +
+            "&scope=email%20profile%20openid" +
+            "&access_type=offline");
+        }
+        
         // 회원가입에 사용되는 폼 양식에서 빈값이 있는지를 확인
         // 있으면 true 없으면 false
         function isAllEmpty(id, pwd) {
@@ -62,6 +72,7 @@
             const userCheckResult = $("#small-i-user-check-result");
             const btnLogin = $("#btn-i-login");
             const btnHiddenLogin = $("#btn-i-hidden-login");
+            const btnGoogleLogin = $("#btn-i-google-login");
             const inputId = $("#input-i-id");
             const inputPwd = $("#input-i-pwd");
             const inputIdSave = $("#input-i-id-save");
@@ -102,6 +113,10 @@
                     });
                 }
             });
+            
+            btnGoogleLogin.on("click", function() {
+                requestGoogleAuth();
+            })
         });
     </script>
     <style>
