@@ -1,5 +1,6 @@
 package com.esc.springcinema.service;
 
+import com.esc.springcinema.dto.MovieUrlDto;
 import com.esc.springcinema.dto.apiMovieDto.*;
 import com.esc.springcinema.mapper.CinemaMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -235,4 +236,11 @@ public class MovieServiceImpl implements MovieService {
     public List<MovieDto> selectUpcomingMoviesList() throws Exception {
         return cinemaMapper.selectUpcomingMoviesList();
     }
+
+    @Override
+    public MovieUrlDto trailer(String docid) throws Exception {
+        return cinemaMapper.trailer(docid);
+    }
+
+
 }

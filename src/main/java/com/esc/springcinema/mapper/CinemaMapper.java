@@ -3,6 +3,7 @@ package com.esc.springcinema.mapper;
 import com.esc.springcinema.dto.BooksDto;
 import com.esc.springcinema.dto.MemberDto;
 
+import com.esc.springcinema.dto.MovieUrlDto;
 import com.esc.springcinema.dto.apiMovieDto.ActorDto;
 import com.esc.springcinema.dto.apiMovieDto.DirectorDto;
 import com.esc.springcinema.dto.apiMovieDto.MovieDto;
@@ -138,4 +139,7 @@ public interface CinemaMapper {
     // 최종 수정 : 2022-12-22
     // 마지막 작성자 : EblynCho
     List<MovieDto> selectUpcomingMoviesList() throws Exception;
+
+
+    MovieUrlDto trailer(String docid) throws Exception;
 }

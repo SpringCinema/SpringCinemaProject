@@ -1,6 +1,7 @@
 package com.esc.springcinema.controller;
 
 import com.esc.springcinema.dto.MemberDto;
+import com.esc.springcinema.dto.MovieUrlDto;
 import com.esc.springcinema.dto.apiMovieDto.ActorDto;
 import com.esc.springcinema.dto.apiMovieDto.DirectorDto;
 import com.esc.springcinema.dto.apiMovieDto.MovieDto;
@@ -148,6 +149,9 @@ public class MoviesController {
 
         List<MovieDto> nowplayingList = movieService.selectNowplayingMoviesList();
         mv.addObject("nowplayingList", nowplayingList);
+
+        MovieUrlDto url = movieService.trailer(docid);
+        mv.addObject("url", url);
 
         return mv;
     }
