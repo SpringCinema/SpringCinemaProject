@@ -287,13 +287,23 @@ public class MypageController {
     }
     
 //    (DB 적용)
-//    2022-12-16 양민호
+//    2022-12-23 양민호
 //    book 페이지에서 입력값을 받아오는 좌석 선택 페이지 뷰
 //    현재 book 페이지에 date 와 time값을 제외하고 임의의 고정된 값 받아오고 있음.
     @RequestMapping(value = "/seat" , method = RequestMethod.POST)
     public ModelAndView openSeat(@RequestParam("movieTitle") String movieTitle, @RequestParam("cinemaName") String cinemaName, @RequestParam("inputDate") String date,
                                 @RequestParam("screenHallName") String screenHallName, @RequestParam("inputTime") String screenTime,
-                                @RequestParam("docid") String docid) throws Exception {
+                                @RequestParam("docid") String docid, HttpServletRequest request) throws Exception {
+        // MoonNight285(2022-12-23)
+        // 로그인했는지 확인 시작
+        String userId = memberService.getLoggedInUserId(request);
+        String isLogin = "false";
+        
+        if (userId.equals("") == false) {
+            isLogin = "true";
+        }
+        // 로그인했는지 확인 종료
+        
         ModelAndView mv = new ModelAndView("movieseat");
 
         ScreenHallDto selectScreenData = cinemaService.selectScreenData(movieTitle, cinemaName, screenHallName);
@@ -334,6 +344,9 @@ public class MypageController {
         // 2022-12-21 조은비
         MovieDto selectMoviePoster = cinemaService.selectMoviePoster(docid);
         mv.addObject("selectMoviePoster", selectMoviePoster);
+        
+        // 2022-12-23 MoonNight285
+        mv.addObject("isLogin", isLogin);
 
         return mv;
     }

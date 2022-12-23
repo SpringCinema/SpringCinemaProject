@@ -6,6 +6,7 @@ import com.esc.springcinema.dto.PaymentsDto;
 import com.esc.springcinema.dto.ScreenHallDto;
 import com.esc.springcinema.dto.apiMovieDto.MovieDto;
 import com.esc.springcinema.service.CinemaService;
+import com.esc.springcinema.service.MemberService;
 import com.esc.springcinema.service.MypageService;
 import com.esc.springcinema.service.PaymentService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,16 +33,27 @@ public class BookController {
 
     @Autowired
     private MypageService mypageService;
+    
+    @Autowired
+    private MemberService memberService;
 
     // 예약 페이지를 보여줍니다.
-    // 최종 수정 : 2022-12-16
-    // 마지막 작성자 : yang
+    // 최종 수정 : 2022-12-23
+    // 마지막 작성자 : MoonNight285
     @RequestMapping("/book")
-    public ModelAndView viewBook(@RequestParam(value = "docid", required = false) String docid) throws Exception{
+    public ModelAndView viewBook(@RequestParam(value = "docid", required = false) String docid, HttpServletRequest request) throws Exception{
+        String userId = memberService.getLoggedInUserId(request);
+        String isLogin = "false";
+        
+        if (userId.equals("") == false) {
+            isLogin = "true";
+        }
+        
         ModelAndView mv = new ModelAndView("book_test_DB");
         List<MovieDto> allScreenTitle = cinemaService.allScreenTitle();
         mv.addObject("allScreenTitle", allScreenTitle);
         mv.addObject("docId", docid);
+        mv.addObject("isLogin", isLogin);
         return mv;
     }
 
@@ -80,23 +92,20 @@ public class BookController {
     }
 
     // 결제 전 예매정보 확인 페이지를 보여줍니다.
-    // 최종 수정 : 2022-12-22
-    // 마지막 작성자 : EblynCho
+    // 최종 수정 : 2022-12-23
+    // 마지막 작성자 : MoonNight285
     @RequestMapping(value = "/payment", method = RequestMethod.GET)
-    public ModelAndView viewPayment(HttpServletRequest request) throws Exception {
-        request.setCharacterEncoding("UTF-8");
-        HttpSession session = request.getSession();
+    public Object viewPayment(HttpServletRequest request) throws Exception {
+        String userId = memberService.getLoggedInUserId(request);
 
-        if (session.getAttribute("loggedInUserInfo") == null) {
-            ModelAndView mv = new ModelAndView("/login");
-            return mv;
+        if (userId.equals("")) {
+            return "redirect:/user/login";
         }
-
-        session.setMaxInactiveInterval(1800);
-        String loggedInUserId = ((MemberDto)session.getAttribute("loggedInUserInfo")).getId();
+        
         ModelAndView mv = new ModelAndView("/payment");
-        MemberDto myInfo = mypageService.selectMyInfo(loggedInUserId);
+        MemberDto myInfo = mypageService.selectMyInfo(userId);
         mv.addObject("myInfo", myInfo);
+        mv.addObject("isLogin", "true");
 
         return mv;
     }
