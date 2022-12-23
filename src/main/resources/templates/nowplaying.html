@@ -147,6 +147,11 @@
             margin-left: 400px;
             margin-right: 400px;
         }
+
+        .overlay img {
+            width: 213px;
+            height: 305px;
+        }
     </style>
 </head>
 <header th:replace="fragments/header :: headerFragment"></header>
@@ -166,7 +171,7 @@
                 <div class="button-book"><a href="/book?docid=" th:attrappend="href=${list.docid}" class="rounded btn-c-book"> 예매하기 </a></div>
             </div>
             <div class="text-center mx-auto my-1">
-                <span class="title" th:text="${list.title}">영화 제목</span>
+                <span class="title" th:text="${list.title}" style="width: 213px">영화 제목</span>
             </div>
             <div>
                 <span>예매율</span>
