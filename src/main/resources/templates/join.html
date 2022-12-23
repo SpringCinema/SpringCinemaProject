@@ -11,6 +11,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"></script>
     <script src="/js/event.js"></script>
+    <script src='https://www.google.com/recaptcha/api.js'></script>
     <script>
         // 비밀번호 & 비밀번호 확인란에 포커스 아웃되면 암호 일치한지 확인
         function equalPassword() {
@@ -117,8 +118,27 @@
                     return;
                 }
 
-                const btnHiddenJoin = $("#btn-i-hidden-join");
-                btnHiddenJoin.click();
+                // 구글 캡챠 기능
+                $.ajax({
+                    url: "/robot",
+                    type: "post",
+                    data: {recaptcha: $('#g-recaptcha-response').val()},
+                    success: function(data) {
+                        switch (data) {
+                            case 0:
+                                const btnHiddenJoin = $("#btn-i-hidden-join");
+                                btnHiddenJoin.click();
+                                break;
+                            case 1:
+                                alert("자동 가입 방지 봇을 확인 한뒤 진행 해 주세요.");
+                                break;
+                            default:
+                                alert("자동 가입 방지 봇을 실행 하던 중 오류가 발생 했습니다. [Error bot Code : " + Number(data) + "]");
+                                break;
+                        }
+                    }
+                });
+
             });
             
             // 생년 삽입
@@ -156,6 +176,10 @@
         
         #div-i-btn-wrapper {
             margin-top: 35px;
+        }
+
+        .g-recaptcha {
+            margin-left: 30px;
         }
     </style>
 </head>
@@ -214,6 +238,8 @@
                             <label class="mb-1">전화번호</label>
                             <input id="input-i-tel" type="tel" class="form-control" name="tel" maxlength="20">
                         </div>
+<!--                        캡챠 태그-->
+                        <div class="g-recaptcha" data-sitekey="6LdXh54jAAAAAGlVPjDIzHNXEl7c5Upd27upkeHb"></div>
                         <div id="div-i-btn-wrapper" class="mb-3 d-flex justify-content-center">
                             <a href="/main"><button id="btn-i-main" type="button" class="btn btn-dark">메인으로</button></a>
                             <button id="btn-i-join" type="button" class="btn btn-success">가입하기</button>
