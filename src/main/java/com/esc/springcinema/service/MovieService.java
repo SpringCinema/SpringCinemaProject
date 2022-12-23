@@ -1,5 +1,6 @@
 package com.esc.springcinema.service;
 
+import com.esc.springcinema.dto.MovieUrlDto;
 import com.esc.springcinema.dto.apiMovieDto.*;
 
 import java.util.HashMap;
@@ -50,4 +51,6 @@ public interface MovieService {
     // 최종 수정 : 2022-12-22
     // 마지막 작성자 : EblynCho
     List<MovieDto> selectUpcomingMoviesList() throws Exception;
+
+    MovieUrlDto trailer(String docid) throws Exception;
 }
