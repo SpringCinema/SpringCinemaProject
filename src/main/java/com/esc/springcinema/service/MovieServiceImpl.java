@@ -95,8 +95,8 @@ public class MovieServiceImpl implements MovieService {
     // 최종 수정 : 2022-12-15
     // 마지막 작성자 : eblyncho
     @Override
-    public List<MovieDto> selectMoviesList() throws Exception {
-        return cinemaMapper.selectMoviesList();
+    public List<MovieDto> searchMoviesList(String title) throws Exception {
+        return cinemaMapper.searchMoviesList(title);
     }
 
     // 메인화면 캐러셀에 현재상영작 불러오기
@@ -237,6 +237,9 @@ public class MovieServiceImpl implements MovieService {
         return cinemaMapper.selectUpcomingMoviesList();
     }
 
+    // 예고편 불러오기
+    // 최종 수정 : 2022-12-23
+    // 마지막 작성자 : EblynCho
     @Override
     public MovieUrlDto trailer(String docid) throws Exception {
         return cinemaMapper.trailer(docid);

@@ -104,5 +104,16 @@
         }
     </style>
 
+    <script type="text/javascript">
+        function search_movie(){
+            let search = document.getElementById("search").value;
+
+            sessionStorage.setItem("searchMovie", search);
+
+            location.replace("/searchMovie");
+            }
+
+    </script>
+
 </th:block>
 </html>

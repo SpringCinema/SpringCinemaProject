@@ -160,4 +160,13 @@
         WHERE docid = #{docid}
         ]]>
     </select>
+
+    <!-- 영화 검색 -->
+    <select id="searchMoviesList" parameterType="String" resultType="com.esc.springcinema.dto.apiMovieDto.MovieDto">
+        <![CDATA[
+        SELECT docid, title, SUBSTRING_INDEX(posters, '|', 1) AS posters
+        FROM movies
+        WHERE title REGEXP #{title}
+        ]]>
+    </select>
 </mapper>
