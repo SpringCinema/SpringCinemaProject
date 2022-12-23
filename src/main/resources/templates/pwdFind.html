@@ -98,7 +98,7 @@
                             }
                         },
                         error: function (){
-                            alert("ajax 통신이 오류가 발생했습니다.");
+                            alert("메일 송신 오류! 아이디 이메일을 확인하세요");
                         }
                     });
                 }
@@ -156,7 +156,7 @@
                             }
                         },
                         error: function (){
-                            alert("ajax 통신이 오류가 발생했습니다.");
+                            alert("메일 송신 오류! 아이디 이메일을 확인하세요");
                         }
                     });
                 }
@@ -167,25 +167,43 @@
                 const id = $('#input-i-id').val();
                 const pwd = password.val();
                 const secureNum = $('#input-i-SecureNum').val();
+                if (password.val() == '' && passwordCheck.val() == '') {
+                    alert('비밀번호를 입력해주세요');
+                }
 
-
-                if(password.val() == passwordCheck.val() && secureNum != '') {
-                    $('#form-i-frm')[0].action = '/pwdUpdateOk';
-                    $('#form-i-frm')[0].method = 'POST';
-                    $('#form-i-frm')[0].submit();
+                if(password.val() == passwordCheck.val() && password.val() != '' && passwordCheck.val() != '') {
                     $.ajax({
-                        url: '/pwdUpdateOk',
-                        type: 'post',
-                        data: {id: id, pwd: pwd, secureNum: secureNum},
-                        success: function (data) {
+                        url: "/checkSession",
+                        type: "post",
+                        data: {id: id, secureNum: secureNum},
+                        success:function (data) {
+                            if(data == "OK") {
+                                $('#form-i-frm')[0].action = '/pwdUpdateOk';
+                                $('#form-i-frm')[0].method = 'POST';
+                                $('#form-i-frm')[0].submit();
+                                $.ajax({
+                                    url: '/pwdUpdateOk',
+                                    type: 'post',
+                                    data: {id: id, pwd: pwd, secureNum: secureNum},
+                                    success: function (data) {
+                                    },
+                                    error: function () {
+
+                                    }
+                                });
+                            }
+                            else {
+                                alert('인증번호가 틀렸습니다.');
+                            }
                         },
-                        error: function () {
-                            alert('만료되었습니다.')
+                        error:function () {
+                            alert('세션 통신 에러')
                         }
                     });
                 }
-
             });
+
+
         });
     </script>
 
