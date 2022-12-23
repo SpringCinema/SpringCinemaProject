@@ -165,4 +165,18 @@ public class UserController {
             return mv;
         }
     }
+
+
+    @ResponseBody
+    @RequestMapping(value = "/checkSession", method = RequestMethod.POST)
+    public String checkSessionInfo(@RequestParam("id") String id,@RequestParam("secureNum") String secureNum, HttpServletRequest request) {
+        HttpSession session = request.getSession();
+        String sessionId = (String) session.getAttribute("findPwdSecure" + id);
+        if(sessionId.equals(secureNum)) {
+            return "OK";
+        }
+        else {
+            return "NO";
+        }
+    }
 }

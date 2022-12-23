@@ -32,8 +32,25 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="/js/header.js"></script>
     <script>
         $(document).ready(function () {
+            // 2022-12-20 양민호
+            // 메인페이지 / 영화상세페이지에서 예매버튼 클릭했을 경우 해당 영화 자동 선택 이벤트
+            const getDoc = $('#div-i-getDoc').text();
+            const movieLen = $('#div-i-movie-content').find('li').length;
+            if(getDoc != '') {
+                for(let i = 0; i < movieLen; i++) {
+                    const docId = $('.div-c-movieList').find('span:last-child').eq(i).text();
+
+                    if(getDoc.includes(docId)) {
+                        setTimeout(function () {
+                            $('#div-i-movie-content').find('li').eq(i).trigger('click');
+                        }, 1);
+                    }
+                }
+            }
+
             const yearValue = $("#small-i-year-value");
             const monthValue = $("#h4-i-month-value");
             let selectedMovieName;
@@ -47,6 +64,13 @@
             const today = new Date();
             const year = today.getFullYear();
             const month = today.getMonth() + 1;
+            const date = today.getDate();
+            const hours = today.getHours();
+            let minute = today.getMinutes();
+            if(minute < 10) {
+                minute = '0' + minute;
+            }
+
             yearValue.text(year);
             monthValue.text(month);
 
@@ -63,6 +87,18 @@
                 today.setDate(today.getDate() + 1);
             }
 
+            // 날짜 항목 리스트의 수가 15개 이하일 때 다음달 날짜 추가
+            let dateLen = $('#div-i-date-content').find('li').length;
+            while(dateLen < 15) {
+                if (today.getDay() == 0) {
+                    dateList.append(`<li class="li-c-sunday" style="color: red;">${dayNames[today.getDay()]} ${today.getDate()}</li>`);
+                } else {
+                    dateList.append(`<li>${dayNames[today.getDay()]} ${today.getDate()}</li>`);
+                }
+                today.setDate(today.getDate() + 1);
+                dateLen = dateLen + 1;
+            }
+
             // 영화 목록을 클릭하면 색상 강조하고 값 저장
             const movieNames = $("#div-i-movie-content").children("ul").children();
             movieNames.on("click", function () {
@@ -72,31 +108,182 @@
                 $(this).css("background-color", "#333333");
                 $(this).css("color", "white");
 
-                selectedMovieName = $(this).text();
+
+                selectedMovieName = $(this).find("span").first().text().trim();
 
                 const movieView = $("#p-i-selected-movie");
                 movieView.text(selectedMovieName); // 유저에게 보여주기위한 용도
 
                 const movieSender = $("#input-i-send-movie");
                 movieSender.val(selectedMovieName); // 서버 전달용
+
+                const docId = $(this).find('span').last().text().trim();
+                $('#input-i-send-docid').val(docId); // 서버 전달용 docid
+
+                // 2022-12-18 양민호
+                // 영화 선택 시 극장 정보 표시
+                // ajax 통신을 통하여 선택 영화의 상영 극장 이름을 가져오고, 극장 수에따라 li 태그 변경
+                //------ 부터 ------
+                // 날짜목록 / 시간목록 안보이게 설정
+                $("#div-i-date-content").children("ul").css('display', 'none');
+                $('#div-i-time-content').children().css("display", 'none');
+
+                // 영화 변경 시 기존 입력값 제거
+                $('#p-i-selected-cinema').text("선택극장 : 없음");
+                $("#p-i-selected-date").text('선택날짜 : 없음');
+                $('#p-i-selected-hall').text('선택상영관 : 없음');
+                $('#p-i-selected-time').text('선택시간 : 없음');
+
+                // 영화 클릭 시 선택되어 있던 극장의 css 및 input value 모두 초기화
+                $("#ul-i-selectCinema").children('li').css("background-color", "");
+                $("#ul-i-selectCinema").children('li').css("color", "");
+                $('#ul-i-selectCinema').css("display", 'block');
+                $("#input-i-send-cinema").val('');
+                $("#input-i-send-date").val('');
+                $("#input-i-send-hall").val('');
+                $("#input-i-send-time").val('');
+
+                let movie = $('#input-i-send-movie').val();
+                $.ajax({
+                    url: "/book/cinema",
+                    type: "post",
+                    data: {movieTitle: movie},
+                    success:function(data){
+                        $('#ul-i-selectCinema').children().remove();
+                        if(data.length > 0) {
+                            for(let i = 0; i < data.length; i++) {
+                                let cinemaName = data[i].cinemaName;
+                                $('#ul-i-selectCinema').append('<li>' + cinemaName + '</li>');
+                            }
+                        }
+                        else {
+                            $('#ul-i-selectCinema').append('<li>상영하는 극장이 없습니다.</li>');
+                        }
+                    },
+                    error: function () {
+                        alert("ajax 통신이 오류가 발생했습니다.");
+                    }
+                });
+                //------ 까지 ------
             });
 
-            // 극장 목록을 클릭하면 색상 강조하고 값 저장
-            const cinemaNames = $("#div-i-cinema-content").children("ul").children();
-            cinemaNames.on("click", function () {
-                cinemaNames.css("background-color", "");
-                cinemaNames.css("color", "");
 
-                $(this).css("background-color", "#333333");
-                $(this).css("color", "white");
+            // 극장 목록을 클릭하면 색상 강조하고 값 저장
+            // 2022-12-18 양민호
+            // 극장 선택 시 날짜 정보 표시
+            // 동적이벤트 append를 사용하였기에 상위 태그 기준으로 click이벤트 발생
+            //------ 부터 ------
+            const cinemaNames = $("#ul-i-selectCinema");
+            cinemaNames.on("click", 'li' , function () {
+                cinemaNames.children('li').css("background-color", "");
+                cinemaNames.children('li').css("color", "");
+
+                // 극장 변경 시 입력값 초기화
+                $("#p-i-selected-date").text('선택날짜 : 없음');
+                $('#p-i-selected-hall').text('선택상영관 : 없음');
+                $('#p-i-selected-time').text('선택시간 : 없음');
+                $("#input-i-send-date").val('');
+                $("#input-i-send-hall").val('');
+                $("#input-i-send-time").val('');
+                $('#div-i-time-content div').css("display", 'none');
+
+                // 날짜 목록 css
+                // 날짜 목록 선택 후 극장 변경 시 선택되었던 날짜 color가 white로 고정된 상태인걸 재 설정
+                $(dates).css("background-color", "");
+                $(dates).css("color", "black");
+                $('.li-c-sunday').css("color", "red");
+
+                // 시간 목록 css
+                $(".span-c-time").css("background-color", "");
+                $(".span-c-time").css("color", "");
 
                 selectedCinemaName = $(this).text();
 
                 const cinemaView = $("#p-i-selected-cinema");
-                cinemaView.text("선택극장 : " + selectedCinemaName);
-
                 const cinemaSender = $("#input-i-send-cinema");
+
+                cinemaView.text("선택극장 : " + selectedCinemaName);
+                $(this).css("background-color", "#333333");
+                $(this).css("color", "white");
+                $('#div-i-date-content').children('ul').css('display', 'block');
                 cinemaSender.val(selectedCinemaName);
+
+
+                let title = $('#input-i-send-movie').val();
+                let cinema = $('#input-i-send-cinema').val();
+                $('#div-i-time-content').children('div').children().remove();
+                // ajax 통신을 통해 선택한 정보에 대한 정보 screen_hall에서 가져옴.
+                $.ajax({
+                    url: "/book/viewTime",
+                    type: "post",
+                    data: {movieTitle: title, cinemaName: cinema},
+                    success:function(data){
+                        if(data.length > 0) {
+                            for(let i = 0; i < data.length; i++) {
+                                const getScreenHallName = data[i].screenHallName;
+                                const getAm1 = String(data[i].am1);
+                                const getAm2 = data[i].am2;
+                                const getPm1 = data[i].pm1;
+                                const getPm2 = data[i].pm2;
+                                // 시간정보를 문자열로 변환하여 다 더한 후 null 문자열 모두 제거
+                                let totalTime = getAm1 + getAm2 + getPm1 + getPm2;
+                                totalTime = totalTime.replace(/null/g, '');
+                                let tag = '';
+                                // 시간정보를 다 더하여 null 문자열을 제거한 길이에 따라 시간 정보 출력
+                                if(totalTime.length == 8) {
+                                    const time = totalTime.slice(0, -3);
+                                    tag = "<ul><h6><b>" + getScreenHallName + "(총 120석)</b></h6>";
+                                    tag += "<li><span class='span-c-time'><span class='span-c-hall'>" + getScreenHallName + "|</span>" +
+                                        time + "</span><span class='span-c-remainSeats ms-1'></span></li></ul>";
+                                    $('#div-i-time-content').children('div').append(tag);
+                                }
+                                else if(totalTime.length == 16) {
+                                    const time1 = totalTime.slice(0, 5);
+                                    const time2 = totalTime.slice(8, -3);
+                                    tag = "<ul><h6><b>" + getScreenHallName + "(총 120석)</b></h6>";
+                                    tag += "<li><span class='span-c-time'><span class='span-c-hall'>" + getScreenHallName + "|</span>" +
+                                        time1 + "</span><span class='span-c-remainSeats ms-1'></span></li>";
+                                    tag += "<li class='ms-3'><span class='span-c-time'><span class='span-c-hall'>" + getScreenHallName + "|</span>" +
+                                        time2 + "</span><span class='span-c-remainSeats ms-1'></span></li>";
+                                    $('#div-i-time-content').children('div').append(tag);
+                                }
+                                else if(totalTime.length == 24) {
+                                    const time1 = totalTime.slice(0, 5);
+                                    const time2 = totalTime.slice(8, 13);
+                                    const time3 = totalTime.slice(16, -3);
+                                    tag = "<ul><h6><b>" + getScreenHallName + "(총 120석)</b></h6>";
+                                    tag += "<li><span class='span-c-time'><span class='span-c-hall'>" + getScreenHallName + "|</span>" +
+                                        time1 + "</span><span class='span-c-remainSeats ms-1'></span></li>";
+                                    tag += "<li class='ms-3'><span class='span-c-time'><span class='span-c-hall'>" + getScreenHallName + "|</span>" +
+                                        time2 + "</span><span class='span-c-remainSeats ms-1'></span></li>";
+                                    tag += "<li><span class='span-c-time'><span class='span-c-hall'>" + getScreenHallName + "|</span>" +
+                                        time3 + "</span><span class='span-c-remainSeats ms-1'></span></li>";
+                                    $('#div-i-time-content').children('div').append(tag);
+                                }
+                                else {
+                                    const time1 = totalTime.slice(0, 5);
+                                    const time2 = totalTime.slice(8, 13);
+                                    const time3 = totalTime.slice(16, 21);
+                                    const time4 = totalTime.slice(24, -3);
+                                    tag = "<ul><h6><b>" + getScreenHallName + "(총 120석)</b></h6>";
+                                    tag += "<li><span class='span-c-time'><span class='span-c-hall'>" + getScreenHallName + "|</span>" +
+                                        time1 + "</span><span class='span-c-remainSeats ms-1'></span></li>";
+                                    tag += "<li class='ms-3'><span class='span-c-time'><span class='span-c-hall'>" + getScreenHallName + "|</span>" +
+                                        time2 + "</span><span class='span-c-remainSeats ms-1'></span></li>";
+                                    tag += "<li><span class='span-c-time'><span class='span-c-hall'>" + getScreenHallName + "|</span>" +
+                                        time3 + "</span><span class='span-c-remainSeats ms-1'></span></li>";
+                                    tag += "<li class='ms-3'><span class='span-c-time'><span class='span-c-hall'>" + getScreenHallName + "|</span>" +
+                                        time4 + "</span><span class='span-c-remainSeats ms-1'></span></li>";
+                                    $('#div-i-time-content').children('div').append(tag);
+                                }
+                            }
+                        }
+                    },
+                    error: function () {
+                        alert("ajax 통신이 오류가 발생했습니다.");
+                    }
+                });
+                //------ 까지 ------
             });
 
             // 날짜 목록을 클릭하면 색상 강조하고 값 저장
@@ -104,6 +291,20 @@
             // 일요일은 클래스(li-c-sunday)로 판단
             const dates = $("#div-i-date-content").children("ul").children();
             dates.on("click", function () {
+                // 2022-12-19 양민호
+                // 잔여 좌석 표시 ajax 통신
+                //------ 부터 ------
+
+                $('#div-i-time-content div').css("display", 'block');
+                $('#p-i-selected-hall').text('선택상영관 : 없음');
+                $('#p-i-selected-time').text('선택시간 : 없음');
+                $("#input-i-send-hall").val('');
+                $("#input-i-send-time").val('');
+                $(".span-c-time").removeClass('clickedTime');
+                $(".span-c-time").css('background-color', '');
+                $(".span-c-time").css('color', '');
+
+
                 for (let i = 0; i < dates.length; ++i) {
                     dates.eq(i).css("background-color", "");
 
@@ -129,34 +330,133 @@
 
                 const dateSender = $("#input-i-send-date");
                 dateSender.val(`${year}년 ${month}월 ${selectedDate}일 ${selectedDay}요일`);
+
+                let ul_length = $('#div-i-time-content').children('div').children('ul').length;
+                for (let i = 0; i < ul_length; i++) {
+                    let li_length = $('#div-i-time-content').children('div').children('ul').eq(i).children('li').length;
+                    for(let j = 0; j < li_length; j++) {
+                        let firstSpan = $('#div-i-time-content').children('div').children('ul').eq(i).children('li').eq(j).children('span:first-child');
+                        let time =  firstSpan.text().slice(3, 8);
+                        let hall =  firstSpan.text().slice(0, 2);
+                        let seat =  $('#div-i-time-content').children('div').children('ul').eq(i).children('li').eq(j).children('span:last-child');
+                        let title = $('#input-i-send-movie').val();
+                        let cinema = $('#input-i-send-cinema').val();
+                        let date = year + '-' + month + "-" + selectedDate;
+                        let viewTime = date + " " + time + ":00";
+
+                        $.ajax({
+                            url: "/book/remainSeats",
+                            type: "post",
+                            data: {title: title, cinema:cinema, hall:hall, viewTime:viewTime},
+                            success:function(data){
+                                let remainSeat = 120 - data;
+                                seat.text(remainSeat + '석');
+                            },
+                            error: function () {
+                                alert("ajax 통신이 오류가 발생했습니다.");
+                            }
+                        });
+                    }
+                }
             });
 
             // 시간 목록을 클릭하면 색상 강조하고 값 저장
             // 시간 목록을 클릭하면 상영관 정보도 같이 저장되어야함
             // 시간 목록을 선택하면 상영관과 시간 정보를 가공해서 표시
-            const times = $(".span-c-time");
-            times.on("click", function () {
-                times.css("background-color", "");
-                times.css("color", "");
+            // 2022-12-20 양민호
+            // 동적이벤트 append를 사용하였기에 상위 태그 기준으로 click이벤트 발생
+            // -------------부터 -------------
+            $(document).on("click", ".span-c-time", function() {
 
-                $(this).css("background-color", "#333333");
-                $(this).css("color", "white");
+                let seat =  $(this).next().text();
+                let time =  $(this).text().slice(3);
+                time = time.slice(0, 2) + time.slice(3);
+                const dtY = $("#input-i-send-date").val().slice(0, 4);
+                const dtM = $("#input-i-send-date").val().slice(6, 8);
+                const dtD = $("#input-i-send-date").val().slice(10, 12);
+                const todayYmd = year  + String(month) +  date;
+                const selectYmd = dtY + String(dtM) + dtD
+                let now = String(hours) + String(minute);
+                now = parseInt(now);
+                time = parseInt(time);
 
-                selectedHall = $(this).text().split("|")[0]; // X관
-                selectedTime = $(this).text().split("|")[1]; // 9 : 30(예시)
 
-                const hallView = $("#p-i-selected-hall");
-                hallView.text("선택상영관 : " + selectedHall);
+                if(seat != '0석'|| (selectYmd == todayYmd && time > now) || (selectYmd > todayYmd)) {
+                    const times = $(".span-c-time");
+                    times.removeClass();
+                    times.addClass('span-c-time');
+                    times.css("background-color", "");
+                    times.css("color", "");
 
-                const timeView = $("#p-i-selected-time");
-                timeView.text("선택시간 : " + selectedTime);
+                    $(this).addClass('clickedTime');
 
-                const hallSender = $("#input-i-send-hall");
-                hallSender.val(selectedHall);
+                    $(this).css("background-color", "#333333");
+                    $(this).css("color", "white");
 
-                const timeSender = $("#input-i-send-time");
-                timeSender.val(selectedTime);
+                    selectedHall = $(this).text().split("|")[0]; // X관
+                    selectedTime = $(this).text().split("|")[1]; // 9 : 30(예시)
+
+                    const hallView = $("#p-i-selected-hall");
+                    hallView.text("선택상영관 : " + selectedHall);
+
+                    const timeView = $("#p-i-selected-time");
+                    timeView.text("선택시간 : " + selectedTime);
+
+                    const hallSender = $("#input-i-send-hall");
+                    hallSender.val(selectedHall);
+
+                    const timeSender = $("#input-i-send-time");
+                    timeSender.val(selectedTime);
+                }
+
+                // 잔여좌석이 없을 경우 / 상영 시간이 지난 경우 클릭 방지
+                if(seat == '0석' || (selectYmd == todayYmd && time < now)) {
+                    $(this).off('click');
+                    $(this).css('background-color', '#f2f0e5');
+                    $(this).css('color', 'black');
+
+                    const hallView = $("#p-i-selected-hall");
+                    hallView.text("선택상영관 : 없음");
+                    const timeView = $("#p-i-selected-time");
+                    timeView.text("선택시간 : 없음");
+                    const hallSender = $("#input-i-send-hall");
+                    hallSender.val('');
+                    const timeSender = $("#input-i-send-time");
+                    timeSender.val('');
+                }
             });
+
+            // 잔여 좌석이 없거나 상영시간이 지난 경우 체크 방지
+            $(document).on('mouseenter mouseleave', ".span-c-time", function() {
+                $(this).css('cursor', 'pointer');
+
+                const seat =  $(this).next().text();
+                let time =  $(this).text().slice(3);
+                time = time.slice(0, 2) + time.slice(3);
+                const dtY = $("#input-i-send-date").val().slice(0, 4);
+                const dtM = $("#input-i-send-date").val().slice(6, 8);
+                const dtD = $("#input-i-send-date").val().slice(10, 12);
+                const todayYmd = year  + String(month) +  date;
+                const selectYmd = dtY + String(dtM) + dtD
+                let now = String(hours) + String(minute);
+                now = parseInt(now)
+                time = parseInt(time)
+
+
+                if(seat == '0석') {
+                    $(this).css('cursor', 'default');
+                    $(this).off('click');
+                    $(this).css('background-color', '#f2f0e5');
+                    $(this).css('color', 'black');
+                }
+                else if(todayYmd == selectYmd && now > time) {
+                    $(this).css('cursor', 'default');
+                    $(this).off('click');
+                    $(this).css('background-color', '#f2f0e5');
+                    $(this).css('color', 'black');
+                }
+            });
+            // ------------- 까지 -------------
 
             // 좌석선택 버튼을 클릭시 선택안한 데이터가 있는지 체크하고 선택한 데이터를 서버로 넘김
             const btnNext = $("#btn-i-next");
@@ -173,7 +473,27 @@
                     btnError.click();
                     return;
                 }
+                // 2022-12-18 양민호
+                // ------------------부터----------------
+                // 임시적으로 입력 값 숨겨진 태그에 붙여넣고 서버로 데이터 전송
+                // 서버 전달용 input 태그 value값 설정
+                else {
+                    $(`input[name='inputAdt']:checked`)
+                    let date = $("#p-i-selected-date").text().slice(7)
+                    let time = $(".clickedTime").text().split("|")[1];
+                    let selectTitle = $('#p-i-selected-movie').text();
+                    let selectCinema = $('#p-i-selected-cinema').text().slice(7);
+                    let selectHall = $('#p-i-selected-hall').text().slice(8);
 
+                    movieSender.val(selectTitle);
+                    cinemaSender.val(selectCinema);
+                    dateSender.val(date);
+                    hallSender.val(selectHall);
+                    timeSender.val(time);
+                    const frm = $('#form-i-book')[0];
+                    frm.submit();
+                }
+                // ------------------까지----------------
                 // 다 선택했으면 서버로 값 넘기기
             });
         });
@@ -230,7 +550,7 @@
 
         /* 내용부분 박스에서 컨텐츠 요소에 마우스 올렸을때 포인터 변경 */
         #div-i-movie-content ul li:hover, #div-i-cinema-content ul li:hover, #div-i-date-content ul li:hover,
-        #div-i-time-content ul li:hover {
+        .span-c-time:hover {
             cursor: pointer;
         }
 
@@ -241,7 +561,7 @@
         }
 
         /* 내용부분 박스에서 컨텐츠 요소에 마우스 올렸을때 색상변경(시간대에만 적용) */
-        #div-i-time-content ul li:hover .span-c-time {
+        .span-c-time:hover {
             background-color: #333333;
             color: white;
         }
@@ -333,12 +653,22 @@
         .span-c-time span {
             display: none;
         }
+
+    /*    2022-12-19 양민호*/
+    /*    ---- 부터 ----*/
+        .div-c-movieList span {
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space : nowrap;
+        }
+    /*    ---- 까지 ----*/
     </style>
 
     <th:block th:replace="fragments/config :: configFragment"></th:block>
 </head>
 <body>
     <header th:replace="fragments/header :: headerFragment"></header>
+    <div id="div-i-getDoc" style="display: none" th:text="${docId}"></div>
     <div id="div-i-main" class="container">
         <div class="row">
             <div class="col-xl-12 d-flex justify-content-between">
@@ -359,85 +689,59 @@
         <div class="row">
             <div id="div-i-body" class="col-xl-12 d-flex justify-content-between">
                 <div id="div-i-movie-content" style="border-left: 2px solid gray">
+<!--                    2022-12-16 양민호 -->
+<!--                    -------------- 부터 ------------ -->
                     <ul>
-                        <li>
-                            <div class="d-flex justify-content-start">
-                                <img src="/img/twelve.png" class="mx-2">아바타 물의길
+                        <li th:each="item : ${allScreenTitle}">
+                            <div class="d-flex justify-content-start div-c-movieList" th:if="${item.rating} == '전체관람가'">
+<!--                                rating 조건에 따른 연령 표시 이미지 추가 -->
+                                <img src="/img/letter-a.png">
+                                <span th:text="${item.title}" th:title="${item.title}" class="ms-1"></span>
+                                <span style="display: none" th:text="${item.docid}"></span>
                             </div>
-                        </li>
-                        <li>
-                            <div class="d-flex justify-content-start">
-                                <img src="/img/fifteen.png" class="mx-2">올빼미
+                            <div class="d-flex justify-content-start div-c-movieList" th:if="${item.rating} == '12세관람가'">
+                                <!--                                rating 조건에 따른 연령 표시 이미지 추가 -->
+                                <img src="/img/twelve.png">
+                                <span th:text="${item.title}" th:title="${item.title}" class="ms-1"></span>
+                                <span style="display: none" th:text="${item.docid}"></span>
                             </div>
-                        </li>
-                        <li>
-                            <div class="d-flex justify-content-start">
-                                <img src="/img/letter-a.png" class="mx-2">신비아파트
+                            <div class="d-flex justify-content-start div-c-movieList" th:if="${item.rating} == '15세관람가'">
+                                <!--                                rating 조건에 따른 연령 표시 이미지 추가 -->
+                                <img src="/img/fifteen.png">
+                                <span th:text="${item.title}" th:title="${item.title}" class="ms-1"></span>
+                                <span style="display: none" th:text="${item.docid}"></span>
                             </div>
-                        </li>
-                        <li>
-                            <div class="d-flex justify-content-start">
-                                <img src="/img/twelve.png" class="mx-2">탄생
+                            <div class="d-flex justify-content-start div-c-movieList" th:if="${item.rating} == '18세관람가(청소년관람불가)'">
+                                <!--                                rating 조건에 따른 연령 표시 이미지 추가 -->
+                                <img src="/img/eighteen.png">
+                                <span th:text="${item.title}" th:title="${item.title}" class="ms-1"></span>
+                                <span style="display: none" th:text="${item.docid}"></span>
                             </div>
-                        </li>
-                        <li>
-                            <div class="d-flex justify-content-start">
-                                <img src="/img/eighteen.png" class="mx-2">크리스마스 캐럴
+                            <div class="d-flex justify-content-start div-c-movieList" th:if="${item.rating} == ''">
+                                <!--                                rating 조건에 따른 연령 표시 이미지 추가 -->
+                                <span th:text="${item.title}" th:title="${item.title}" style="margin-left: 28px"></span>
+                                <span style="display: none" th:text="${item.docid}"></span>
                             </div>
                         </li>
                     </ul>
+<!--                    -------------- 까지 ------------ -->
+<!--                    2022-12-18 양민호 -->
+<!--                    -------------- 부터 ------------ -->
                 </div>
                 <div id="div-i-cinema-content">
-                    <ul>
-                        <li>서울</li>
-                        <li>부산</li>
+                    <ul id="ul-i-selectCinema" style="display: none">
                     </ul>
                 </div>
                 <div id="div-i-date-content" style="width: 100px;">
                     <small id="small-i-year-value" class="d-flex justify-content-center mt-2">2022</small>
                     <h4 id="h4-i-month-value" class="text-center">12</h4>
-                    <ul style="list-style: none"></ul>
+                    <ul style="list-style: none; display: none"></ul>
                 </div>
                 <div id="div-i-time-content">
-                    <ul>
-                        <h6><b>1관(총 82석)</b></h6>
-                        <li>
-                            <span class="span-c-time"><span>1관|</span> 9 : 30</span>
-                            <span class="span-c-seat">76석</span>
-                        </li>
-                        <li>
-                            <span class="span-c-time"><span>1관|</span> 11 : 30</span>
-                            <span class="span-c-seat">66석</span>
-                        </li>
-                        <li>
-                            <span class="span-c-time"><span>1관|</span> 14 : 30</span>
-                            <span class="span-c-seat">82석</span>
-                        </li>
-                        <li>
-                            <span class="span-c-time"><span>1관|</span> 18 : 30</span>
-                            <span class="span-c-seat">55석</span>
-                        </li>
-                    </ul>
-                    <ul>
-                        <h6><b>2관(총 82석)</b></h6>
-                        <li>
-                            <span class="span-c-time"><span>2관|</span> 9 : 30</span>
-                            <span class="span-c-seat">76석</span>
-                        </li>
-                        <li>
-                            <span class="span-c-time"><span>2관|</span> 11 : 30</span>
-                            <span class="span-c-seat">66석</span>
-                        </li>
-                        <li>
-                            <span class="span-c-time"><span>2관|</span> 14 : 30</span>
-                            <span class="span-c-seat">82석</span>
-                        </li>
-                        <li>
-                            <span class="span-c-time"><span>2관|</span> 18 : 30</span>
-                            <span class="span-c-seat">55석</span>
-                        </li>
-                    </ul>
+                    <div>
+                    </div>
                 </div>
+<!--                    -------------- 까지 ------------ -->
             </div>
             <div id="div-i-footer" class="col-xl-12 d-flex justify-content-start">
                 <div id="div-i-selected-movie">
@@ -456,14 +760,19 @@
                 </div>
             </div>
             <!-- 이 폼은 눈에 보이지않습니다. 오로지 서버에 전달하기위한 용도입니다. -->
-            <form action="" method="">
-                <input id="input-i-send-movie" type="hidden">
-                <input id="input-i-send-cinema" type="hidden">
-                <input id="input-i-send-date" type="hidden">
-                <input id="input-i-send-hall" type="hidden">
-                <input id="input-i-send-time" type="hidden">
+<!--            2022-12-15 양민호 -->
+<!--            -------------------부터-------------------- -->
+<!--            임시 name값 추가-->
+            <form action="/seat" method="post" id="form-i-book">
+                <input id="input-i-send-movie" type="hidden" name="movieTitle">
+                <input id="input-i-send-cinema" type="hidden" name="cinemaName">
+                <input id="input-i-send-date" type="hidden" name="inputDate">
+                <input id="input-i-send-hall" type="hidden" name="screenHallName">
+                <input id="input-i-send-time" type="hidden" name="inputTime">
+                <input id="input-i-send-docid" type="hidden" name="docid">
                 <button id="btn-i-hidden-next" type="submit"></button>
             </form>
+<!--            -------------------까지-------------------- -->
         </div>
     </div>
     <footer th:replace="fragments/footer.html :: footerFragment"></footer>

@@ -16,9 +16,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @Controller
 public class BookController {
@@ -48,8 +46,8 @@ public class BookController {
         if (userId.equals("") == false) {
             isLogin = "true";
         }
-        
-        ModelAndView mv = new ModelAndView("book_test_DB");
+
+        ModelAndView mv = new ModelAndView("book");
         List<MovieDto> allScreenTitle = cinemaService.allScreenTitle();
         mv.addObject("allScreenTitle", allScreenTitle);
         mv.addObject("docId", docid);
@@ -148,7 +146,6 @@ public class BookController {
         String screenHall = screen.substring(screenIdx+2);
 
         List<BooksDto> bookSeat = cinemaService.selectSeatCode(title, cinema, screenHall, vTime);
-        System.out.println(bookSeat);
 
         return bookSeat;
     }
