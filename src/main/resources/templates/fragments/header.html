@@ -1,5 +1,5 @@
 <!-- 수정일 : 2022-12-22일 -->
-<!-- 마지막으로 수정한 사람 : EblynCho -->
+<!-- 마지막으로 수정한 사람 : MoonNight285 -->
 <!-- Header -->
 
 <!DOCTYPE html>
@@ -7,7 +7,6 @@
 <head>
     <meta charset="UTF-8" xmlns:th="http://www.thymeleaf.org">
     <title>Title</title>
-
 </head>
 <body>
 <header th:fragment="headerFragment">
@@ -17,7 +16,11 @@
             <div class="justify-content-end">
                 <ul>
                     <li class="mx-3">
-                        <a href="/user/login" class="a-c-main"><img src="/img/login2.png" alt="로그인" style="display:block;" class="mx-auto my-1"><span>로그인</span></a>
+                        <a th:if="${isLogin} == 'false'" href="/user/login" class="a-c-main"><img src="/img/login2.png" alt="로그인" style="display:block;" class="mx-auto my-1"><span>로그인</span></a>
+                        <a id="a-i-header-logout" th:unless="${isLogin} == 'false'" href="#" class="a-c-main"><img src="/img/login2.png" alt="로그인" style="display:block;" class="mx-auto my-1"><span>로그아웃</span></a>
+                        <form method="post" action="/user/logout" id="form-i-header-logout">
+                            <button id="btn-i-header-logout" style="display: none" type="submit"></button>
+                        </form>
                     </li>
                     <li class="mx-2">
                         <a href="/clause" class="a-c-main"><img src="/img/join2.png" alt="회원가입" style="display:block;" class="mx-auto my-1"><span>회원가입</span></a>

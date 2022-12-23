@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.util.List;
 
 @Service
@@ -60,5 +61,21 @@ public class MemberServiceImpl implements MemberService {
     public void pwdUpdate(String pwd, String id) throws Exception {
         cinemaMapper.pwdUpdate(pwd, id);
     }
-
+    
+    // 현재 사용자가 로그인 되어있다면 로그인한 아이디를 반환한다.
+    // 최종 수정 : 2022-12-22
+    // 마지막 작성자 : MoonNight285
+    @Override
+    public String getLoggedInUserId(HttpServletRequest request) throws Exception {
+        request.setCharacterEncoding("UTF-8");
+        HttpSession session = request.getSession();
+        
+        if (session.getAttribute("loggedInUserInfo") != null) {
+            session.setMaxInactiveInterval(1800);
+            return ((MemberDto)session.getAttribute("loggedInUserInfo")).getId();
+        } else {
+            return "";
+        }
+    }
+    
 }

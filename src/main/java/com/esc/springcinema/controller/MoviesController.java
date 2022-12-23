@@ -6,6 +6,7 @@ import com.esc.springcinema.dto.apiMovieDto.DirectorDto;
 import com.esc.springcinema.dto.apiMovieDto.MovieDto;
 import com.esc.springcinema.dto.apiMovieDto.PlotDto;
 import com.esc.springcinema.scheduler.MovieDataManager;
+import com.esc.springcinema.service.MemberService;
 import com.esc.springcinema.service.MovieService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -27,20 +28,22 @@ public class MoviesController {
     
     @Autowired
     private MovieDataManager movieDataManager;
+    
+    @Autowired
+    private MemberService memberService;
 
     // 메인화면 캐러셀에 현재상영작, 추천목록 불러오기
-    // 최종 수정 : 2022-12-21
+    // 최종 수정 : 2022-12-22
     // 마지막 작성자 : MoonNight285
     @RequestMapping("/main")
     public ModelAndView viewNowplayingMoviesList(HttpServletRequest request) throws Exception {
-        request.setCharacterEncoding("UTF-8");
-        HttpSession session = request.getSession();
+        String userId = memberService.getLoggedInUserId(request);
+        String isLogin = "false";
 
         HashMap<String, MovieDto> birthList = new HashMap<>(); // 값이 없는경우 사이즈는 0
-        if (session.getAttribute("loggedInUserInfo") != null) {
-            session.setMaxInactiveInterval(1800);
-            String loggedInUserId = ((MemberDto)session.getAttribute("loggedInUserInfo")).getId();
-            birthList = movieService.selectBirthMovieList(loggedInUserId);
+        if (userId.equals("") == false) {
+            birthList = movieService.selectBirthMovieList(userId);
+            isLogin = "true";
         }
         
         ModelAndView mv = new ModelAndView("main");
@@ -53,6 +56,7 @@ public class MoviesController {
         mv.addObject("recommendList", recommendList);
         mv.addObject("randomGenre", randomGenre);
         mv.addObject("birthList", birthList);
+        mv.addObject("isLogin", isLogin);
 
         return mv;
     }
@@ -71,36 +75,59 @@ public class MoviesController {
     }
 
     // 영화_현재상영작 페이지
-    // 최종 수정 : 2022-12-21
-    // 마지막 작성자 : EblynCho
+    // 최종 수정 : 2022-12-22
+    // 마지막 작성자 : MoonNight285
     @RequestMapping("/nowplaying")
-    public ModelAndView viewNowPlaying() throws Exception {
+    public ModelAndView viewNowPlaying(HttpServletRequest request) throws Exception {
+        String userId = memberService.getLoggedInUserId(request);
+        String isLogin = "false";
+
+        if (userId.equals("") == false) {
+            isLogin = "true";
+        }
+
         ModelAndView mv = new ModelAndView("nowplaying");
 
         List<MovieDto> nowplayingList = movieService.selectNowplayingMoviesList();
         mv.addObject("nowplayingList", nowplayingList);
+        mv.addObject("isLogin", isLogin);
 
         return mv;
     }
 
     // 영화_상영예정작 페이지
-    // 최종 수정 : 2022-12-15
-    // 마지막 작성자 : eblyncho
+    // 최종 수정 : 2022-12-23
+    // 마지막 작성자 : MoonNight285
     @RequestMapping("/upcoming")
-    public ModelAndView viewUpcoming() throws Exception {
+    public ModelAndView viewUpcoming(HttpServletRequest request) throws Exception {
+        String userId = memberService.getLoggedInUserId(request);
+        String isLogin = "false";
+    
+        if (userId.equals("") == false) {
+            isLogin = "true";
+        }
+        
         ModelAndView mv = new ModelAndView("upcoming");
 
         List<MovieDto> upcomingList = movieService.selectUpcomingMoviesList();
         mv.addObject("upcomingList", upcomingList);
+        mv.addObject("isLogin", isLogin);
 
         return mv;
     }
 
     // 영화_상세 페이지
-    // 최종 수정 : 2022-12-15
-    // 마지막 작성자 : eblyncho
+    // 최종 수정 : 2022-12-22
+    // 마지막 작성자 : MoonNight285
     @RequestMapping("/movieDetail")
-    public ModelAndView openMovieDetail(@RequestParam String docid) throws Exception {
+    public ModelAndView openMovieDetail(@RequestParam String docid, HttpServletRequest request) throws Exception {
+        String userId = memberService.getLoggedInUserId(request);
+        String isLogin = "false";
+
+        if (userId.equals("") == false) {
+            isLogin = "true";
+        }
+
         ModelAndView mv = new ModelAndView("movieDetail");
 
         MovieDto movies = movieService.selectMovieDetail(docid);
@@ -116,6 +143,8 @@ public class MoviesController {
         mv.addObject("actorList", actorList);
 
         mv.addObject("docId",docid);
+
+        mv.addObject("isLogin", isLogin);
 
         return mv;
     }

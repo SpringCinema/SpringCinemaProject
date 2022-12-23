@@ -1,6 +1,6 @@
-<!-- 수정일 : 2022-12-14일 -->
+<!-- 수정일 : 2022-12-22일 -->
 <!-- 마지막으로 수정한 사람 : MoonNight285 -->
-<!-- 마지막으로 작업한 내용 : 서버로 값 넘기기 -->
+<!-- 마지막으로 작업한 내용 : UI 디자인 변경 -->
 <!-- 유저 로그인 페이지 -->
 
 <!DOCTYPE html>
@@ -113,7 +113,11 @@
         }
 
         #div-i-login-form {
-            width: 360px;
+            width: 460px;
+            border: 2px solid #d3d3d3;
+            padding : 50px;
+            border-radius: 25px;
+            background-color: #fcfcfc;
         }
 
         #btn-i-login {
@@ -181,6 +185,9 @@
                         <div class="mb-3 d-flex justify-content-center">
                             <button id="btn-i-login" type="button" class="btn btn-success">로그인</button>
                             <button id="btn-i-hidden-login" type="submit"></button>
+                        </div>
+                        <div class="d-flex justify-content-center">
+                            <small><a href="/clause" style="text-decoration: none">아이디가 없으신가요? 회원가입을 해보세요!</a></small>
                         </div>
                     </div>
                 </form>
