@@ -146,6 +146,9 @@ public class MoviesController {
 
         mv.addObject("isLogin", isLogin);
 
+        List<MovieDto> nowplayingList = movieService.selectNowplayingMoviesList();
+        mv.addObject("nowplayingList", nowplayingList);
+
         return mv;
     }
 }
