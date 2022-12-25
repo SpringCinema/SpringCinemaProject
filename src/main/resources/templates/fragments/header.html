@@ -54,13 +54,16 @@
                     </li>
                 </ul>
             </div>
-            <ul class="input-c-search justify-content-end m-0 p-0">
-                <input type="text" style="height: 24px" onkeyup="if( window.event.keyCode == 13 ){search_movie();}" id="search">
-            </ul>
+            <form action="/searchMovie" method="get" name="frm">
+                <ul class="input-c-search justify-content-end m-0 p-0">
+                    <input type="text" style="height: 24px" onkeypress="JavaScript:press(this.form)" id="keyword" name="keyword">
+                </ul>
+            </form>
         </div>
 
     </div>
     <hr class="hr-c-nav">
+
 </header>
 </body>
 </html>

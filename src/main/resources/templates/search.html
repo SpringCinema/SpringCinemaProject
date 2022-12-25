@@ -9,27 +9,10 @@
     <script th:inline="javascript">
         $(document).ready(function () {
 
-            let searchMovie = sessionStorage.getItem("searchMovie");
+            let keyword = sessionStorage.getItem("keyword");
 
-            console.log(searchMovie);
+            $('.search').prepend('"' + keyword + '"');
 
-            // $('#search').val(searchMovie);
-            // $('.search').prepend("<span>searchMovie</span>");
-            $('.search').prepend('"' + searchMovie + '"');
-
-            $.ajax({
-                url: "/searchMovie",
-                type: "GET",
-                contentType: 'application/json',
-                data: {"title": searchMovie},
-                success: function (data) {
-                    // alert("통신 성공!");
-                    // alert(searchMovie);
-                },
-                error:function(request,status,error){
-                    alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
-                }
-            })
         })
     </script>
 
@@ -197,8 +180,8 @@
                 <span class="title" th:text="${list.title}">영화 제목</span>
             </div>
             <div>
-                <span>개봉예정일 </span>
-<!--                <span th:text="${list.repRlsDate}">2022.12.01</span>-->
+                <span>개봉일 </span>
+                <span th:text="${list.repRlsDate}">2022.12.01</span>
             </div>
         </li>
     </div>

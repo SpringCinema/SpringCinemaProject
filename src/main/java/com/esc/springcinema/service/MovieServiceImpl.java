@@ -95,8 +95,8 @@ public class MovieServiceImpl implements MovieService {
     // 최종 수정 : 2022-12-15
     // 마지막 작성자 : eblyncho
     @Override
-    public List<MovieDto> searchMoviesList(String title) throws Exception {
-        return cinemaMapper.searchMoviesList(title);
+    public List<MovieDto> searchMoviesList(String keyword) throws Exception {
+        return cinemaMapper.searchMoviesList(keyword);
     }
 
     // 메인화면 캐러셀에 현재상영작 불러오기

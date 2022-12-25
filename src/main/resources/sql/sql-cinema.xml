@@ -164,9 +164,9 @@
     <!-- 영화 검색 -->
     <select id="searchMoviesList" parameterType="String" resultType="com.esc.springcinema.dto.apiMovieDto.MovieDto">
         <![CDATA[
-        SELECT docid, title, SUBSTRING_INDEX(posters, '|', 1) AS posters
+        SELECT docid, title, SUBSTRING_INDEX(posters, '|', 1) AS posters, repRlsDate
         FROM movies
-        WHERE title REGEXP #{title}
+        WHERE title REGEXP #{keyword}
         ]]>
     </select>
 </mapper>

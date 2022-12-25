@@ -64,17 +64,15 @@ public class MoviesController {
     }
 
     // 영화 검색
-    // 최종 수정 : 2022-12-23
+    // 최종 수정 : 2022-12-26
     // 마지막 작성자 : EblynCho
     @ResponseBody
-    @RequestMapping("/searchMovie")
-    public ModelAndView viewMoviesList(@RequestParam Map<String, Object> param) throws Exception {
+    @RequestMapping(value = "/searchMovie")
+    public ModelAndView viewMoviesList(String keyword) throws Exception {
         ModelAndView mv = new ModelAndView("search");
 
-        String title = (String) param.get("title");
-        System.out.println("리턴" + title);
-
-        List<MovieDto> dataList = movieService.searchMoviesList(title);
+        List<MovieDto> dataList = movieService.searchMoviesList(keyword);
+//        System.out.println(keyword);
         mv.addObject("dataList", dataList);
 
         return mv;

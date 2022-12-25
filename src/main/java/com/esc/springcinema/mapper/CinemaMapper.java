@@ -36,7 +36,7 @@ public interface CinemaMapper {
     // 영화 검색
     // 최종 수정 : 2022-12-15
     // 마지막 작성자 : eblyncho
-    List<MovieDto> searchMoviesList(String title) throws Exception;
+    List<MovieDto> searchMoviesList(String keyword) throws Exception;
 
     // 메인화면 캐러셀에 현재상영작 불러오기
     // 최종 수정 : 2022-12-15
