@@ -75,6 +75,9 @@ public class MoviesController {
 //        System.out.println(keyword);
         mv.addObject("dataList", dataList);
 
+        List<MovieDto> nowplayingList = movieService.selectNowplayingMoviesList();
+        mv.addObject("nowplayingList", nowplayingList);
+
         return mv;
     }
 
