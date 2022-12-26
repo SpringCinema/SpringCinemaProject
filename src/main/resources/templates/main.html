@@ -26,6 +26,12 @@
                 slidesToShow: 3,
                 slidesToScroll: 3
             });
+
+            $('#a-i-play').click(function () {
+                if ($('#div-i-trailer').css('display') == 'none') {
+                    $('#div-i-trailer').show();
+                }
+            });
         });
     </script>
     <script>
@@ -225,9 +231,10 @@
 
         .div-c-youtube {
             /*background-color: black;*/
+            height: 305px;
             background: #000000;  /* fallback for old browsers */
-            background: -webkit-linear-gradient(to left, #434343, #000000);  /* Chrome 10-25, Safari 5.1-6 */
-            background: linear-gradient(to left, #434343, #000000); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+            background: -webkit-linear-gradient(to right, #434343, #000000);  /* Chrome 10-25, Safari 5.1-6 */
+            background: linear-gradient(to right, #434343, #000000); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
 
         }
         /*.faded {*/
@@ -267,8 +274,8 @@
         .div-c-movie-list-wrapper {
             border: 3px solid #d3d3d3;
             border-radius: 30px;
-            margin-top: 125px;
-            margin-bottom: 125px;
+            margin-top: 80px;
+            margin-bottom: 8px;
             background-color: #fcfcfc;
         }
         
@@ -285,8 +292,27 @@
             height: 305px;
         }
         /* 추천목록 디자인 끝 */
-    </style>
 
+        .div-c-youtube a {
+            text-decoration: none;
+            color: white;
+        }
+
+        .div-c-youtube div {
+            padding-left: 120px;
+        }
+
+        .div-c-trailer {
+            display: none;
+            width: 936px;
+            z-index: 2;
+        }
+
+        .div-c-trailer a span {
+            font-size: 27px;
+        }
+
+    </style>
 
 </head>
 
@@ -294,18 +320,24 @@
 
 <body>
 <div class="container">
-    <div class="div-c-youtube">
-        <a href="#">
-            <div class="faded">
-                <img src="https://img.youtube.com/vi/UOfRrh9mPiE/mqdefault.jpg" alt="유튜브 동영상 이미지입니다." class="img-c-trailer">
+    <div class="position-relative">
+        <div class="div-c-trailer position-absolute" id="div-i-trailer">
+            <iframe width="100%" height="305" src="https://www.youtube.com/embed/kihrFxwdMb4?mute=1&rel=0&showsearch=0&control=0&version=3&vq=hd1080&loop=1&autoplay=1"
+                    title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" id="iframe-i-trailer" allowfullscreen>
+            </iframe>
+        </div>
+        <div class="div-c-youtube d-flex justify-content-between" id="div-i-youtube">
+            <div class="m-5 d-flex flex-column justify-content-around">
+                <h3 style="color: white">아바타: 물의 길</h3>
+                <h4 style="color: white">12월 대개봉</h4>
+                <a href="#" id="a-i-play"><h5>예고편 재생 <img src="/img/play.png" alt="" width="23px"></h5></a>
             </div>
-<!--            <img src="https://img.youtube.com/vi/UOfRrh9mPiE/mqdefault.jpg" alt="유튜브 동영상 이미지입니다.">-->
-<!--            <h5 class="mt-2"><%=title%></h5>-->
-        </a>
-<!--        <iframe width="100%" height="400" src="https://www.youtube.com/embed/kihrFxwdMb4?autoplay=1&mute=1&rel=0&showsearch=0&control=0&version=3&vq=hd1080"-->
-<!--                title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen>-->
-<!--        </iframe>-->
+            <div class="faded">
+                <img src="http://file.koreafilm.or.kr/thm/02/99/17/88/tn_DPF026148.jpg" alt="">
+            </div>
+        </div>
     </div>
+
     
     <div class="div-c-movie-list-wrapper">
         <h3 class="mx-5 mt-4">현재상영작</h3>
@@ -383,11 +415,11 @@
             </div>
         </section>
     </div>
+</div>
 
-    <div class="container border mx-auto my-3" style="height: 200px; border-color: black;">
-        <p>이벤트 및 광고</p>
-    </div>
-
+<div class="div-c-add mx-auto my-5" style="width:980px;">
+    <!--        <p>이벤트 및 광고</p>-->
+    <a href="https://www.youtube.com/watch?v=k28qSawg-Nw"><img src="/img/ad1.png" alt=""></a>
 </div>
 
 <footer th:replace="fragments/footer :: footerFragment"></footer>

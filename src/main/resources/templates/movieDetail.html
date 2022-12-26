@@ -138,7 +138,8 @@
     <div class="container mx-auto px-5">
         <li class="box flex">
             <div class="container2">
-                <img src="#" alt="영화포스터" th:src="${movies.posters}" />
+                <img src="/img/defaultPoster.png" th:if="${movies.posters != null}" th:src="${movies.posters}" onerror="this.onerror=null; this.src='/img/defaultPoster.png';" />
+<!--                <img src="#" alt="영화포스터" th:src="${movies.posters}" />-->
             </div>
             <div class="div-c-detail1">
                 <span class="title" th:text="${movies.title}"></span><br>
