@@ -19,13 +19,14 @@ public class UserUniqueIdManager {
         uniqueIdMap = new ConcurrentHashMap<>();
     }
     
-    // 고유값과 생성된 날짜를 포함하여 저장
+    // 고유값과 생성된 날짜를 포함하여 저장하고 생성된 고유값을 반환
     // 마지막 작성일 : 2022-12-27
     // 작성자 : MoonNight285
-    public void setUniqueId(String userId) {
+    public String setUniqueId(String userId) {
         String uniqueId = UUID.randomUUID().toString();
         LocalDateTime today = LocalDateTime.now();
         uniqueIdMap.put(uniqueId + "_" + today, userId);
+        return uniqueId + "_" + today;
     }
     
     // 해당하는 고유값이 없는경우 null 반환
@@ -33,6 +34,13 @@ public class UserUniqueIdManager {
     // 작성자 : MoonNight285
     public String getUniqueId(String uniqueId) {
         return uniqueIdMap.get(uniqueId);
+    }
+    
+    // 특정 고유값을 삭제
+    // 마지막 작성일 : 2022-12-27
+    // 작성자 : MoonNight285
+    public void deleteUniqueId(String uniqueId) {
+        uniqueIdMap.remove(uniqueId);
     }
     
     // 하루마다 세션에 저장된 날짜를 구해서 만료일이 지났다면 삭제한다.

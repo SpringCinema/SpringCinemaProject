@@ -1,6 +1,7 @@
 package com.esc.springcinema.controller;
 
 import com.esc.springcinema.dto.MemberDto;
+import com.esc.springcinema.scheduler.UserUniqueIdManager;
 import com.esc.springcinema.service.MailService;
 import com.esc.springcinema.service.MemberService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +19,9 @@ public class UserController {
 
     @Autowired
     private MailService mailService;
+    
+    @Autowired
+    private UserUniqueIdManager userUniqueIdManager;
 
     // 로그인 페이지를 보여줍니다.
     // 최종 수정 : 2022-12-22
@@ -35,6 +39,42 @@ public class UserController {
         view.addObject("isLogin", "false");
         view.addObject("referer", referer);
         return view;
+    }
+    
+    // 로그인 시 고유값을 기준으로 저장되어있는 아이디를 불러온다.
+    // 값이 없는경우 null이 반환
+    // 최종 수정 : 2022-12-27
+    // 마지막 작성자 : MoonNight285
+    @ResponseBody
+    @RequestMapping(value = "/user/uid", method = RequestMethod.GET)
+    public String getUniqueId(@RequestParam("uniqueId") String uniqueId) throws Exception {
+        String id = userUniqueIdManager.getUniqueId(uniqueId);
+        
+        if (id != null) {
+            return id;
+        } else {
+            return "null";
+        }
+    }
+    
+    // 로그인 시 고유값을 기준으로 아이디를 저장하고 고유값을 클라이언트에게 반환한다.
+    // 최종 수정 : 2022-12-27
+    // 마지막 작성자 : MoonNight285
+    @ResponseBody
+    @RequestMapping(value = "/user/uid", method = RequestMethod.POST)
+    public String setUniqueId(@RequestParam("id") String id) throws Exception {
+        return userUniqueIdManager.setUniqueId(id);
+    }
+    
+    // 로그인 시 아이디 저장을 하지않는경우 기존에 존재했던 고유값을 삭제한다.
+    // 반환값은 성공했다는 상태 값
+    // 최종 수정 : 2022-12-27
+    // 마지막 작성자 : MoonNight285
+    @ResponseBody
+    @RequestMapping(value = "/user/uid", method = RequestMethod.DELETE)
+    public String deleteUniqueId(@RequestParam("uniqueId") String uniqueId) throws Exception {
+        userUniqueIdManager.deleteUniqueId(uniqueId);
+        return "done";
     }
     
     // 로그인전에 실패했을경우 페이지 이동하지않고 처리하기위해 테스트 로그인진행
