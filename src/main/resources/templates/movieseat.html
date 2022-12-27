@@ -83,14 +83,127 @@
                 }
             });
 
-
-            // 좌석 선택 이벤트
-            // 선택한 인원수 보다 많은 좌석 선택 시 오류 메세지 출력
-            $(`input[type='checkbox']`).on('click', function () {
+            // 2명 이상 예매 시 좌석 2개 선택 css
+            $(`.div-c-seat`).children('label').hover(function () {
+                // 마우스 호버 css
                 let count = $(`input[type='checkbox']:checked`).length;
                 let adtVal = parseInt($(`input[name='inputAdt']:checked`).val());
                 let teenVal = parseInt($(`input[name='inputTeen']:checked`).val());
                 let popNum = adtVal + teenVal;
+
+                const seatNum = parseInt($(this).text());
+                const seatCode = $(this).parent('div').parent('div').prev('div').text().trim();
+                const nextSeat = seatCode + (seatNum + 1);
+                const thisInput = $(`#input-i-${seatCode + seatNum}`);
+                const nextInput = $(`#input-i-${seatCode + (seatNum + 1)}`);
+                const prevSeat = seatCode + (seatNum - 1);
+                const prevInput = $(`#input-i-${seatCode + (seatNum - 1)}`);
+
+                if(popNum - count > 1) {
+                    // 붙어있는 다음 좌석이 존재 할 때
+                    if($(this).next().val()) {
+                        // 현재좌석 선택 전
+                        if(!thisInput.prop('checked')) {
+                            if(!nextInput.prop('disabled')) {
+                                if(nextInput.prop('checked') && thisInput.prev().prev().val()) {
+                                    $(`label[for='input-i-${prevSeat}']`).css('background-color', '#198754');
+                                    $(this).css('background-color', '#198754');
+                                }
+                                else {
+                                    $(`label[for='input-i-${nextSeat}']`).css('background-color', '#198754');
+                                    $(this).css('background-color', '#198754');
+                                }
+                            }
+                        }
+                        // 현재좌석 선택됨
+                        else if(thisInput.prop('checked')){
+                            if(nextInput.prop('checked') && prevInput.prop('checked')) {
+                                $(`label[for='input-i-${nextSeat}']`).css('background-color', '#198754');
+                                $(this).css('background-color', '#198754');
+                            }
+                            else if(nextInput.prop('checked') && !prevInput.prop('checked')) {
+                                $(`label[for='input-i-${nextSeat}']`).css('background-color', '#198754');
+                                $(this).css('background-color', '#198754');
+                            }
+                            else if(!nextInput.prop('checked') && prevInput.prop('checked')){
+                                $(`label[for='input-i-${prevSeat}']`).css('background-color', '#198754');
+                                $(this).css('background-color', '#198754');
+                            }
+                        }
+
+                        // 다음좌석 선택 불가, 이전좌석 존재
+                        if(nextInput.prop('disabled') && thisInput.prev().prev().val()) {
+                            $(`label[for='input-i-${prevSeat}']`).css('background-color', '#198754');
+                            $(this).css('background-color', '#198754');
+                        }
+                    }
+                    else {
+                        if(!prevInput.prop('disabled') && !prevInput.prop('checked')) {
+                            $(`label[for='input-i-${prevSeat}']`).css('background-color', '#198754');
+                            $(this).css('background-color', '#198754');
+                        }
+                    }
+                }
+                // 남은 선택좌석 1개 일 때
+                else if(popNum - count == 1){
+                    if(thisInput.prop('checked')) {
+                        if(nextInput.prop('checked') && prevInput.prop('checked')) {
+                            $(`label[for='input-i-${nextSeat}']`).css('background-color', '#198754');
+                            $(this).css('background-color', '#198754');
+                        }
+                        else if(nextInput.prop('checked') && !prevInput.prop('checked')) {
+                            $(`label[for='input-i-${nextSeat}']`).css('background-color', '#198754');
+                            $(this).css('background-color', '#198754');
+                        }
+                        else if(!nextInput.prop('checked') && prevInput.prop('checked')){
+                            $(`label[for='input-i-${prevSeat}']`).css('background-color', '#198754');
+                            $(this).css('background-color', '#198754');
+                        }
+                    }
+                }
+                else {
+                    if(thisInput.prop('checked')) {
+                        if(nextInput.prop('checked') && prevInput.prop('checked')) {
+                            $(`label[for='input-i-${nextSeat}']`).css('background-color', '#198754');
+                            $(this).css('background-color', '#198754');
+                        }
+                        else if(nextInput.prop('checked') && !prevInput.prop('checked')) {
+                            $(`label[for='input-i-${nextSeat}']`).css('background-color', '#198754');
+                            $(this).css('background-color', '#198754');
+                        }
+                        else if(!nextInput.prop('checked') && prevInput.prop('checked')){
+                            $(`label[for='input-i-${prevSeat}']`).css('background-color', '#198754');
+                            $(this).css('background-color', '#198754');
+                        }
+                    }
+                }
+            //    마우스 이탈 시 css
+            }, function () {
+                const seatNum = parseInt($(this).text());
+                const seatCode = $(this).parent('div').parent('div').prev('div').text().trim();
+                const nextSeat = seatCode + (seatNum + 1);
+                const prevSeat = seatCode + (seatNum - 1);
+
+                $(`label[for='input-i-${nextSeat}']`).css('background-color', '');
+                $(`label[for='input-i-${prevSeat}']`).css('background-color', '');
+                $(this).css('background-color', '');
+            });
+
+
+            // 좌석 선택 이벤트
+            // 선택한 인원수 보다 많은 좌석 선택 시 오류 메세지 출력
+            $(`input[type='checkbox']`).on('click', function () {
+                const count = $(`input[type='checkbox']:checked`).length;
+                const adtVal = parseInt($(`input[name='inputAdt']:checked`).val());
+                const teenVal = parseInt($(`input[name='inputTeen']:checked`).val());
+                const popNum = adtVal + teenVal;
+
+                const seatCode = $(this).val().slice(0, 1);
+                const seatNum = parseInt($(this).val().slice(1));
+                const nextInput = $(`#input-i-${seatCode + (seatNum + 1)}`);
+                const nextVal = $(this).next().next().val();
+                const prevInput = $(`#input-i-${seatCode + (seatNum - 1)}`);
+                const prevVal = $(this).prev().prev().val();
 
                 if (count > popNum) {
                     // 좌석 수가 더 많을 경우 체크박스 클릭 해제
@@ -102,11 +215,62 @@
                         $('#input-i-seatCode').val('');
                     }
                     else {
-
+                        if(popNum - count > 0) {
+                            // 붙어있는 다음좌석이 존재할 때
+                            if(nextVal) {
+                                // 현재 좌석 체크 시
+                                if($(this).prop('checked')) {
+                                    // 다음 좌석 체크되어 있을 때 이전 좌석선택
+                                    if(nextInput.prop('checked') && prevVal) {
+                                        prevInput.prop('checked', true);
+                                    }
+                                    // 다음 좌석이 선택 가능하면 다음 좌석 선택
+                                    if(!nextInput.prop('disabled')) {
+                                        nextInput.prop('checked', true);
+                                    }
+                                    // 선택 불가능하고 붙어있는 이전 좌석이 존재할 때 이전 좌석 선택
+                                    else {
+                                        if(prevVal) {
+                                            prevInput.prop('checked', true);
+                                            console.log($(this).val())
+                                            console.log(prevInput.val())
+                                        }
+                                    }
+                                }
+                                // 현재 좌석 체크아웃
+                                else {
+                                    // 다음 좌석이 선택 불가능 할 때 이전 좌석 체크아웃
+                                    if(nextInput.prop('disabled')) {
+                                        prevInput.prop('checked', false);
+                                    }
+                                    // 다음 좌석 선택 가능할 때
+                                    else {
+                                        // 다음 좌석이 체크되어있지 않고 이전좌석이 체크되어 있을 때 이전좌석 체크아웃
+                                        if(!nextInput.prop('checked') && prevInput.prop('checked')) {
+                                            prevInput.prop('checked', false);
+                                        }
+                                        // 다음좌석 체크 되어 있을 때 다음 좌석 체크아웃
+                                        if(nextInput.prop('checked')) {
+                                            nextInput.prop('checked', false);
+                                        }
+                                    }
+                                }
+                            }
+                            else {
+                                if($(this).prop('checked')){
+                                    if(!prevInput.prop('checked') || !prevInput.prop('disabled')) {
+                                        prevInput.prop('checked', true);
+                                    }
+                                }
+                                else {
+                                    prevInput.prop('checked', false);
+                                }
+                            }
+                        }
                         // 좌석 번호 출력
                         $('#input-i-seatCode').text('');
                         $('input[type=checkbox]').each(function (index) {
-                            if($(this).is(":checked")==true){
+                            if($(this).is(":checked")){
                                 $('#input-i-seatCode').append($(this).val() + '|');
                             }
                         });
@@ -181,16 +345,12 @@
     </script>
 
     <style>
-        header {
-            width: 1920px;
-            max-width: none !important;
-        }
-
         .container {
             width: 1300px;
             max-width: none !important;
+            margin-top: 75px;
+            margin-bottom: 75px;
         }
-
 
         .label-c-btn {
             background-color: lightgray;
@@ -223,10 +383,10 @@
 <body>
 <!-- 헤더부분 -->
 <header th:replace="fragments/header :: headerFragment"></header>
-
+<div style="display: none" id="div-i-combine"></div>
 <!-- 메인부분 -->
 <main class="container">
-    <div class="col-10 mx-auto mt-5 border" style="background-color: #f2f0e5">
+    <div class="col-10 mx-auto border" style="background-color: #f2f0e5">
         <div class="bg-dark text-light text-center m-0 mx-auto">
             <input type="hidden" id="inpupt-i-docid" th:value="${selectMoviePoster.posters}" readonly>
             <p class="m-0">인원/좌석</p>
@@ -360,7 +520,6 @@
                         </div>
 
                         <div class="col-3 p-0 div-c-seat">
-
                             <input type="checkbox" class="btn-check" th:id="'input-i-' + ${item} + '10'" th:value="${item} + '10'">
                             <label class="ps-2 btn btn-success" th:for="'input-i-' + ${item} + '10'" style="width: 35.8px"><p class="m-0">10</p></label>
                             <input type="checkbox" class="btn-check" th:id="'input-i-' + ${item} + '11'" th:value="${item} + '11'">

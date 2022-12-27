@@ -176,7 +176,7 @@
                     <img src="/img/defaultPoster.png" th:if="${list.posters != null}" th:src="${list.posters}" onerror="this.onerror=null; this.src='/img/defaultPoster.png';" class="rounded"/>
                 </div>
                 <div class="button-detail"><a href="/movieDetail?docid=" th:attrappend="href=${list.docid}" class="rounded btn-c-detail"> 상세보기 </a></div>
-                <div class="button-book" th:each="list1 : ${nowplayingList}"><a href="/book?docid=" th:if="${list.title} == ${list1.title}" th:attrappend="href=${docId}" id="btn-i-book" class="rounded btn-c-book"> 예매하기 </a></div>
+                <div class="button-book" th:each="list1 : ${nowplayingList}"><a href="/book?docid=" th:if="${list.title} == ${list1.title}" th:attrappend="href=${list.docid}" id="btn-i-book" class="rounded btn-c-book"> 예매하기 </a></div>
             </div>
             <div class="text-center mx-auto my-1" style="width: 213px">
                 <span class="title" th:text="${list.title}">영화 제목</span>
