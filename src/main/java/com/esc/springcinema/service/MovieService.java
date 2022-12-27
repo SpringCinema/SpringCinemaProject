@@ -56,4 +56,9 @@ public interface MovieService {
     // 최종 수정 : 2022-12-23
     // 마지막 작성자 : EblynCho
     MovieUrlDto trailer(String docid) throws Exception;
+
+    // 메인화면 예고편 랜덤 불러오기
+    // 최종 수정 : 2022-12-27
+    // 마지막 작성자 : EblynCho
+    MovieUrlDto randomTrailer() throws Exception;
 }

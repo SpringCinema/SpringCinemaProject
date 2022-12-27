@@ -34,9 +34,9 @@ public class MoviesController {
     @Autowired
     private MemberService memberService;
 
-    // 메인화면 캐러셀에 현재상영작, 추천목록 불러오기
-    // 최종 수정 : 2022-12-22
-    // 마지막 작성자 : MoonNight285
+    // 메인화면 예고편 랜덤 재생
+    // 최종 수정 : 2022-12-27
+    // 마지막 작성자 : EblynCho
     @RequestMapping("/main")
     public ModelAndView viewNowplayingMoviesList(HttpServletRequest request) throws Exception {
         String userId = memberService.getLoggedInUserId(request);
@@ -59,6 +59,9 @@ public class MoviesController {
         mv.addObject("randomGenre", randomGenre);
         mv.addObject("birthList", birthList);
         mv.addObject("isLogin", isLogin);
+
+        MovieUrlDto randomTrailer = movieService.randomTrailer();
+        mv.addObject("randomTrailer", randomTrailer);
 
         return mv;
     }

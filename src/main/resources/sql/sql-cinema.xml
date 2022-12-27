@@ -161,6 +161,15 @@
         ]]>
     </select>
 
+    <!-- 메인화면 랜덤 예고편 -->
+    <select id="randomTrailer" resultType="com.esc.springcinema.dto.MovieUrlDto">
+        <![CDATA[
+        SELECT docid, title, url
+        FROM movie_urls
+        ORDER BY RAND() LIMIT 1
+        ]]>
+    </select>
+
     <!-- 영화 검색 -->
     <select id="searchMoviesList" parameterType="String" resultType="com.esc.springcinema.dto.apiMovieDto.MovieDto">
         <![CDATA[

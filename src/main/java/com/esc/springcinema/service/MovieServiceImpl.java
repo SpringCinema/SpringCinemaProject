@@ -245,5 +245,12 @@ public class MovieServiceImpl implements MovieService {
         return cinemaMapper.trailer(docid);
     }
 
+    // 메인화면 예고편 랜덤 불러오기
+    // 최종 수정 : 2022-12-27
+    // 마지막 작성자 : EblynCho
+    @Override
+    public MovieUrlDto randomTrailer() throws Exception {
+        return cinemaMapper.randomTrailer();
+    }
 
 }
