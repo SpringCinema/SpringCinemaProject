@@ -34,7 +34,7 @@ public class MoviesController {
     @Autowired
     private MemberService memberService;
 
-    // 메인화면 예고편 랜덤 재생
+    // 메인화면 (예고편 랜덤 재생)
     // 최종 수정 : 2022-12-27
     // 마지막 작성자 : EblynCho
     @RequestMapping("/main")
@@ -67,19 +67,27 @@ public class MoviesController {
     }
 
     // 영화 검색
-    // 최종 수정 : 2022-12-26
+    // 최종 수정 : 2022-12-27
     // 마지막 작성자 : EblynCho
     @ResponseBody
     @RequestMapping(value = "/searchMovie")
-    public ModelAndView viewMoviesList(String keyword) throws Exception {
+    public ModelAndView viewMoviesList(HttpServletRequest request, String keyword) throws Exception {
+        String userId = memberService.getLoggedInUserId(request);
+        String isLogin = "false";
+
+        if (userId.equals("") == false) {
+            isLogin = "true";
+        }
+
         ModelAndView mv = new ModelAndView("search");
 
         List<MovieDto> dataList = movieService.searchMoviesList(keyword);
-//        System.out.println(keyword);
         mv.addObject("dataList", dataList);
 
         List<MovieDto> nowplayingList = movieService.selectNowplayingMoviesList();
         mv.addObject("nowplayingList", nowplayingList);
+
+        mv.addObject("isLogin", isLogin);
 
         return mv;
     }
