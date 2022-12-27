@@ -13,6 +13,8 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"></script>
     <script src="/js/event.js"></script>
     <script>
+        const EXPIRE_DAYS = 3; // 쿠키 만료날짜, 서버와 동일하게 사용해야함
+        
         // 회원가입에 사용되는 폼 양식에서 빈값이 있는지를 확인
         // 있으면 true 없으면 false
         function isAllEmpty(id, pwd) {
@@ -58,6 +60,39 @@
             return decodeURIComponent(cookieValue);
         }
         
+        // 서버에게 고유값을 생성요청
+        // 성공시 true, 실패시 false
+        function generateUniqueId(inputId) {
+            $.ajax({
+                url : "/user/uid",
+                type : "post",
+                data : {id : inputId.val()},
+                success : function (result) {
+                    setCookie("SpringUID", result, EXPIRE_DAYS);
+                    return true;
+                },
+                error : function () {
+                    return false;
+                }
+            });
+        }
+        
+        // 서버에게 고유값을 삭제하도록 요청
+        // 성공시 true, 실패시 false
+        function removeUniqueId(userKey) {
+            $.ajax({
+                url : "/user/uid",
+                type : "delete",
+                data : {uniqueId : userKey},
+                success : function (result) {
+                    return true;
+                },
+                error : function () {
+                    return false;
+                }
+            });
+        }
+        
         $(document).ready(function () {
             const userCheckResult = $("#small-i-user-check-result");
             const btnLogin = $("#btn-i-login");
@@ -65,42 +100,92 @@
             const inputId = $("#input-i-id");
             const inputPwd = $("#input-i-pwd");
             const inputIdSave = $("#input-i-id-save");
-    
+            
+            console.log(document.cookie);
+            
+            let userId;
             let userKey = getCookie("SpringUID");
-            if (userKey != "") {
-                inputId.val(userKey);
-                inputIdSave.attr("checked", true);
-            }
-    
-            inputIdSave.on("click", function () {
-                if (inputIdSave.is(":checked")) {
-                    setCookie("SpringUID", inputId.val(), 3);
-                } else {
-                    deleteCookie("SpringUID");
-                }
-            });
-
-            btnLogin.on("click", function () {
-                if (isAllEmpty(inputId.val(), inputPwd.val()) == false) {
-                    $.ajax({
-                        url : "/user/testLogin",
-                        type : "post",
-                        data : {targetId : inputId.val(), pwd : inputPwd.val()},
-                        success : function (data) {
-                            if (data == "true") {
-                                if (inputIdSave.is(":checked")) {
-                                    setCookie("SpringUID", inputId.val(), 3);
-                                }
-                                btnHiddenLogin.click();
-                            } else {
-                                runUserCheckFailAnimate(userCheckResult, "아이디 또는 비밀번호가 틀렸습니다.");
-                            }
-                        },
-                        error : function () {
-                            alert("서버와 통신이 실패했습니다.");
+            if (userKey != "") { // 저장된 고유값이 있는경우
+                $.ajax({
+                    url : "/user/uid",
+                    type : "get",
+                    data : {uniqueId : userKey},
+                    success : function (result) {
+                        if (result != "null") { // 서버에 고유값을 전송했을때 유효한 값이 있다면 실행
+                            userId = result;
+                            inputId.val(result);
+                            inputIdSave.attr("checked", true);
+                        } else { // 서버에 저장된 고유값을 전송했을때 유효하지 않으면 실행
+                            userKey = "expired";
                         }
-                    });
+                    },
+                    error : function () {
+                        alert("서버와 통신에 실패했습니다.");
+                    }
+                });
+            }
+            
+            btnLogin.on("click", function () {
+                if (isAllEmpty(inputId.val(), inputPwd.val())) { // 빈값 있는지 검사
+                    return;
                 }
+    
+                $.ajax({
+                    url : "/user/testLogin",
+                    type : "post",
+                    data : {targetId : inputId.val(), pwd : inputPwd.val()},
+                    success : function (data) {
+                        if (data != "true") { // DB에 유저가 존재하지않으면
+                            runUserCheckFailAnimate(userCheckResult, "아이디 또는 비밀번호가 틀렸습니다.");
+                            return;
+                        }
+    
+                        // 아이디 저장을 사용한다면
+                        if (inputIdSave.is(":checked") && userId != inputId.val()) { // 아이디가 변경된경우 기존의 고유값을 서버에서 삭제하고 신규발급
+                            let removeResult = removeUniqueId(userKey);
+                            if (removeResult == false) {
+                                alert("서버와 통신에 실패했습니다.");
+                                return;
+                            }
+    
+                            let generateResult = generateUniqueId(inputId);
+                            if (generateResult == false) {
+                                alert("서버와 통신에 실패했습니다.");
+                                return;
+                            }
+    
+                            btnHiddenLogin.click();
+                            return;
+                        } else if (inputIdSave.is(":checked") && (userKey == "expired" || userKey == "")) { // 고유값이 만료되었거나 존재하지않는경우 신규발급
+                            let generateResult = generateUniqueId(inputId);
+                            if (generateResult == false) {
+                                alert("서버와 통신에 실패했습니다.");
+                                return;
+                            }
+    
+                            btnHiddenLogin.click();
+                            return;
+                        } else if (inputIdSave.is(":checked")) { // 아이디 저장을 사용하면서 고유값이 유효한경우 그냥 로그인진행
+                            btnHiddenLogin.click();
+                            return;
+                        }
+    
+                        // 아이디 저장을 사용안하는 경우
+                        if (userKey != "expired" && userKey != "") { // 고유값이 존재하는경우 서버에 삭제요청
+                            let removeResult = removeUniqueId(userKey);
+                            if (removeResult == false) {
+                                alert("서버와 통신에 실패했습니다.");
+                                return;
+                            }
+                        }
+                        
+                        deleteCookie("SpringUID");
+                        btnHiddenLogin.click();
+                    },
+                    error : function () {
+                        alert("서버와 통신이 실패했습니다.");
+                    }
+                });
             });
         });
     </script>
