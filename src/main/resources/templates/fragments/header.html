@@ -22,7 +22,7 @@
                             <button id="btn-i-header-logout" style="display: none" type="submit"></button>
                         </form>
                     </li>
-                    <li class="mx-2">
+                    <li th:if="${isLogin} == 'false'" class="mx-2">
                         <a href="/clause" class="a-c-main"><img src="/img/join2.png" alt="회원가입" style="display:block;" class="mx-auto my-1"><span>회원가입</span></a>
                     </li>
                     <li class="mx-2 me-5">
@@ -54,13 +54,16 @@
                     </li>
                 </ul>
             </div>
-            <ul class="input-c-search justify-content-end m-0 p-0">
-                <input type="text" style="height: 24px">
-            </ul>
+            <form action="/searchMovie" method="get" name="frm">
+                <ul class="input-c-search justify-content-end m-0 p-0">
+                    <input type="text" style="height: 24px" onkeypress="JavaScript:press(this.form)" id="keyword" name="keyword">
+                </ul>
+            </form>
         </div>
 
     </div>
     <hr class="hr-c-nav">
+
 </header>
 </body>
 </html>

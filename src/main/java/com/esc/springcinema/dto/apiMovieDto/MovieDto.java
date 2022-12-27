@@ -188,4 +188,6 @@ public class MovieDto {
     public void setPlotsDto(PlotsDto plotsDto) {
         this.plotsDto = plotsDto;
     }
+
+    private String keyword;
 }

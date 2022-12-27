@@ -1,6 +1,8 @@
 package com.esc.springcinema.controller;
 
+import com.esc.springcinema.dto.BooksDto;
 import com.esc.springcinema.dto.MemberDto;
+import com.esc.springcinema.dto.MovieUrlDto;
 import com.esc.springcinema.dto.apiMovieDto.ActorDto;
 import com.esc.springcinema.dto.apiMovieDto.DirectorDto;
 import com.esc.springcinema.dto.apiMovieDto.MovieDto;
@@ -10,8 +12,7 @@ import com.esc.springcinema.service.MemberService;
 import com.esc.springcinema.service.MovieService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
@@ -19,6 +20,7 @@ import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 public class MoviesController {
@@ -62,17 +64,23 @@ public class MoviesController {
     }
 
     // 영화 검색
-    // 최종 수정 : 2022-12-15
-    // 마지막 작성자 : eblyncho
-    @RequestMapping("/searchMovie")
-    public ModelAndView viewMoviesList() throws Exception {
+    // 최종 수정 : 2022-12-26
+    // 마지막 작성자 : EblynCho
+    @ResponseBody
+    @RequestMapping(value = "/searchMovie")
+    public ModelAndView viewMoviesList(String keyword) throws Exception {
         ModelAndView mv = new ModelAndView("search");
 
-        List<MovieDto> dataList = movieService.selectMoviesList();
+        List<MovieDto> dataList = movieService.searchMoviesList(keyword);
+//        System.out.println(keyword);
         mv.addObject("dataList", dataList);
+
+        List<MovieDto> nowplayingList = movieService.selectNowplayingMoviesList();
+        mv.addObject("nowplayingList", nowplayingList);
 
         return mv;
     }
+
 
     // 영화_현재상영작 페이지
     // 최종 수정 : 2022-12-22
@@ -145,6 +153,12 @@ public class MoviesController {
         mv.addObject("docId",docid);
 
         mv.addObject("isLogin", isLogin);
+
+        List<MovieDto> nowplayingList = movieService.selectNowplayingMoviesList();
+        mv.addObject("nowplayingList", nowplayingList);
+
+        MovieUrlDto url = movieService.trailer(docid);
+        mv.addObject("url", url);
 
         return mv;
     }

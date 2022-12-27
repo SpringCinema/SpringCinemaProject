@@ -4,7 +4,7 @@
 <!-- 유저 로그인 페이지 -->
 
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>스프링 시네마 - 로그인</title>
@@ -190,6 +190,7 @@
                             <small><a href="/clause" style="text-decoration: none">아이디가 없으신가요? 회원가입을 해보세요!</a></small>
                         </div>
                     </div>
+                    <input type="hidden" th:value="${referer}" name="referer">
                 </form>
             </div>
         </div>

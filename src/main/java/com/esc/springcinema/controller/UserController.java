@@ -29,9 +29,11 @@ public class UserController {
         if (userId.equals("") == false) {
             return "redirect:/main";
         }
-
+    
+        String referer = request.getHeader("REFERER"); // 로그인으로 들어오기 이전페이지의 URL 정보
         ModelAndView view = new ModelAndView("/login");
         view.addObject("isLogin", "false");
+        view.addObject("referer", referer);
         return view;
     }
     
@@ -55,15 +57,31 @@ public class UserController {
     
     // 로그인 진행을합니다.
     // 세션에 아이디와 이름이 저장됩니다.
-    // 아이디 저장을 위해서는 쿠기를 사용을 해야할것같으나 개인정보는 내릴수없기때문에 고민해봐야함
-    // 최종 수정 : 2022-12-14
+    // 최종 수정 : 2022-12-23
     // 마지막 작성자 : MoonNight285
     @RequestMapping(value = "/user/login", method = RequestMethod.POST)
     public String login(@RequestParam("targetId") String targetId, @RequestParam("pwd") String pwd, HttpServletRequest request) throws Exception {
         MemberDto member = memberService.login(targetId, pwd);
         HttpSession session = request.getSession();
         session.setAttribute("loggedInUserInfo", member);
-        return "redirect:/main";
+    
+        // 헤더에서 referer 속성을 바로 가져오면 login 페이지 정보가 나오기 때문에 미리
+        // 저장해놓은 이전페이지 정보를 파라미터로 가져온다.
+        String referer = request.getParameter("referer");
+        
+        final String[] REDIRECT_ABLE_URL_LIST = new String[] {"movieDetail", "nowplaying", "upcoming", "book", "seat"};
+        final String REFERER_URL = referer.split("/")[3];
+        for (String targetUrl : REDIRECT_ABLE_URL_LIST) {
+            if (REFERER_URL.contains("seat")) { // 좌석 선택 페이지에서는 로그인후 구조상 좌석 선택 페이지로 돌아갈수가 없음
+                return "redirect:/book";
+            }
+            
+            if (REFERER_URL.contains(targetUrl)) { // 좌석 선택 페이지를 제외하고는 로그인 이전 페이지로 돌아감
+                return "redirect:/" + REFERER_URL;
+            }
+        }
+        
+        return "redirect:/main"; // 나머지는 전부 메인으로 이동
     }
     
     // 로그아웃
@@ -85,11 +103,18 @@ public class UserController {
     }
 
     // 비밀번호 찾기 페이지
-    // 최종 수정 : 2022-12-21
-    // 마지막 작성자 : yang
+    // 최종 수정 : 2022-12-23
+    // 마지막 작성자 : MoonNight285
     @RequestMapping(value = "/findPwd")
-    public ModelAndView findPWd(HttpServletRequest request) throws Exception {
+    public Object findPWd(HttpServletRequest request) throws Exception {
+        String userId = memberService.getLoggedInUserId(request);
+        
+        if (userId.equals("") == false) {
+            return "redirect:/main";
+        }
+        
         ModelAndView mv = new ModelAndView("pwdFind");
+        mv.addObject("isLogin", "false"); // 비밀번호 찾기는 무조건 로그아웃상태임
         return mv;
     }
 
@@ -124,7 +149,7 @@ public class UserController {
     }
 
     // 비밀번호 변경 완료 페이지
-    // 최종 수정 : 2022-12-21
+    // 최종 수정 : 2022-12-23
     // 마지막 작성자 : yang
     @RequestMapping(value = "/pwdUpdateOk", method = RequestMethod.POST)
     public ModelAndView updatePwd(@RequestParam("pwd") String pwd, @RequestParam("id") String id,@RequestParam("secureNum") String secureNum,
@@ -139,6 +164,7 @@ public class UserController {
                 mv.addObject("headMsg", "비밀번호를 성공적으로 변경하였습니다.");
                 mv.addObject("link", "/user/login");
                 mv.addObject("btnMsg", "로그인");
+                mv.addObject("isLogin", "false");
                 session.removeAttribute("findPwdUser" + id);
                 session.removeAttribute("findPwdSecure" + id);
                 return mv;
@@ -149,6 +175,7 @@ public class UserController {
                 mv.addObject("headMsg", "비밀번호변경에 실패했습니다.");
                 mv.addObject("link", "/findPwd");
                 mv.addObject("btnMsg", "돌아가기");
+                mv.addObject("isLogin", "false");
                 session.removeAttribute("findPwdUser" + id);
                 session.removeAttribute("findPwdSecure" + id);
                 return mv;
@@ -160,6 +187,7 @@ public class UserController {
             mv.addObject("headMsg", "인증번호가 만료되었습니다.");
             mv.addObject("link", "/findPwd");
             mv.addObject("btnMsg", "돌아가기");
+            mv.addObject("isLogin", "false");
             session.removeAttribute("findPwdUser" + id);
             session.removeAttribute("findPwdSecure" + id);
             return mv;

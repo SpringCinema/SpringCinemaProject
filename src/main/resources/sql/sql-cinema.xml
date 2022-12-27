@@ -151,4 +151,22 @@
     <update id="pwdUpdate" parameterType="String">
         UPDATE members SET pwd = #{pwd} WHERE id = #{id}
     </update>
+
+    <!-- 예고편 -->
+    <select id="trailer" resultType="com.esc.springcinema.dto.MovieUrlDto">
+        <![CDATA[
+        SELECT docid, url
+        FROM movie_urls
+        WHERE docid = #{docid}
+        ]]>
+    </select>
+
+    <!-- 영화 검색 -->
+    <select id="searchMoviesList" parameterType="String" resultType="com.esc.springcinema.dto.apiMovieDto.MovieDto">
+        <![CDATA[
+        SELECT docid, title, SUBSTRING_INDEX(posters, '|', 1) AS posters, repRlsDate
+        FROM movies
+        WHERE title REGEXP #{keyword}
+        ]]>
+    </select>
 </mapper>

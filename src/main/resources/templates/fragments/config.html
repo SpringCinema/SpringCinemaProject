@@ -104,5 +104,19 @@
         }
     </style>
 
+
+    <script type="text/javascript">
+
+        function press(f) {
+            let keyword = document.getElementById("keyword").value;
+            // console.log(keyword);
+            sessionStorage.setItem("keyword", keyword);
+            if (f.keyCode == 13) {
+                frm.submit();
+            }
+        }
+
+    </script>
+
 </th:block>
 </html>

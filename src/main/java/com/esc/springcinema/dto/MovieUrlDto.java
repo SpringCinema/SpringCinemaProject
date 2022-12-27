@@ -4,7 +4,7 @@ import lombok.Data;
 
 @Data
 public class MovieUrlDto {
-    private int idx;
+    private String docid;
     private String title;
     private String url;
 }
