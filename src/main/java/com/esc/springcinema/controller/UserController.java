@@ -125,7 +125,7 @@ public class UserController {
     }
     
     // 로그아웃
-    // 최종 수정 : 2022-12-22
+    // 최종 수정 : 2022-12-28
     // 마지막 작성자 : MoonNight285
     @RequestMapping(value = "/user/logout", method = RequestMethod.POST)
     public ModelAndView logout(HttpServletRequest request) throws Exception {
@@ -134,7 +134,7 @@ public class UserController {
         session.invalidate();
 
         ModelAndView view = new ModelAndView("common/process_complete");
-        view.addObject("title", "스프링 시네마 - 로그아웃 완료");
+        view.addObject("title", "SPRING CINEMA - 로그아웃 완료");
         view.addObject("headMsg", "로그아웃이 완료되었습니다.");
         view.addObject("link", "/main");
         view.addObject("btnMsg", "메인으로");

@@ -21,7 +21,7 @@ public class PaymentsController {
     private MemberService memberService;
     
     // 결제 완료 후 DB 저장 & 페이지 이동
-    // 최종 수정 : 2022-12-23
+    // 최종 수정 : 2022-12-28
     // 마지막 작성자 : MoonNight285
     @RequestMapping(value = "/paymentComplete", method = RequestMethod.GET)
     public ModelAndView addPayment(HttpServletRequest request) throws Exception {
@@ -33,7 +33,7 @@ public class PaymentsController {
         }
         
         ModelAndView resultView = new ModelAndView("common/process_complete");
-        resultView.addObject("title", "스프링 시네마 - 예매 완료");
+        resultView.addObject("title", "SPRING CINEMA - 예매 완료");
         resultView.addObject("headMsg", "예매가 완료되었습니다.");
         resultView.addObject("link", "/main");
         resultView.addObject("btnMsg", "메인으로");
@@ -43,7 +43,7 @@ public class PaymentsController {
 
 
     // 결제 실패 후 페이지 이동
-    // 최종 수정 : 2022-12-23
+    // 최종 수정 : 2022-12-28
     // 마지막 작성자 : MoonNight285
     @RequestMapping(value = "/paymentCancel", method = RequestMethod.GET)
     public ModelAndView paymentCancel(HttpServletRequest request) throws Exception {
@@ -55,7 +55,7 @@ public class PaymentsController {
         }
         
         ModelAndView resultView = new ModelAndView("common/process_complete");
-        resultView.addObject("title", "스프링 시네마 - 예매 실패");
+        resultView.addObject("title", "SPRING CINEMA - 예매 실패");
         resultView.addObject("headMsg", "예매 결제가 완료되지 않았습니다.");
         resultView.addObject("link", "/main");
         resultView.addObject("btnMsg", "메인으로");

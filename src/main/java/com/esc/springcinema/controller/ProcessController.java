@@ -17,7 +17,7 @@ public class ProcessController {
 
     // 특정작업이 처리가 완료되었을때의 뷰를 보여주는 기능을 해주는 함수
     // 메세지 타입에따라 다르게 처리가능
-    // 최종 수정 : 2022-12-22
+    // 최종 수정 : 2022-12-28
     // 마지막 작성자 : MoonNight285
     @RequestMapping( value = "/complete")
     public ModelAndView viewProcessComplete(@RequestParam("msgType") String msgType, HttpServletRequest request) throws Exception {
@@ -35,13 +35,13 @@ public class ProcessController {
 
         switch (msgType) {
             case "UserDeleted" :
-            title = "스프링 시네마 - 회원탈퇴 완료";
+            title = "SPRING CINEMA - 회원탈퇴 완료";
             headMsg = "회원탈퇴가 완료되었습니다.";
             btnMsg = "메인으로";
             link = "/main";
             break;
             case "payCancel" :
-                title = "스프링 시네마 - 결제취소 완료";
+                title = "SPRING CINEMA - 결제취소 완료";
                 headMsg = "결제취소가 완료되었습니다.";
                 btnMsg = "마이페이지로";
                 link = "/mypage";

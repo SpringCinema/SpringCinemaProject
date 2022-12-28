@@ -75,13 +75,13 @@ public class JoinController {
         boolean result = memberService.createMember(member);
         ModelAndView resultView = new ModelAndView("common/process_complete");
         if (result == true) { // 아이디가 올바르게 들어갔는지 검증하는 기능이 아직 구현되지않음 무조건 true
-            resultView.addObject("title", "스프링 시네마 - 회원가입 완료");
+            resultView.addObject("title", "SPRING CINEMA - 회원가입 완료");
             resultView.addObject("headMsg", "회원가입이 완료되었습니다.");
             resultView.addObject("link", "/main");
             resultView.addObject("btnMsg", "메인으로");
             resultView.addObject("isLogin", "false");
         } else {
-            resultView.addObject("title", "스프링 시네마 - 회원가입 실패");
+            resultView.addObject("title", "SPRING CINEMA - 회원가입 실패");
             resultView.addObject("headMsg", "회원가입도중 문제가 발생했습니다.");
             resultView.addObject("link", "/main");
             resultView.addObject("btnMsg", "메인으로");
