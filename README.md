@@ -14,8 +14,9 @@
 
 # 프로젝트 설명
 #### 이 애플리케이션은 어떤일을 하나요?
-    스프링 시네마는 KMDB의 API를 연동해 영화 데이터를 가져와 실제 영화관 사이트처럼 현재/상영 예정작을 보여주는 기능 그리고
-    영화를 선택하고 예매하는 프로세스 최종적으로 아임포트를 사용해 테스트 결제까지 연동해놓은 애플리케이션입니다.
+    스프링 시네마는 KMDB의 API를 연동해 영화 데이터를 가져와 실제 영화관 사이트처럼 현재/상영 예정작을 보여주는 기능
+    그리고 영화를 선택하고 예매하는 프로세스 최종적으로 아임포트를 사용해 테스트 결제까지
+    연동해놓은 애플리케이션입니다.
     
 #### 이 프로젝트에는 어떤 기술이 사용되었나요?
 🔎 프론트
@@ -34,11 +35,14 @@
     
 
 # 프로젝트 환경설정 및 설치방법 
+    이 프로젝트는 스프링 2.7.6 버전이 사용되었습니다.
+    어플리케이션을 구동하고 싶으면 프로젝트를 받아 build.gradle에 있는 종속되는 부분을 다운하고
+    사용하시면 됩니다.
 
 # 개발에 참여한 팀원 
-* MoonNight285(github : https://github.com/MoonNight285)
-* EblynCho(github : https://github.com/EblynCho)
-* minho95(github : https://github.com/OwOowl)
+* MoonNight285(github : https://github.com/MoonNight285 , email : kimjyjh123@gmail.com)
+* EblynCho(github : https://github.com/EblynCho , email : eblyn52@naver.com)
+* minho95(github : https://github.com/OwOowl , email : ymh0052@naver.com)
 
 # 참고자료 
 * 한국영화데이터베이스(https://www.kmdb.or.kr/info/api/apiDetail/6)
